@@ -126,10 +126,106 @@
 
     <div class="variant">
       <div class="variant-num">Variant E — samma som A men med <code>#</code>-flagga på svaret (hörs först i reverse)</div>
-      <div class="variant-desc">Samma struktur som A reverse, men svaret (som hörs först) är v6-flag-normer (TTS-prompt "#normer"). Isolerar ENBART effekten av <code>#</code>-prompten.</div>
+      <div class="variant-desc">Samma struktur som A reverse, men svaret (som hörs först) är v6-flag-normer (TTS-prompt "#normer", <code>--language Swedish</code>). Isolerar ENBART effekten av <code>#</code>-prompten.</div>
       <button class="btn-instr" onclick="playAudio('audio/v6-flag-normer.mp3')">🔊 Först ("#normer", flagga)</button>
       <button class="btn-answ" onclick="playAudio('audio/v6-fraga-only.mp3')">🔊 Sedan ("Förklara ordet")</button>
       <button class="btn-both" onclick="playTwoFiles('audio/v6-flag-normer.mp3', 'audio/v6-fraga-only.mp3', 0)">▶️ Båda (#-flagga först, 0ms paus)</button>
+    </div>
+  </div>
+
+  <!-- ========== TEST: DEMOKRATI ========== -->
+  <h1 style="margin-top: 2rem;">Test: demokrati</h1>
+  <p class="subtitle">
+    Samma test, nytt ord. Jämför 4 sätt att spela "Förklara ordet" + "demokrati". Alla filer genererade med <code>--language Swedish</code>.
+  </p>
+
+  <p style="text-align:center; color:#64748b; font-size:0.85rem; font-style:italic;">
+    Fråga = "Förklara ordet" (samma som normer, återanvänd v6-fraga-only) · Svar = "demokrati"
+  </p>
+
+  <!-- ========== DEMOKRATI FORWARD MODE ========== -->
+  <div class="mode-section">
+    <div class="mode-title">📖 Forward mode (framsida): "Förklara ordet" → "demokrati"</div>
+    <div class="mode-desc">Användaren ser "demokrati" (frågan ovan), ska höra frågan och tänka ut svaret.</div>
+    <div class="prompt">demokrati</div>
+
+    <div class="variant">
+      <div class="variant-num">Variant A — 2 separata TTS-filer, 0ms paus (playTwoFiles)</div>
+      <div class="variant-desc">Spelar v6-fraga-only ("Förklara ordet") → 0ms paus → v6-svar-only-demokrati ("demokrati").</div>
+      <button class="btn-instr" onclick="playAudio('audio/v6-fraga-only.mp3')">🔊 Fråga ("Förklara ordet")</button>
+      <button class="btn-answ" onclick="playAudio('audio/v6-svar-only-demokrati.mp3')">🔊 Svar ("demokrati")</button>
+      <button class="btn-both" onclick="playTwoFiles('audio/v6-fraga-only.mp3', 'audio/v6-svar-only-demokrati.mp3', 0)">▶️ Båda (2 filer, 0ms paus)</button>
+    </div>
+
+    <div class="variant">
+      <div class="variant-num">Variant B — 1 fil med MiniMax <code>&lt;#0.5#&gt;</code> pause-marker (inbyggd paus)</div>
+      <div class="variant-desc">Samma källinnehåll ("Förklara ordet&lt;#0.5#&gt;demokrati") som 1 TTS-ström med naturlig paus inbakad. Prosodin bevaras bättre.</div>
+      <button class="btn-both" onclick="playAudio('audio/v6-fraga-plus-svar-marked-demokrati.mp3')">▶️ Spela (1 fil, inbyggd 0.5s paus via MiniMax-marker)</button>
+    </div>
+
+    <div class="variant">
+      <div class="variant-num">Variant C — 2 SPLICEADE filer från samma TTS-pass, 0ms paus (playTwoFiles)</div>
+      <div class="variant-desc">Samma källinnehåll som A ("Förklara ordet" + "demokrati"), 0s paus. Fråga + svar kommer från SAMMA TTS-ström (splittad vid 1.41s med ffmpeg) → bättre prosody.</div>
+      <button class="btn-instr" onclick="playAudio('audio/v6-spliced-q-demokrati.mp3')">🔊 Fråga ("Förklara ordet", splice)</button>
+      <button class="btn-answ" onclick="playAudio('audio/v6-spliced-a-demokrati.mp3')">🔊 Svar ("demokrati", splice)</button>
+      <button class="btn-both" onclick="playTwoFiles('audio/v6-spliced-q-demokrati.mp3', 'audio/v6-spliced-a-demokrati.mp3', 0)">▶️ Båda (splice, 0ms paus)</button>
+    </div>
+
+    <div class="variant">
+      <div class="variant-num">Variant D — 1 fil utan paus (concat, baseline)</div>
+      <div class="variant-desc">Samma källinnehåll, 1 fil (concat utan paus). Testar hur det låter utan paus alls.</div>
+      <button class="btn-both" onclick="playAudio('audio/v6-fraga-plus-svar-natural-demokrati.mp3')">▶️ Spela (1 fil, concat utan paus)</button>
+    </div>
+
+    <div class="variant">
+      <div class="variant-num">Variant E — samma som A men svar med <code>#</code>-flagga (isolerar <code>#</code>-effekten)</div>
+      <div class="variant-desc">Samma q-fil som A (v6-fraga-only), men svar med <code>#</code>-flagga: v6-flag-demokrati (TTS-prompt "#demokrati", <code>--language Swedish</code>). Isolerar ENBART effekten av <code>#</code>-prompten.</div>
+      <button class="btn-instr" onclick="playAudio('audio/v6-fraga-only.mp3')">🔊 Fråga ("Förklara ordet")</button>
+      <button class="btn-answ" onclick="playAudio('audio/v6-flag-demokrati.mp3')">🔊 Svar ("#demokrati", flagga)</button>
+      <button class="btn-both" onclick="playTwoFiles('audio/v6-fraga-only.mp3', 'audio/v6-flag-demokrati.mp3', 0)">▶️ Båda (A-struktur + #-flagga, 0ms paus)</button>
+    </div>
+  </div>
+
+  <!-- ========== DEMOKRATI REVERSE MODE ========== -->
+  <div class="mode-section">
+    <div class="mode-title">🔊 Reverse mode (baksida): Svar → "Förklara ordet"</div>
+    <div class="mode-desc">Användaren ser "Förklara ordet" (frågan ovan), ska höra svaret och gissa begreppet.</div>
+    <div class="prompt">Förklara ordet</div>
+
+    <div class="variant">
+      <div class="variant-num">Variant A — 2 separata TTS-filer, 0ms paus (playTwoFiles)</div>
+      <div class="variant-desc">Spelar v6-svar-only-demokrati ("demokrati") → 0ms paus → v6-fraga-only ("Förklara ordet").</div>
+      <button class="btn-instr" onclick="playAudio('audio/v6-svar-only-demokrati.mp3')">🔊 Fråga ("demokrati", svar)</button>
+      <button class="btn-answ" onclick="playAudio('audio/v6-fraga-only.mp3')">🔊 Svar ("Förklara ordet", fråga)</button>
+      <button class="btn-both" onclick="playTwoFiles('audio/v6-svar-only-demokrati.mp3', 'audio/v6-fraga-only.mp3', 0)">▶️ Båda (2 filer, 0ms paus)</button>
+    </div>
+
+    <div class="variant">
+      <div class="variant-num">Variant B — 1 fil med MiniMax <code>&lt;#0.5#&gt;</code> pause-marker (inbyggd paus)</div>
+      <div class="variant-desc">Samma källinnehåll, 1 fil med inbyggd 0.5s paus. Prosodin bevaras bättre än separata filer.</div>
+      <button class="btn-both" onclick="playAudio('audio/v6-fraga-plus-svar-marked-demokrati.mp3')">▶️ Spela (1 fil, inbyggd 0.5s paus)</button>
+    </div>
+
+    <div class="variant">
+      <div class="variant-num">Variant C — 2 SPLICEADE filer från samma TTS-pass, 0ms paus (playTwoFiles)</div>
+      <div class="variant-desc">Samma källinnehåll som A reverse, 0s paus. Svar + fråga från SAMMA TTS-ström (splittad vid 1.41s) → bättre prosody.</div>
+      <button class="btn-instr" onclick="playAudio('audio/v6-spliced-a-demokrati.mp3')">🔊 Först ("demokrati", splice)</button>
+      <button class="btn-answ" onclick="playAudio('audio/v6-spliced-q-demokrati.mp3')">🔊 Sedan ("Förklara ordet", splice)</button>
+      <button class="btn-both" onclick="playTwoFiles('audio/v6-spliced-a-demokrati.mp3', 'audio/v6-spliced-q-demokrati.mp3', 0)">▶️ Båda (splice, 0ms paus)</button>
+    </div>
+
+    <div class="variant">
+      <div class="variant-num">Variant D — 1 fil utan paus (concat, baseline)</div>
+      <div class="variant-desc">Samma källinnehåll, 1 fil (concat utan paus). Testar hur det låter utan paus alls.</div>
+      <button class="btn-both" onclick="playAudio('audio/v6-fraga-plus-svar-natural-demokrati.mp3')">▶️ Spela (1 fil, concat utan paus)</button>
+    </div>
+
+    <div class="variant">
+      <div class="variant-num">Variant E — samma som A men med <code>#</code>-flagga på svaret (hörs först i reverse)</div>
+      <div class="variant-desc">Samma struktur som A reverse, men svaret (som hörs först) är v6-flag-demokrati (TTS-prompt "#demokrati", <code>--language Swedish</code>).</div>
+      <button class="btn-instr" onclick="playAudio('audio/v6-flag-demokrati.mp3')">🔊 Först ("#demokrati", flagga)</button>
+      <button class="btn-answ" onclick="playAudio('audio/v6-fraga-only.mp3')">🔊 Sedan ("Förklara ordet")</button>
+      <button class="btn-both" onclick="playTwoFiles('audio/v6-flag-demokrati.mp3', 'audio/v6-fraga-only.mp3', 0)">▶️ Båda (#-flagga först, 0ms paus)</button>
     </div>
   </div>
 
