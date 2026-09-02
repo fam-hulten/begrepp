@@ -34,8 +34,8 @@
   </style>
 </head>
 <body>
-  <div class="banner">🧪 CONCEPT TEST V3.2 — Sekventiell 2-fils uppspelning vs 1 fil</div>
-  <div class="version">v7 · commit 7e1d431 · 2026-09-02 12:42</div>
+  <div class="banner">🧪 CONCEPT TEST V3.3 — A vs C (splice) vs E (#-flagga)</div>
+  <div class="version">v8 · 2026-09-02 19:10 · E-variant tillagd, C-variant splicead, A-variant 0ms paus permanent</div>
 
   <h1>Test: normer</h1>
   <p class="subtitle">
@@ -68,17 +68,25 @@
     </div>
 
     <div class="variant">
-      <div class="variant-num">Variant C — 2 separata TTS-filer, 0ms paus (playTwoFiles)</div>
-      <div class="variant-desc">Samma källinnehåll som A ("Förklara ordet" + "normer"), 0s paus. Fråga + svar från SEPARATA TTS-filer, direkt efter varandra.</div>
-      <button class="btn-instr" onclick="playAudio('audio/v6-fraga-only.mp3')">🔊 Fråga ("Förklara ordet")</button>
-      <button class="btn-answ" onclick="playAudio('audio/v6-svar-only.mp3')">🔊 Svar ("normer")</button>
-      <button class="btn-both" onclick="playTwoFiles('audio/v6-fraga-only.mp3', 'audio/v6-svar-only.mp3', 0)">▶️ Båda (2 filer, 0s paus)</button>
+      <div class="variant-num">Variant C — 2 SPLICEADE filer från samma TTS-pass, 0ms paus (playTwoFiles)</div>
+      <div class="variant-desc">Samma källinnehåll som A ("Förklara ordet" + "normer"), 0s paus. Fråga + svar kommer från SAMMA TTS-ström (splittad vid 1.76s med ffmpeg) → bättre prosody än separata TTS-filer.</div>
+      <button class="btn-instr" onclick="playAudio('audio/v6-spliced-q.mp3')">🔊 Fråga ("Förklara ordet", splice)</button>
+      <button class="btn-answ" onclick="playAudio('audio/v6-spliced-a.mp3')">🔊 Svar ("normer", splice)</button>
+      <button class="btn-both" onclick="playTwoFiles('audio/v6-spliced-q.mp3', 'audio/v6-spliced-a.mp3', 0)">▶️ Båda (splice, 0ms paus)</button>
     </div>
 
     <div class="variant">
       <div class="variant-num">Variant D — 1 fil utan paus (concat, baseline)</div>
       <div class="variant-desc">Samma källinnehåll, 1 fil (concat utan paus). Testar hur det låter utan paus alls.</div>
       <button class="btn-both" onclick="playAudio('audio/v6-fraga-plus-svar-natural.mp3')">▶️ Spela (1 fil, concat utan paus)</button>
+    </div>
+
+    <div class="variant">
+      <div class="variant-num">Variant E — samma som A men svar med <code>#</code>-flagga (isolerar <code>#</code>-effekten)</div>
+      <div class="variant-desc">Samma q-fil som A (v6-fraga-only), men svar med <code>#</code>-flagga: v6-flag-normer (TTS-prompt "#normer"). Isolerar ENBART effekten av <code>#</code>-prompten — allt annat identiskt med A.</div>
+      <button class="btn-instr" onclick="playAudio('audio/v6-fraga-only.mp3')">🔊 Fråga ("Förklara ordet")</button>
+      <button class="btn-answ" onclick="playAudio('audio/v6-flag-normer.mp3')">🔊 Svar ("#normer", flagga)</button>
+      <button class="btn-both" onclick="playTwoFiles('audio/v6-fraga-only.mp3', 'audio/v6-flag-normer.mp3', 0)">▶️ Båda (A-struktur + #-flagga, 0ms paus)</button>
     </div>
   </div>
 
@@ -103,11 +111,11 @@
     </div>
 
     <div class="variant">
-      <div class="variant-num">Variant C — 2 separata TTS-filer, 0ms paus (playTwoFiles)</div>
-      <div class="variant-desc">Samma källinnehåll, 0s paus mellan filerna. Fråga + svar från SEPARATA TTS-filer, direkt efter varandra.</div>
-      <button class="btn-instr" onclick="playAudio('audio/v6-svar-only.mp3')">🔊 Fråga ("normer", svar)</button>
-      <button class="btn-answ" onclick="playAudio('audio/v6-fraga-only.mp3')">🔊 Svar ("Förklara ordet", fråga)</button>
-      <button class="btn-both" onclick="playTwoFiles('audio/v6-svar-only.mp3', 'audio/v6-fraga-only.mp3', 0)">▶️ Båda (2 filer, 0s paus)</button>
+      <div class="variant-num">Variant C — 2 SPLICEADE filer från samma TTS-pass, 0ms paus (playTwoFiles)</div>
+      <div class="variant-desc">Samma källinnehåll som A reverse, 0s paus. Svar + fråga från SAMMA TTS-ström (splittad vid 1.76s) → bättre prosody än separata TTS-filer.</div>
+      <button class="btn-instr" onclick="playAudio('audio/v6-spliced-a.mp3')">🔊 Först ("normer", splice)</button>
+      <button class="btn-answ" onclick="playAudio('audio/v6-spliced-q.mp3')">🔊 Sedan ("Förklara ordet", splice)</button>
+      <button class="btn-both" onclick="playTwoFiles('audio/v6-spliced-a.mp3', 'audio/v6-spliced-q.mp3', 0)">▶️ Båda (splice, 0ms paus)</button>
     </div>
 
     <div class="variant">
@@ -115,16 +123,25 @@
       <div class="variant-desc">Samma källinnehåll, 1 fil (concat utan paus). Testar hur det låter utan paus alls.</div>
       <button class="btn-both" onclick="playAudio('audio/v6-fraga-plus-svar-natural.mp3')">▶️ Spela (1 fil, concat utan paus)</button>
     </div>
+
+    <div class="variant">
+      <div class="variant-num">Variant E — samma som A men med <code>#</code>-flagga på svaret (hörs först i reverse)</div>
+      <div class="variant-desc">Samma struktur som A reverse, men svaret (som hörs först) är v6-flag-normer (TTS-prompt "#normer"). Isolerar ENBART effekten av <code>#</code>-prompten.</div>
+      <button class="btn-instr" onclick="playAudio('audio/v6-flag-normer.mp3')">🔊 Först ("#normer", flagga)</button>
+      <button class="btn-answ" onclick="playAudio('audio/v6-fraga-only.mp3')">🔊 Sedan ("Förklara ordet")</button>
+      <button class="btn-both" onclick="playTwoFiles('audio/v6-flag-normer.mp3', 'audio/v6-fraga-only.mp3', 0)">▶️ Båda (#-flagga först, 0ms paus)</button>
+    </div>
   </div>
 
   <div class="info-box">
-    <strong>Utvärdera:</strong>
+    <strong>Utvärdera (V3.3):</strong>
     <ol style="margin: 0.4rem 0 0 1.25rem; padding: 0;">
-      <li>Låter "Förklara ordet" + 0ms paus + "normer" (Variant A) som ett naturligt yttrande?</li>
-      <li>Låter Variant A bättre än Variant C (båda 0ms paus, samma filer) med playTwoFiles?</li>
-      <li>Låter Variant B (1 fil med marker) ännu bättre eftersom det är EN sammanhängande TTS-ström?</li>
+      <li>Låter Variant A (diskreta filer, 0ms paus) som ett naturligt yttrande?</li>
+      <li>Låter Variant C bättre (samma TTS-ström, splicead) jämfört med A?</li>
+      <li>Vad gör <code>#</code>-flaggan i Variant E — låter "Förklara ordet" → "#normer" bättre/annorlunda än A?</li>
       <li>Vilken variant är pedagogiskt bäst för Zacharias (DLD-vänligt)?</li>
     </ol>
+    <p style="margin: 0.6rem 0 0 0;"><strong>Lyssningstest (utanför jämförelsen):</strong> <a href="audio/v6-flag-normer.mp3">v6-flag-normer.mp3</a> · <a href="audio/v6-flag-demokrati.mp3">v6-flag-demokrati.mp3</a></p>
   </div>
 
   <a href="./" class="meta">← Tillbaka till huvudappen (V3.1)</a>
