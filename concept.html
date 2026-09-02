@@ -49,9 +49,9 @@
 
     <div class="variant">
       <div class="variant-num">Variant A — 2 separata filer, 0.5s JS-paus</div>
-      <div class="variant-desc">Spelar 2 filer med setTimeout(500) emellan. Enklast, men prosodin bryts.</div>
-      <button class="btn-instr" onclick="playAudio('audio/v3-instr.mp3')">🔊 Fråga</button>
-      <button class="btn-answ" onclick="playAudio('audio/concept-forklaring-normer.mp3')">🔊 Svar</button>
+      <div class="variant-desc">Spelar 2 filer med 0.5s paus emellan (vänta på 'ended'-event). Enklast, men prosodin bryts.</div>
+      <button class="btn-instr" onclick="playAudio('audio/v3-instr.mp3')">🔊 Fråga (samma källa som C)</button>
+      <button class="btn-answ" onclick="playAudio('audio/concept-forklaring-normer.mp3')">🔊 Svar (per-begrepp)</button>
       <button class="btn-both" onclick="playTwoFiles('audio/v3-instr.mp3', 'audio/concept-forklaring-normer.mp3', 500)">▶️ Båda (0.5s paus)</button>
     </div>
 
@@ -63,8 +63,8 @@
 
     <div class="variant">
       <div class="variant-num">Variant C — 1 TTS-fil, ffmpeg-spliced i 2</div>
-      <div class="variant-desc">Genererar "Vilket ord kan förklaras som. En del av..." som 1 fil, splittar med ffmpeg. Naturlig prosody.</div>
-      <button class="btn-instr" onclick="playAudio('audio/v3-instr.mp3')">🔊 Fråga (spliced)</button>
+      <div class="variant-desc">Samma fråga-källa som A, men svar OCH övergång är från samma TTS-pass. Naturlig prosody.</div>
+      <button class="btn-instr" onclick="playAudio('audio/v3-instr.mp3')">🔊 Fråga (samma källa som A)</button>
       <button class="btn-answ" onclick="playAudio('audio/v3-forklaring.mp3')">🔊 Svar (spliced)</button>
       <button class="btn-both" onclick="playTwoFiles('audio/v3-instr.mp3', 'audio/v3-forklaring.mp3', 0)">▶️ Båda (0s — spliced övergång)</button>
     </div>
@@ -84,7 +84,7 @@
 
     <div class="variant">
       <div class="variant-num">Variant A — 2 separata filer, 0.5s JS-paus</div>
-      <div class="variant-desc">Spelar 2 filer med setTimeout(500) emellan.</div>
+      <div class="variant-desc">Spelar 2 filer med 0.5s paus (vänta på 'ended'-event).</div>
       <button class="btn-instr" onclick="playAudio('audio/concept-shared-instruction.mp3')">🔊 Fråga (shared)</button>
       <button class="btn-answ" onclick="playAudio('audio/concept-forklaring-normer.mp3')">🔊 Svar (per-begrepp)</button>
       <button class="btn-both" onclick="playTwoFiles('audio/concept-shared-instruction.mp3', 'audio/concept-forklaring-normer.mp3', 500)">▶️ Båda (0.5s paus)</button>
@@ -98,8 +98,8 @@
 
     <div class="variant">
       <div class="variant-num">Variant C — 1 TTS-fil, ffmpeg-spliced i 2</div>
-      <div class="variant-desc">Samma spliced filer som forward. Passar båda lägena.</div>
-      <button class="btn-instr" onclick="playAudio('audio/v3-instr.mp3')">🔊 Fråga (spliced)</button>
+      <div class="variant-desc">Frågan är samma som A, men svar OCH övergång är från samma TTS-pass. Naturlig prosody.</div>
+      <button class="btn-instr" onclick="playAudio('audio/v3-instr.mp3')">🔊 Fråga (samma som A)</button>
       <button class="btn-answ" onclick="playAudio('audio/v3-forklaring.mp3')">🔊 Svar (spliced)</button>
       <button class="btn-both" onclick="playTwoFiles('audio/v3-instr.mp3', 'audio/v3-forklaring.mp3', 0)">▶️ Båda (0s — spliced övergång)</button>
     </div>
@@ -126,29 +126,46 @@
   <script>
     const audio = new Audio();
     audio.preload = 'auto';
+    let isPlaying = false;
 
     function playAudio(src) {
+      if (isPlaying) { audio.pause(); }
+      isPlaying = true;
       audio.src = src;
-      audio.play().catch(err => console.warn('Audio play failed:', err));
+      audio.play().catch(err => {
+        console.warn('Audio play failed:', err);
+        isPlaying = false;
+      });
     }
 
     function playTwoFiles(src1, src2, pauseMs) {
-      // Spela första filen, vänta pauseMs, spela andra
+      // Spela src1, vänta tills den är klar, vänta pauseMs, spela src2.
+      // Fix: använd 'ended' event istället för setTimeout (förra versionen startade
+      // src2 innan src1 var klar → överlappande/trasigt ljud).
+      if (isPlaying) { audio.pause(); }
+      isPlaying = true;
       audio.src = src1;
-      audio.play().catch(err => console.warn('Audio play failed:', err));
-      // Sätt timer för nästa fil
-      setTimeout(() => {
-        // Vänta tills första filen är klar ELLER tills pauseMs har gått
-        // För enkelhet: använd pauseMs som total fördröjning
-        // Mer sofistikerat: lyssna på 'ended' event
-      }, pauseMs);
+      audio.play().catch(err => {
+        console.warn('Audio play failed:', err);
+        isPlaying = false;
+      });
+      audio.onended = () => {
+        const playSecond = () => {
+          audio.src = src2;
+          audio.play().catch(err => {
+            console.warn('Audio play failed:', err);
+            isPlaying = false;
+          });
+        };
+        if (pauseMs > 0) {
+          setTimeout(playSecond, pauseMs);
+        } else {
+          playSecond();
+        }
+      };
     }
 
-    // Mer sofistikerad version: lyssna på 'ended' för naturlig övergång
-    audio.addEventListener('ended', () => {
-      // Om vi är i "play both" mode, spela nästa
-      // (implementeras med global state om användaren vill ha exakt 0s spliced övergång)
-    });
+    audio.addEventListener('ended', () => { isPlaying = false; });
   </script>
 </body>
 </html>
