@@ -1,0 +1,273 @@
+// Begrepp — PWA
+// Laddar begrepp-data.json, presenterar 12 SO-begrepp med audio för recall-träning.
+// Läge 1 (forward): Begrepp visas → användaren tänker/säger förklaring → tryck → visa + läs upp förklaring
+// Läge 2 (reverse): Förklaring visas + läses upp → användaren gissar ord → tryck → visa + läs upp begrepp
+// Efter reveal: ✓ Rätt (tas ur kön, klart för denna session) / ✗ Fel (flyttas till sist i kön, repeteras)
+// Session klar när kön är tom. Cross-session mastery sparas i LocalStorage.
+
+const STORAGE_KEY = 'begrepp-v1';
+const SW_VERSION = 'begrepp-v1';
+
+let data = null;
+let queue = []; // aktuell kö för sessionen (array av begrepp-IDs)
+let masteredThisSession = []; // ordning på klarade denna session
+let sessionRepeats = 0; // antal ggr ett kort flyttats till slutet av kön
+let sessionAttempts = []; // logg: [{id, correct, mode}, ...]
+let currentCard = null;
+let currentMode = 'forward'; // 'forward' eller 'reverse'
+let revealed = false;
+
+const audio = new Audio();
+audio.preload = 'auto';
+
+const cardEl = document.getElementById('card');
+const promptEl = document.getElementById('prompt');
+const answerEl = document.getElementById('answer');
+const audioBegreppBtn = document.getElementById('audioBegreppBtn');
+const audioForklaringBtn = document.getElementById('audioForklaringBtn');
+const revealBtn = document.getElementById('revealBtn');
+const selfAssessEl = document.getElementById('selfAssess');
+const rattBtn = document.getElementById('rattBtn');
+const felBtn = document.getElementById('felBtn');
+const progressBar = document.getElementById('progressBar');
+const currentSpan = document.getElementById('current');
+const totalSpan = document.getElementById('total');
+const streakCounter = document.getElementById('streakCounter');
+const streakNum = document.getElementById('streakNum');
+const modeForwardBtn = document.getElementById('modeForwardBtn');
+const modeReverseBtn = document.getElementById('modeReverseBtn');
+const summaryEl = document.getElementById('summary');
+const startOverBtn = document.getElementById('startOverBtn');
+const installHint = document.getElementById('installHint');
+const installBtn = document.getElementById('installBtn');
+const dismissInstallBtn = document.getElementById('dismissInstall');
+const titleEl = document.getElementById('title');
+
+let streak = 0;
+let deferredInstallPrompt = null;
+
+async function loadData() {
+  try {
+    const res = await fetch('begrepp-data.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const json = await res.json();
+    data = json;
+    if (!data.begrepp || !data.begrepp.length) throw new Error('Inga begrepp i datafilen');
+    if (data.meta?.title) titleEl.textContent = data.meta.title;
+    init();
+  } catch (err) {
+    console.error('Kunde inte ladda begrepp-data.json:', err);
+    promptEl.textContent = '⚠️';
+    answerEl.textContent = 'Kunde inte ladda data. Kontrollera att begrepp-data.json finns.';
+    answerEl.classList.remove('hidden');
+    revealBtn.disabled = true;
+  }
+}
+
+function init() {
+  // Slumpa begrepp
+  const all = [...data.begrepp];
+  for (let i = all.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [all[i], all[j]] = [all[j], all[i]];
+  }
+  queue = all.map(b => b.id);
+  masteredThisSession = [];
+  sessionRepeats = 0;
+  sessionAttempts = [];
+  streak = 0;
+  totalSpan.textContent = data.begrepp.length;
+  renderProgress();
+  updateStreak();
+  nextCard();
+}
+
+function nextCard() {
+  if (queue.length === 0) {
+    showSummary();
+    return;
+  }
+  const id = queue[0];
+  currentCard = data.begrepp.find(b => b.id === id);
+  if (!currentCard) {
+    // Säkerhetsåtgärd om ID inte hittas
+    queue.shift();
+    nextCard();
+    return;
+  }
+  revealed = false;
+  renderCard();
+}
+
+function renderCard() {
+  if (!currentCard) return;
+  if (currentMode === 'forward') {
+    promptEl.textContent = currentCard.begrepp;
+    answerEl.textContent = currentCard.forklaring;
+    audioBegreppBtn.classList.remove('hidden');
+    audioForklaringBtn.classList.add('hidden');
+  } else {
+    promptEl.textContent = currentCard.forklaring;
+    answerEl.textContent = currentCard.begrepp;
+    audioBegreppBtn.classList.add('hidden');
+    audioForklaringBtn.classList.remove('hidden');
+  }
+  answerEl.classList.add('hidden');
+  revealBtn.classList.remove('hidden');
+  selfAssessEl.classList.add('hidden');
+  currentSpan.textContent = (masteredThisSession.length + 1) + ' av ' + data.begrepp.length;
+
+  // Auto-play audio när ett nytt kort visas (reverse → läs förklaring; forward → läs begrepp)
+  const playType = currentMode === 'reverse' ? 'forklaring' : 'begrepp';
+  setTimeout(() => playAudio(playType), 300);
+}
+
+function playAudio(type) {
+  if (!currentCard) return;
+  const src = type === 'begrepp' ? currentCard.audio_begrepp : currentCard.audio_forklaring;
+  if (!src) return;
+  audio.src = src;
+  audio.play().catch(err => console.warn('Audio play failed:', err));
+}
+
+function reveal() {
+  if (!currentCard || revealed) return;
+  revealed = true;
+  answerEl.classList.remove('hidden');
+  revealBtn.classList.add('hidden');
+  selfAssessEl.classList.remove('hidden');
+  // Spela upp ljudet för svaret som visades
+  const playType = currentMode === 'forward' ? 'forklaring' : 'begrepp';
+  playAudio(playType);
+}
+
+function selfAssess(correct) {
+  if (!currentCard || !revealed) return;
+  if (correct) {
+    // ✓ Rätt: ta ur kön
+    queue.shift();
+    masteredThisSession.push(currentCard.id);
+    streak++;
+  } else {
+    // ✗ Fel: flytta till sist i kön
+    const cardId = queue.shift();
+    queue.push(cardId);
+    sessionRepeats++;
+    streak = 0;
+  }
+  sessionAttempts.push({ id: currentCard.id, correct, mode: currentMode });
+  saveMastery(currentCard.id, correct);
+  renderProgress();
+  updateStreak();
+  nextCard();
+}
+
+function saveMastery(cardId, correct) {
+  try {
+    const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    const card = stored[cardId] || { correct: 0, wrong: 0, lastSeen: null };
+    if (correct) card.correct++;
+    else card.wrong++;
+    card.lastSeen = new Date().toISOString();
+    stored[cardId] = card;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
+  } catch (err) {
+    console.warn('Kunde inte spara mastery:', err);
+  }
+}
+
+function updateStreak() {
+  streakNum.textContent = streak;
+  streakCounter.classList.toggle('active', streak > 0);
+}
+
+function renderProgress() {
+  progressBar.innerHTML = '';
+  for (let i = 0; i < data.begrepp.length; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'progress-dot';
+    if (i < masteredThisSession.length) dot.classList.add('completed');
+    else if (i === masteredThisSession.length) dot.classList.add('active');
+    progressBar.appendChild(dot);
+  }
+}
+
+function showSummary() {
+  cardEl.classList.add('hidden');
+  summaryEl.classList.remove('hidden');
+  document.getElementById('summaryFirstTry').textContent = masteredThisSession.length;
+  document.getElementById('summaryRepeats').textContent = sessionRepeats;
+  audio.pause();
+}
+
+function startOver() {
+  cardEl.classList.remove('hidden');
+  summaryEl.classList.add('hidden');
+  init();
+}
+
+function setMode(mode) {
+  if (currentMode === mode) return;
+  currentMode = mode;
+  modeForwardBtn.classList.toggle('active', mode === 'forward');
+  modeForwardBtn.setAttribute('aria-selected', mode === 'forward');
+  modeReverseBtn.classList.toggle('active', mode === 'reverse');
+  modeReverseBtn.setAttribute('aria-selected', mode === 'reverse');
+  // Återställ progress och starta om (byter läge = ny session)
+  init();
+}
+
+// Event listeners
+modeForwardBtn.addEventListener('click', () => setMode('forward'));
+modeReverseBtn.addEventListener('click', () => setMode('reverse'));
+revealBtn.addEventListener('click', reveal);
+rattBtn.addEventListener('click', () => selfAssess(true));
+felBtn.addEventListener('click', () => selfAssess(false));
+startOverBtn.addEventListener('click', startOver);
+audioBegreppBtn.addEventListener('click', () => playAudio('begrepp'));
+audioForklaringBtn.addEventListener('click', () => playAudio('forklaring'));
+dismissInstallBtn?.addEventListener('click', () => installHint.hidden = true);
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  installHint.hidden = false;
+  installBtn.hidden = false;
+});
+
+installBtn?.addEventListener('click', async () => {
+  if (!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  const { outcome } = await deferredInstallPrompt.userChoice;
+  if (outcome === 'accepted') installHint.hidden = true;
+  deferredInstallPrompt = null;
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  // Ignorera om användaren skriver i input
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.key === ' ' || e.key === 'Enter') {
+    if (!revealed) {
+      e.preventDefault();
+      reveal();
+    }
+  } else if (e.key === 'r' || e.key === 'R') {
+    if (revealed) rattBtn.click();
+  } else if (e.key === 'f' || e.key === 'F') {
+    if (revealed) felBtn.click();
+  } else if (e.key === '1') {
+    modeForwardBtn.click();
+  } else if (e.key === '2') {
+    modeReverseBtn.click();
+  }
+});
+
+// Service worker (registrera för offline)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(err => console.warn('SW registration failed:', err));
+  });
+}
+
+loadData();

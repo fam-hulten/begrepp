@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "title": "Begrepp — Klass 4 Lejonskolan",
+    "subtitle": "Samhällskunskap v.37 — träna begrepp med audio, självbedöm rätt/fel"
+  },
+  "begrepp": [
+    {
+      "id": "manniskor",
+      "begrepp": "Människor",
+      "forklaring": "Tillhör olika typer av grupper som familj, släkt, skolklass, förening med mera.",
+      "audio_begrepp": "audio/manniskor-begrepp.mp3",
+      "audio_forklaring": "audio/manniskor-forklaring.mp3"
+    },
+    {
+      "id": "media",
+      "begrepp": "Media",
+      "forklaring": "Alla sätt som vi får och ger information i ett samhälle. T.ex. från internet, tidningar och sociala medier.",
+      "audio_begrepp": "audio/media-begrepp.mp3",
+      "audio_forklaring": "audio/media-forklaring.mp3"
+    },
+    {
+      "id": "kultur",
+      "begrepp": "Kultur",
+      "forklaring": "Levnadssätt, seder och traditioner (även böcker, musik, film och teater).",
+      "audio_begrepp": "audio/kultur-begrepp.mp3",
+      "audio_forklaring": "audio/kultur-forklaring.mp3"
+    },
+    {
+      "id": "historia",
+      "begrepp": "Historia",
+      "forklaring": "Äldre saker som har vuxit fram genom tid som till exempel gamla hus, berättelser, tavlor och prydnadssaker.",
+      "audio_begrepp": "audio/historia-begrepp.mp3",
+      "audio_forklaring": "audio/historia-forklaring.mp3"
+    },
+    {
+      "id": "ekonomi",
+      "begrepp": "Ekonomi",
+      "forklaring": "Hur människor arbetar med att tillverka, köpa och sälja saker.",
+      "audio_begrepp": "audio/ekonomi-begrepp.mp3",
+      "audio_forklaring": "audio/ekonomi-forklaring.mp3"
+    },
+    {
+      "id": "politik",
+      "begrepp": "Politik",
+      "forklaring": "Hur samhället ska styras och vem som har rätt att bestämma.",
+      "audio_begrepp": "audio/politik-begrepp.mp3",
+      "audio_forklaring": "audio/politik-forklaring.mp3"
+    },
+    {
+      "id": "normer",
+      "begrepp": "Normer",
+      "forklaring": "Oskrivna regler.",
+      "audio_begrepp": "audio/normer-begrepp.mp3",
+      "audio_forklaring": "audio/normer-forklaring.mp3"
+    },
+    {
+      "id": "regler",
+      "begrepp": "Regler",
+      "forklaring": "Något som finns nerskrivet och man följer i t.ex. skolan eller på en arbetsplats.",
+      "audio_begrepp": "audio/regler-begrepp.mp3",
+      "audio_forklaring": "audio/regler-forklaring.mp3"
+    },
+    {
+      "id": "lagar",
+      "begrepp": "Lagar",
+      "forklaring": "Regler som alla i samhället måste följa.",
+      "audio_begrepp": "audio/lagar-begrepp.mp3",
+      "audio_forklaring": "audio/lagar-forklaring.mp3"
+    },
+    {
+      "id": "gemenskap",
+      "begrepp": "Gemenskap",
+      "forklaring": "Att känna när man tillhör en grupp t.ex. i en förening eller med sina närmsta kompisar eller familj.",
+      "audio_begrepp": "audio/gemenskap-begrepp.mp3",
+      "audio_forklaring": "audio/gemenskap-forklaring.mp3"
+    },
+    {
+      "id": "grupp",
+      "begrepp": "Grupp",
+      "forklaring": "När man är fler än två personer.",
+      "audio_begrepp": "audio/grupp-begrepp.mp3",
+      "audio_forklaring": "audio/grupp-forklaring.mp3"
+    },
+    {
+      "id": "tradition",
+      "begrepp": "Tradition",
+      "forklaring": "Något man firar år efter år på samma sätt. T.ex. att fira midsommar eller valborg.",
+      "audio_begrepp": "audio/tradition-begrepp.mp3",
+      "audio_forklaring": "audio/tradition-forklaring.mp3"
+    }
+  ]
+}

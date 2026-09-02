@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color"="#f59e0b">
+  <meta name="description" content="Begrepp - träna SO-begrepp med audio, självbedöm rätt/fel">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Begrepp">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="stylesheet" href="styles.css?v=1">
+  <title>Begrepp</title>
+</head>
+<body>
+  <header>
+    <h1 id="title" contenteditable="true">Begrepp — Klass 4 Lejonskolan</h1>
+    <p class="subtitle">Samhällskunskap v.37 — läs, tänk, jämför med facit</p>
+    <div class="mode-toggle" role="tablist" aria-label="Övningsläge">
+      <button id="modeForwardBtn" class="mode-btn active" role="tab" aria-selected="true">📖 Begrepp → Förklaring</button>
+      <button id="modeReverseBtn" class="mode-btn" role="tab" aria-selected="false">🔊 Förklaring → Begrepp</button>
+    </div>
+  </header>
+
+  <main class="card" id="card">
+    <div class="streak-counter" id="streakCounter" aria-label="Rätt i rad">🔥 <span id="streakNum">0</span></div>
+    <div class="progress-bar" id="progressBar" aria-hidden="true"></div>
+    <div class="counter"><span id="current">1</span> av <span id="total">12</span></div>
+
+    <div class="prompt" id="prompt">—</div>
+
+    <button id="revealBtn" class="primary reveal-main" aria-label="Visa svar (mellanslag)">👁 Visa svaret</button>
+
+    <div class="answer hidden" id="answer">—</div>
+
+    <div class="audio-buttons">
+      <button id="audioBegreppBtn" class="audio-btn" aria-label="Lyssna på begreppet">🔊 Begrepp</button>
+      <button id="audioForklaringBtn" class="audio-btn hidden" aria-label="Lyssna på förklaringen">🔊 Förklaring</button>
+    </div>
+
+    <div class="self-assess hidden" id="selfAssess">
+      <p class="assess-prompt">Svarade du rätt?</p>
+      <div class="assess-buttons">
+        <button id="rattBtn" class="success big" aria-label="Rätt (R)">✓ Rätt</button>
+        <button id="felBtn" class="danger big" aria-label="Fel (F)">✗ Fel</button>
+      </div>
+      <p class="assess-hint">
+        <strong>Rätt</strong> → sparas · <strong>Fel</strong> → repeteras i slutet av högen
+      </p>
+    </div>
+
+    <p class="kbd-hint">
+      <span class="kbd">Mellanslag</span> visa ·
+      <span class="kbd">R</span> rätt ·
+      <span class="kbd">F</span> fel ·
+      <span class="kbd">1</span>/<span class="kbd">2</span> byt läge
+    </p>
+  </main>
+
+  <section class="summary hidden" id="summary">
+    <div class="summary-card">
+      <h2>🎉 Session klar!</h2>
+      <div class="summary-stats">
+        <div class="stat">
+          <span class="stat-num" id="summaryFirstTry">0</span>
+          <span class="stat-label">klar första gången</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num" id="summaryRepeats">0</span>
+          <span class="stat-label">repeteringar</span>
+        </div>
+      </div>
+      <button id="startOverBtn" class="primary">Träna igen</button>
+    </div>
+  </section>
+
+  <footer class="install-hint" id="installHint" hidden>
+    <p>💡 Tips: Lägg till på hemskärmen för att använda offline.</p>
+    <button id="installBtn" hidden>Lägg till</button>
+    <button id="dismissInstall" aria-label="Stäng">✕</button>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
