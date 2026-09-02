@@ -11,13 +11,13 @@
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
-  <link rel="stylesheet" href="styles.css?v=1">
+  <link rel="stylesheet" href="styles.css?v=2">
   <title>Begrepp</title>
 </head>
 <body>
   <header>
     <h1 id="title" contenteditable="true">Begrepp — Klass 4 Lejonskolan</h1>
-    <p class="subtitle">Samhällskunskap v.37 — läs, tänk, jämför med facit</p>
+    <p class="subtitle">Samhällskunskap v.37 — lyssna, tänk, jämför med facit</p>
     <div class="mode-toggle" role="tablist" aria-label="Övningsläge">
       <button id="modeForwardBtn" class="mode-btn active" role="tab" aria-selected="true">📖 Begrepp → Förklaring</button>
       <button id="modeReverseBtn" class="mode-btn" role="tab" aria-selected="false">🔊 Förklaring → Begrepp</button>
@@ -36,8 +36,8 @@
     <div class="answer hidden" id="answer">—</div>
 
     <div class="audio-buttons">
-      <button id="audioBegreppBtn" class="audio-btn" aria-label="Lyssna på begreppet">🔊 Begrepp</button>
-      <button id="audioForklaringBtn" class="audio-btn hidden" aria-label="Lyssna på förklaringen">🔊 Förklaring</button>
+      <button id="audioPromptBtn" class="audio-btn" aria-label="Lyssna på instruktion">🔊 Instruktion</button>
+      <button id="audioAnswerBtn" class="audio-btn hidden" aria-label="Lyssna på svar" disabled>🔊 Svar</button>
     </div>
 
     <div class="self-assess hidden" id="selfAssess">
@@ -82,6 +82,6 @@
     <button id="dismissInstall" aria-label="Stäng">✕</button>
   </footer>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=2"></script>
 </body>
 </html>

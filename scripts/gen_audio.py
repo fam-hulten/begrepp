@@ -1,27 +1,25 @@
 #!/usr/bin/env python3
 """
-gen_audio.py — Genererar SV audio-filer för begrepp-appen
+gen_audio.py — Genererar 4 SV audio-filer per begrepp (instr + svar, båda riktningar)
 
-Användning:
-    python3 gen_audio.py [--out-dir DIR] [--data-json FILE]
+Per begrepp genereras 4 MP3-filer:
+  1. {id}-instr-forward.mp3   → 'Förklara ordet "{begrepp}"'   (pedagogisk instruktion)
+  2. {id}-forklaring.mp3      → '{förklaring}' (ren text)
+  3. {id}-instr-reverse.mp3   → 'Vilket ord kan förklaras såhär: {förklaring}'
+  4. {id}-begrepp.mp3          → '{begrepp}' (ren text)
 
-Läser begrepp-data.json, genererar 2 MP3-filer per begrepp (begrepp + förklaring) via MiniMax T2A.
+Voice: Swedish_male_1_v1  (MiniMax T2A — verifierad via glosor-appen 2026-09-01)
+Model: speech-2.8-hd
+Speed: 0.85
 
-Voice ID: Swedish_male_1_v1  (verifierad i rattstavning/AUDIO-PIPELINE.md, använd i glosor-appen)
-Model:    speech-2.8-hd
-Speed:    0.85
+Paus-pattern: ` # ` funkar som paus-separator för SV-rösten (verifierad i glosor).
 
-Prompter (MiniMax T2A, svensk röst):
-- Begrepp:   'Skriv ordet #"<begrepp>"'       (# = paus-separator för SV-rösten)
-- Förklaring:'Läs meningen #"<förklaring>"'
+V2-förändring (2026-09-02): separata filer för instruktion + svar (Johanna-direktiv)
+så appen kan spela instruktion → paus → svar för aktiv retrieval-träning.
+Tidigare version använde en enda fil med 'Skriv ordet'/'Läs meningen'-prefix (fel approach).
 
 Auth (memory/audio-permanent-fix.md):
     mmx auth login --api-key "$(cat /tmp/.mmx-key)"   (UTAN --region!)
-
-Exempel:
-    python3 gen_audio.py
-    python3 gen_audio.py --dry-run
-    python3 gen_audio.py --type begrepp      # bara begrepp-filer
 """
 import argparse
 import json
@@ -33,10 +31,12 @@ from pathlib import Path
 VOICE = "Swedish_male_1_v1"
 MODEL = "speech-2.8-hd"
 SPEED = "0.85"
+# Paus-separator (verifierad i MiniMax T2A SV-röst)
+PAUS = " # "
 
 
 def check_mmx_auth() -> bool:
-    """Verifiera att mmx är authad. Returnerar True om auth.status visar method."""
+    """Verifiera att mmx är authad."""
     try:
         r = subprocess.run(
             ["mmx", "auth", "status"],
@@ -50,13 +50,13 @@ def check_mmx_auth() -> bool:
         return False
 
 
-def synth(text: str, voice: str, out_path: Path) -> bool:
+def synth(text: str, out_path: Path) -> bool:
     """Kör mmx speech synthesize. Returnerar True om fil skapades."""
     try:
         r = subprocess.run(
             ["mmx", "speech", "synthesize",
              "--text", text,
-             "--voice", voice,
+             "--voice", VOICE,
              "--model", MODEL,
              "--speed", SPEED,
              "--out", str(out_path),
@@ -71,11 +71,9 @@ def synth(text: str, voice: str, out_path: Path) -> bool:
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--out-dir", default="audio", help="Output-katalog (default: audio/)")
+    parser.add_argument("--out-dir", default="audio", help="Output-katalog")
     parser.add_argument("--data-json", default="begrepp-data.json", help="JSON med begrepp")
     parser.add_argument("--dry-run", action="store_true", help="Visa utan att köra")
-    parser.add_argument("--type", choices=["begrepp", "forklaring", "both"], default="both",
-                        help="Vilken typ: begrepp, forklaring eller both (default: both)")
     args = parser.parse_args()
 
     data_path = Path(args.data_json)
@@ -93,10 +91,10 @@ def main():
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    n_total = len(begrepp_list) * (2 if args.type == "both" else 1)
-    print(f"Genererar {n_total} filer (type={args.type})")
+    n_total = len(begrepp_list) * 4
+    print(f"Genererar {n_total} filer (4 per begrepp)")
+    print(f"Voice:  {VOICE} (verified MiniMax T2A)")
     print(f"Output: {out_dir.resolve()}")
-    print(f"Voice:  {VOICE}, model={MODEL}, speed={SPEED}")
     print()
 
     if not args.dry_run:
@@ -109,39 +107,62 @@ def main():
 
     ok = fail = 0
 
-    # Begrepp: 'Skriv ordet #"<begrepp>"' — # paus-separator för SV-rösten
-    if args.type in ("begrepp", "both"):
-        for b in begrepp_list:
-            wid = b["id"]
-            ord_text = b["begrepp"]
-            out_path = out_dir / f"{wid}-begrepp.mp3"
-            text = f'Skriv ordet #"{ord_text}"'
-            if args.dry_run:
-                print(f"  [dry-run] {out_path.name}: '{text}'")
-                ok += 1
-            elif synth(text, VOICE, out_path):
-                print(f"  ✓ {out_path.name}")
-                ok += 1
-            else:
-                print(f"  ✗ {out_path.name}")
-                fail += 1
+    for b in begrepp_list:
+        wid = b["id"]
+        ord_text = b["begrepp"]
+        forkl_text = b["forklaring"]
 
-    # Förklaring: 'Läs meningen #"<förklaring>"' — samma paus-pattern, "meningen" cue
-    if args.type in ("forklaring", "both"):
-        for b in begrepp_list:
-            wid = b["id"]
-            forkl_text = b["forklaring"]
-            out_path = out_dir / f"{wid}-forklaring.mp3"
-            text = f'Läs meningen #"{forkl_text}"'
-            if args.dry_run:
-                print(f"  [dry-run] {out_path.name}: '{text}'")
-                ok += 1
-            elif synth(text, VOICE, out_path):
-                print(f"  ✓ {out_path.name}")
-                ok += 1
-            else:
-                print(f"  ✗ {out_path.name}")
-                fail += 1
+        # 1. Instruktion forward: 'Förklara ordet "{begrepp}"'
+        out_1 = out_dir / f"{wid}-instr-forward.mp3"
+        text_1 = f'Förklara ordet{PAUS}"{ord_text}"'
+        if args.dry_run:
+            print(f"  [dry-run] {out_1.name}: '{text_1}'")
+            ok += 1
+        elif synth(text_1, out_1):
+            print(f"  ✓ {out_1.name}")
+            ok += 1
+        else:
+            print(f"  ✗ {out_1.name}")
+            fail += 1
+
+        # 2. Förklaring (ren text)
+        out_2 = out_dir / f"{wid}-forklaring.mp3"
+        text_2 = forkl_text
+        if args.dry_run:
+            print(f"  [dry-run] {out_2.name}: '{text_2}'")
+            ok += 1
+        elif synth(text_2, out_2):
+            print(f"  ✓ {out_2.name}")
+            ok += 1
+        else:
+            print(f"  ✗ {out_2.name}")
+            fail += 1
+
+        # 3. Instruktion reverse: 'Vilket ord kan förklaras såhär: {förklaring}'
+        out_3 = out_dir / f"{wid}-instr-reverse.mp3"
+        text_3 = f'Vilket ord kan förklaras såhär{PAUS}{forkl_text}'
+        if args.dry_run:
+            print(f"  [dry-run] {out_3.name}: '{text_3}'")
+            ok += 1
+        elif synth(text_3, out_3):
+            print(f"  ✓ {out_3.name}")
+            ok += 1
+        else:
+            print(f"  ✗ {out_3.name}")
+            fail += 1
+
+        # 4. Begrepp (ren text)
+        out_4 = out_dir / f"{wid}-begrepp.mp3"
+        text_4 = ord_text
+        if args.dry_run:
+            print(f"  [dry-run] {out_4.name}: '{text_4}'")
+            ok += 1
+        elif synth(text_4, out_4):
+            print(f"  ✓ {out_4.name}")
+            ok += 1
+        else:
+            print(f"  ✗ {out_4.name}")
+            fail += 1
 
     print()
     print(f"Resultat: {ok}/{n_total} ok, {fail}/{n_total} fail")
