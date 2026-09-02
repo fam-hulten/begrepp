@@ -1,28 +1,32 @@
 #!/usr/bin/env python3
 """
-gen_audio.py — Genererar 4 SV audio-filer per begrepp (instr + svar, båda riktningar)
+gen_audio.py — Genererar 4 SV audio-filer per begrepp för V3-appen
 
 Per begrepp genereras 4 MP3-filer:
-  1. {id}-instr-forward.mp3   → 'Förklara ordet "{begrepp}"'   (pedagogisk instruktion)
-  2. {id}-forklaring.mp3      → '{förklaring}' (ren text)
-  3. {id}-instr-reverse.mp3   → 'Vilket ord kan förklaras såhär: {förklaring}'
-  4. {id}-begrepp.mp3          → '{begrepp}' (ren text)
+  1. {id}-instr-forward.mp3   → "Förklara ordet {begrepp.lower()}"
+  2. {id}-forklaring.mp3      → "{begrepp} är {expand_abbrev(forklaring.lower())}"
+  3. {id}-instr-reverse.mp3   → "Vilket ord kan förklaras såhär: {forklaring.lower()}"
+  4. {id}-begrepp.mp3          → "{begrepp.lower()}"
 
-Voice: Swedish_male_1_v1  (MiniMax T2A — verifierad via glosor-appen 2026-09-01)
+Voice: Swedish_male_1_v1  (MiniMax T2A)
 Model: speech-2.8-hd
 Speed: 0.85
 
-Paus-pattern: ` # ` funkar som paus-separator för SV-rösten (verifierad i glosor).
+V3-förändringar (2026-09-02):
+- audio_instr_forward: enkel mening "Förklara ordet X" (lowercase substantiv)
+- audio_forklaring: prepended "{begrepp} är" + expand_abbrev() på förklaringen
+- audio_instr_reverse: fortfarande V2-prompt (INTE FIXAD — se STATE-OF-PLAY.md)
+- audio_begrepp: fortfarande standalone (INTE FIXAD — se STATE-OF-PLAY.md)
 
-V2-förändring (2026-09-02): separata filer för instruktion + svar (Johanna-direktiv)
-så appen kan spela instruktion → paus → svar för aktiv retrieval-träning.
-Tidigare version använde en enda fil med 'Skriv ordet'/'Läs meningen'-prefix (fel approach).
+BUG att undvika (2026-09-02 #14792): regex med trailing \b efter period funkar inte
+(period är icke-ord-tecken). Använd r'\bt\.ex\.' UTAN trailing \b.
 
 Auth (memory/audio-permanent-fix.md):
     mmx auth login --api-key "$(cat /tmp/.mmx-key)"   (UTAN --region!)
 """
 import argparse
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -31,8 +35,6 @@ from pathlib import Path
 VOICE = "Swedish_male_1_v1"
 MODEL = "speech-2.8-hd"
 SPEED = "0.85"
-# Paus-separator (verifierad i MiniMax T2A SV-röst)
-PAUS = " # "
 
 
 def check_mmx_auth() -> bool:
@@ -48,6 +50,36 @@ def check_mmx_auth() -> bool:
     except Exception as e:
         print(f"  ✗ auth check misslyckades: {e}", file=sys.stderr)
         return False
+
+
+def expand_abbreviations(text: str) -> str:
+    """
+    Expandera vanliga svenska förkortningar för TTS-prompt.
+
+    VIKTIGT: Använd INTE trailing \b efter period — period är icke-ord-tecken.
+    Exempel: r'\bt\.ex\.' (utan \b efter sista .)
+    """
+    abbreviations = {
+        r'\bt\.ex\.': 'till exempel',
+        r'\bT\.ex\.': 'Till exempel',
+        r'\bosv\.': 'och så vidare',
+        r'\bOsv\.': 'Och så vidare',
+        r'\bbl\.a\.': 'bland annat',
+        r'\bBl\.a\.': 'Bland annat',
+        r'\bca\.': 'cirka',
+        r'\bCa\.': 'Cirka',
+        r'\bdvs\.': 'det vill säga',
+        r'\bDvs\.': 'Det vill säga',
+        r'\bm\.fl\.': 'med flera',
+        r'\bM\.fl\.': 'Med flera',
+        r'\bmm\.': 'med mera',
+        r'\bMm\.': 'Med mera',
+        r'\betc\.': 'et cetera',
+        r'\bEtc\.': 'Et cetera',
+    }
+    for pattern, replacement in abbreviations.items():
+        text = re.sub(pattern, replacement, text)
+    return text
 
 
 def synth(text: str, out_path: Path) -> bool:
@@ -74,6 +106,12 @@ def main():
     parser.add_argument("--out-dir", default="audio", help="Output-katalog")
     parser.add_argument("--data-json", default="begrepp-data.json", help="JSON med begrepp")
     parser.add_argument("--dry-run", action="store_true", help="Visa utan att köra")
+    parser.add_argument(
+        "--type",
+        choices=["instr-forward", "forklaring", "instr-reverse", "begrepp", "all"],
+        default="all",
+        help="Vilken typ: specifik typ eller 'all' (default)"
+    )
     args = parser.parse_args()
 
     data_path = Path(args.data_json)
@@ -91,9 +129,11 @@ def main():
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    n_total = len(begrepp_list) * 4
-    print(f"Genererar {n_total} filer (4 per begrepp)")
-    print(f"Voice:  {VOICE} (verified MiniMax T2A)")
+    types_to_generate = ["instr-forward", "forklaring", "instr-reverse", "begrepp"] if args.type == "all" else [args.type]
+    n_total = len(begrepp_list) * len(types_to_generate)
+
+    print(f"Genererar {n_total} filer (types: {', '.join(types_to_generate)})")
+    print(f"Voice:  {VOICE}")
     print(f"Output: {out_dir.resolve()}")
     print()
 
@@ -112,57 +152,28 @@ def main():
         ord_text = b["begrepp"]
         forkl_text = b["forklaring"]
 
-        # 1. Instruktion forward: 'Förklara ordet "{begrepp}"'
-        out_1 = out_dir / f"{wid}-instr-forward.mp3"
-        text_1 = f'Förklara ordet{PAUS}"{ord_text}"'
-        if args.dry_run:
-            print(f"  [dry-run] {out_1.name}: '{text_1}'")
-            ok += 1
-        elif synth(text_1, out_1):
-            print(f"  ✓ {out_1.name}")
-            ok += 1
-        else:
-            print(f"  ✗ {out_1.name}")
-            fail += 1
+        # V3 PROMPTS (Johanna-direktiv 2026-09-02)
+        prompts = {
+            "instr-forward": f"Förklara ordet {ord_text.lower()}",
+            "forklaring": f"{ord_text} är {expand_abbreviations(forkl_text.lower())}",
+            # Reverse fortfarande V2 — INTE FIXAD (se STATE-OF-PLAY.md)
+            "instr-reverse": f"Vilket ord kan förklaras såhär: {forkl_text.lower()}",
+            "begrepp": ord_text.lower(),
+        }
 
-        # 2. Förklaring (ren text)
-        out_2 = out_dir / f"{wid}-forklaring.mp3"
-        text_2 = forkl_text
-        if args.dry_run:
-            print(f"  [dry-run] {out_2.name}: '{text_2}'")
-            ok += 1
-        elif synth(text_2, out_2):
-            print(f"  ✓ {out_2.name}")
-            ok += 1
-        else:
-            print(f"  ✗ {out_2.name}")
-            fail += 1
+        for typ in types_to_generate:
+            text = prompts[typ]
+            out = out_dir / f"{wid}-{typ}.mp3"
 
-        # 3. Instruktion reverse: 'Vilket ord kan förklaras såhär: {förklaring}'
-        out_3 = out_dir / f"{wid}-instr-reverse.mp3"
-        text_3 = f'Vilket ord kan förklaras såhär{PAUS}{forkl_text}'
-        if args.dry_run:
-            print(f"  [dry-run] {out_3.name}: '{text_3}'")
-            ok += 1
-        elif synth(text_3, out_3):
-            print(f"  ✓ {out_3.name}")
-            ok += 1
-        else:
-            print(f"  ✗ {out_3.name}")
-            fail += 1
-
-        # 4. Begrepp (ren text)
-        out_4 = out_dir / f"{wid}-begrepp.mp3"
-        text_4 = ord_text
-        if args.dry_run:
-            print(f"  [dry-run] {out_4.name}: '{text_4}'")
-            ok += 1
-        elif synth(text_4, out_4):
-            print(f"  ✓ {out_4.name}")
-            ok += 1
-        else:
-            print(f"  ✗ {out_4.name}")
-            fail += 1
+            if args.dry_run:
+                print(f"  [dry-run] {out.name}: '{text[:70]}...'")
+                ok += 1
+            elif synth(text, out):
+                print(f"  ✓ {out.name}")
+                ok += 1
+            else:
+                print(f"  ✗ {out.name}")
+                fail += 1
 
     print()
     print(f"Resultat: {ok}/{n_total} ok, {fail}/{n_total} fail")
