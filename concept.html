@@ -48,31 +48,31 @@
     <div class="prompt">normer</div>
 
     <div class="variant">
-      <div class="variant-num">Variant A — 2 separata filer, 0.5s JS-paus (pre-baked fallback)</div>
-      <div class="variant-desc">Fråga är RIKTIGT genererad "Förklara ordet normer" (inte spliced). Båda spelar pre-baked 1-fil med inbyggd 0.5s paus.</div>
-      <button class="btn-instr" onclick="playAudio('audio/v1-fraga-normer.mp3')">🔊 Fråga (genererad "Förklara ordet normer")</button>
-      <button class="btn-answ" onclick="playAudio('audio/concept-forklaring-normer.mp3')">🔊 Svar (per-begrepp förklaring)</button>
-      <button class="btn-both" onclick="playAudio('audio/v2-botha-normer-0.5s.mp3')">▶️ Båda (pre-baked 1 fil, 0.5s paus inbyggd)</button>
+      <div class="variant-num">Variant A — 2 separata filer, 0.5s JS-paus (FAIR jämförelse)</div>
+      <div class="variant-desc">Fråga = samma källfråga som övriga varianter (v5-forward-q). Svar = samma källsvar (v5-forward-a). Båda = pre-baked 1-fil med 0.5s paus inbyggd.</div>
+      <button class="btn-instr" onclick="playAudio('audio/v5-forward-q.mp3')">🔊 Fråga ("Förklara ordet normer")</button>
+      <button class="btn-answ" onclick="playAudio('audio/v5-forward-a.mp3')">🔊 Svar ("En del av...")</button>
+      <button class="btn-both" onclick="playAudio('audio/v5-forward-both.mp3')">▶️ Båda (pre-baked 1 fil, 0.5s paus)</button>
     </div>
 
     <div class="variant">
       <div class="variant-num">Variant B — MiniMax <#0.5#> pause-marker (1 fil med inbyggd paus)</div>
-      <div class="variant-desc">TTS genererar en fil med naturlig paus inbakad. Prosodin bevaras.</div>
-      <button class="btn-both" onclick="playAudio('audio/v2-pausmarker.mp3')">▶️ Spela (1 fil, inbyggd paus)</button>
+      <div class="variant-desc">Samma källfråga + källsvar som A, men med MiniMax pause-marker (1 fil med 0.5s paus inbakad).</div>
+      <button class="btn-both" onclick="playAudio('audio/v5-forward-marked.mp3')">▶️ Spela (1 fil, inbyggd 0.5s paus via MiniMax-marker)</button>
     </div>
 
     <div class="variant">
-      <div class="variant-num">Variant C — 1 TTS-fil, ffmpeg-spliced i 2</div>
-      <div class="variant-desc">Samma fråga-källa som A, men svar OCH övergång är från samma TTS-pass. Naturlig prosody.</div>
-      <button class="btn-instr" onclick="playAudio('audio/v3-instr.mp3')">🔊 Fråga (samma källa som A)</button>
-      <button class="btn-answ" onclick="playAudio('audio/v3-forklaring.mp3')">🔊 Svar (spliced)</button>
-      <button class="btn-both" onclick="playTwoFiles('audio/v3-instr.mp3', 'audio/v3-forklaring.mp3', 0)">▶️ Båda (0s — spliced övergång)</button>
+      <div class="variant-num">Variant C — 1 TTS-fil, ffmpeg-spliced i 2 (FAIR jämförelse)</div>
+      <div class="variant-desc">Samma källfråga och källsvar som A, men fråga + svar från SAMMA TTS-pass (bättre prosody). Båda = spliced 2 filer, 0s paus.</div>
+      <button class="btn-instr" onclick="playAudio('audio/v5-forward-q.mp3')">🔊 Fråga (samma källa som A)</button>
+      <button class="btn-answ" onclick="playAudio('audio/v5-forward-a.mp3')">🔊 Svar (samma källa som A)</button>
+      <button class="btn-both" onclick="playTwoFiles('audio/v5-forward-q.mp3', 'audio/v5-forward-a.mp3', 0)">▶️ Båda (spliced 0s paus)</button>
     </div>
 
     <div class="variant">
-      <div class="variant-num">Variant D — 1 fil, ingen paus (baseline)</div>
-      <div class="variant-desc">Hela frågan + svar i en TTS-ström. För jämförelse.</div>
-      <button class="btn-both" onclick="playAudio('audio/v4-no-pause.mp3')">▶️ Spela (1 fil)</button>
+      <div class="variant-num">Variant D — 1 fil, ingen paus (FAIR jämförelse)</div>
+      <div class="variant-desc">Samma källfråga + källsvar som A/B/C, 1 fil, 0s paus mellan dem.</div>
+      <button class="btn-both" onclick="playAudio('audio/v5-forward-nopause.mp3')">▶️ Spela (1 fil, ingen paus)</button>
     </div>
   </div>
 
@@ -83,31 +83,31 @@
     <div class="prompt">Oskrivna regler.</div>
 
     <div class="variant">
-      <div class="variant-num">Variant A — 2 separata filer, 0.5s JS-paus (pre-baked fallback)</div>
-      <div class="variant-desc">Fråga är RIKTIGT genererad shared "Vilket ord kan förklaras som" (standalone). Båda spelar pre-baked 1-fil med inbyggd 0.5s paus.</div>
-      <button class="btn-instr" onclick="playAudio('audio/v1-fraga-shared.mp3')">🔊 Fråga (genererad shared "Vilket ord...")</button>
-      <button class="btn-answ" onclick="playAudio('audio/concept-forklaring-normer.mp3')">🔊 Svar (per-begrepp förklaring)</button>
-      <button class="btn-both" onclick="playAudio('audio/v2-botha-shared-0.5s.mp3')">▶️ Båda (pre-baked 1 fil, 0.5s paus inbyggd)</button>
+      <div class="variant-num">Variant A — 2 separata filer, 0.5s JS-paus (FAIR jämförelse)</div>
+      <div class="variant-desc">Fråga = samma källfråga som övriga varianter (v5-forward-q). Svar = samma källsvar (v5-forward-a). Båda = pre-baked 1-fil med 0.5s paus inbyggd.</div>
+      <button class="btn-instr" onclick="playAudio('audio/v5-forward-q.mp3')">🔊 Fråga ("Förklara ordet normer")</button>
+      <button class="btn-answ" onclick="playAudio('audio/v5-forward-a.mp3')">🔊 Svar ("En del av...")</button>
+      <button class="btn-both" onclick="playAudio('audio/v5-forward-both.mp3')">▶️ Båda (pre-baked 1 fil, 0.5s paus)</button>
     </div>
 
     <div class="variant">
       <div class="variant-num">Variant B — MiniMax <#0.5#> pause-marker (1 fil med inbyggd paus)</div>
-      <div class="variant-desc">Samma v2-pausmarker.mp3 (innehåller "Vilket ord..." + paus + "En del av...").</div>
-      <button class="btn-both" onclick="playAudio('audio/v2-pausmarker.mp3')">▶️ Spela (1 fil, inbyggd paus)</button>
+      <div class="variant-desc">Samma källfråga + källsvar som A, men med MiniMax pause-marker (1 fil med 0.5s paus inbakad).</div>
+      <button class="btn-both" onclick="playAudio('audio/v5-forward-marked.mp3')">▶️ Spela (1 fil, inbyggd 0.5s paus via MiniMax-marker)</button>
     </div>
 
     <div class="variant">
-      <div class="variant-num">Variant C — 1 TTS-fil, ffmpeg-spliced i 2</div>
-      <div class="variant-desc">Frågan är samma som A, men svar OCH övergång är från samma TTS-pass. Naturlig prosody.</div>
-      <button class="btn-instr" onclick="playAudio('audio/v3-instr.mp3')">🔊 Fråga (samma som A)</button>
-      <button class="btn-answ" onclick="playAudio('audio/v3-forklaring.mp3')">🔊 Svar (spliced)</button>
-      <button class="btn-both" onclick="playTwoFiles('audio/v3-instr.mp3', 'audio/v3-forklaring.mp3', 0)">▶️ Båda (0s — spliced övergång)</button>
+      <div class="variant-num">Variant C — 1 TTS-fil, ffmpeg-spliced i 2 (FAIR jämförelse)</div>
+      <div class="variant-desc">Samma källfråga och källsvar som A, men fråga + svar från SAMMA TTS-pass (bättre prosody). Båda = spliced 2 filer, 0s paus.</div>
+      <button class="btn-instr" onclick="playAudio('audio/v5-forward-q.mp3')">🔊 Fråga (samma källa som A)</button>
+      <button class="btn-answ" onclick="playAudio('audio/v5-forward-a.mp3')">🔊 Svar (samma källa som A)</button>
+      <button class="btn-both" onclick="playTwoFiles('audio/v5-forward-q.mp3', 'audio/v5-forward-a.mp3', 0)">▶️ Båda (spliced 0s paus)</button>
     </div>
 
     <div class="variant">
-      <div class="variant-num">Variant D — 1 fil, ingen paus (baseline)</div>
-      <div class="variant-desc">Samma v4-no-pause.mp3. För jämförelse med de andra.</div>
-      <button class="btn-both" onclick="playAudio('audio/v4-no-pause.mp3')">▶️ Spela (1 fil)</button>
+      <div class="variant-num">Variant D — 1 fil, ingen paus (FAIR jämförelse)</div>
+      <div class="variant-desc">Samma källfråga + källsvar som A/B/C, 1 fil, 0s paus mellan dem.</div>
+      <button class="btn-both" onclick="playAudio('audio/v5-forward-nopause.mp3')">▶️ Spela (1 fil, ingen paus)</button>
     </div>
   </div>
 
