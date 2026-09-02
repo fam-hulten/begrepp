@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color"="#f59e0b">
+  <title>Begrepp Concept Test V3.2</title>
+  <link rel="stylesheet" href="styles.css?v=1">
+  <style>
+    body { padding: 2rem 1rem; max-width: 600px; margin: 0 auto; }
+    .concept-banner { background: #fbbf24; color: #78350f; padding: 0.6rem 1rem; border-radius: 10px; font-weight: 700; text-align: center; margin-bottom: 1.5rem; font-size: 0.95rem; }
+    h1 { font-size: 1.4rem; margin-bottom: 0.5rem; }
+    .subtitle { color: #64748b; font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.4; }
+    .concept-card { background: white; padding: 1.75rem; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 2px dashed #f59e0b; margin-bottom: 1rem; }
+    .prompt { font-size: 2.25rem; font-weight: 700; color: #f59e0b; text-align: center; margin-bottom: 1rem; padding: 1.25rem 1rem; background: #fef3c7; border-radius: 12px; }
+    .instructions { text-align: center; color: #64748b; font-size: 0.85rem; margin-bottom: 1rem; font-style: italic; }
+    .controls { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem; }
+    button { padding: 1rem 1.25rem; font-size: 0.95rem; border: 2px solid; border-radius: 12px; cursor: pointer; font-weight: 600; min-height: 56px; transition: all 0.15s; background: white; }
+    button:active { transform: translateY(1px); }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+    .audio-shared { color: #1e40af; border-color: #1e40af; }
+    .audio-shared:hover:not(:disabled) { background: #dbeafe; }
+    .audio-forklaring { color: #065f46; border-color: #065f46; }
+    .audio-forklaring:hover:not(:disabled) { background: #d1fae5; }
+    .audio-both { color: #78350f; border-color: #78350f; margin-top: 0.5rem; }
+    .audio-both:hover:not(:disabled) { background: #fef3c7; }
+    .info-box { background: #fef3c7; padding: 1rem; border-radius: 8px; font-size: 0.88rem; margin-top: 1.25rem; border-left: 4px solid #f59e0b; line-height: 1.5; }
+    .info-box strong { color: #92400e; }
+    .info-box ol { margin: 0.5rem 0 0 1.25rem; padding: 0; }
+    .info-box li { margin-bottom: 0.35rem; }
+    .back-link { display: block; text-align: center; margin-top: 1.5rem; padding: 0.75rem; color: #64748b; font-size: 0.9rem; background: #f8fafc; border-radius: 10px; text-decoration: none; }
+    .back-link:hover { background: #f1f5f9; }
+    .meta { text-align: center; color: #94a3b8; font-size: 0.8rem; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="concept-banner">🧪 CONCEPT TEST V3.2 — Shared Instruction + Per-Begrepp Förklaring</div>
+
+  <h1>Begrepp: normer</h1>
+  <p class="subtitle">
+    Ny arkitektur-idé: en <strong>shared</strong> "Vilket ord..." + <strong>bara</strong> förklaring (utan "X är"-prefix).
+    Om detta funkar kan vi spara 11 audio-filer.
+  </p>
+
+  <div class="concept-card">
+    <div class="prompt">normer</div>
+
+    <p class="instructions">Lyssna i tur och ordning — först instruktionen, sedan förklaringen</p>
+
+    <div class="controls">
+      <button class="audio-shared" id="playShared" onclick="playShared()">
+        🔊 Steg 1 — Spela shared "Vilket ord kan förklaras som"
+      </button>
+      <button class="audio-forklaring" id="playForklaring" onclick="playForklaring()" disabled>
+        🔊 Steg 2 — Spela förklaring (utan prefix)
+      </button>
+      <button class="audio-both" id="playBoth" onclick="playBoth()">
+        ▶️ Spela BÅDA i sekvens (1.5s paus emellan)
+      </button>
+    </div>
+
+    <div class="info-box">
+      <strong>Utvärdera:</strong>
+      <ol>
+        <li>Funkar det pedagogiskt med bara förklaring (utan "Normer är...")?</li>
+        <li>Blir det tydligt nog att det är en beskrivning av ett ord?</li>
+        <li>Behöver vi fortfarande "X är"-prefixet?</li>
+      </ol>
+    </div>
+  </div>
+
+  <a href="./" class="back-link">← Tillbaka till huvudappen (V3.1)</a>
+
+  <div class="meta">Concept test — genererad 2026-09-02 · V3.1 förblev orörd på <code>./</code></div>
+
+  <script>
+    const audio = new Audio();
+    audio.preload = 'auto';
+    let sharedPlayed = false;
+
+    const sharedBtn = document.getElementById('playShared');
+    const forklaringBtn = document.getElementById('playForklaring');
+    const bothBtn = document.getElementById('playBoth');
+
+    function playShared() {
+      audio.src = 'audio/concept-shared-instruction.mp3';
+      audio.play().catch(err => console.warn('Audio play failed:', err));
+      sharedPlayed = true;
+      forklaringBtn.disabled = false;
+      bothBtn.disabled = false;
+    }
+
+    function playForklaring() {
+      audio.src = 'audio/concept-forklaring-normer.mp3';
+      audio.play().catch(err => console.warn('Audio play failed:', err));
+    }
+
+    function playBoth() {
+      // Spela först shared, sedan (när klar) forklaring
+      audio.src = 'audio/concept-shared-instruction.mp3';
+      audio.play().catch(err => console.warn('Audio play failed:', err));
+      sharedPlayed = true;
+      forklaringBtn.disabled = false;
+      bothBtn.disabled = false;
+    }
+
+    audio.addEventListener('ended', () => {
+      // Om shared är klar och båda-knappen användes, fortsätt med forklaring
+      if (audio.src.endsWith('concept-shared-instruction.mp3')) {
+        setTimeout(() => {
+          audio.src = 'audio/concept-forklaring-normer.mp3';
+          audio.play().catch(err => console.warn('Audio play failed:', err));
+        }, 1500); // 1.5s paus
+      }
+    });
+  </script>
+</body>
+</html>

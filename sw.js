@@ -1,7 +1,7 @@
 // Begrepp service worker
 // Strategy: cache-first for app shell, network-first for data (begrepp-data.json).
 
-const CACHE_NAME = 'begrepp-v5';
+const CACHE_NAME = 'begrepp-v6';
 const APP_SHELL = [
   './',
   'index.html',
