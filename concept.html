@@ -139,30 +139,35 @@
     }
 
     function playTwoFiles(src1, src2, pauseMs) {
-      // Spela src1, vänta tills den är klar, vänta pauseMs, spela src2.
-      // Fix: använd 'ended' event istället för setTimeout (förra versionen startade
-      // src2 innan src1 var klar → överlappande/trasigt ljud).
+      // Spela src1, vänta audio.duration + pauseMs, spela src2.
+      // Använder duration (metadata) istället för 'ended'-event
+      // — ended-eventet fyrar inte alltid pålitligt för korta MP3-filer
+      // i vissa webbläsare (Mobile Safari, Firefox).
       if (isPlaying) { audio.pause(); }
       isPlaying = true;
       audio.src = src1;
+      const playSecond = () => {
+        audio.src = src2;
+        audio.play().catch(err => {
+          console.warn('Audio play failed:', err);
+          isPlaying = false;
+        });
+      };
+      const startSecond = () => {
+        const durationMs = (audio.duration || 1) * 1000;
+        if (pauseMs > 0) {
+          setTimeout(playSecond, durationMs + pauseMs);
+        } else {
+          setTimeout(playSecond, durationMs);
+        }
+      };
+      audio.onloadedmetadata = startSecond;
       audio.play().catch(err => {
         console.warn('Audio play failed:', err);
         isPlaying = false;
       });
-      audio.onended = () => {
-        const playSecond = () => {
-          audio.src = src2;
-          audio.play().catch(err => {
-            console.warn('Audio play failed:', err);
-            isPlaying = false;
-          });
-        };
-        if (pauseMs > 0) {
-          setTimeout(playSecond, pauseMs);
-        } else {
-          playSecond();
-        }
-      };
+      // Fallback om metadata inte laddas (t.ex. vissa codecs)
+      setTimeout(() => { if (audio.readyState < 1) startSecond(); }, 200);
     }
 
     audio.addEventListener('ended', () => { isPlaying = false; });
