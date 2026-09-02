@@ -48,11 +48,11 @@
     <div class="prompt">normer</div>
 
     <div class="variant">
-      <div class="variant-num">Variant A — 2 separata filer, 0.5s JS-paus</div>
-      <div class="variant-desc">Spelar 2 filer med 0.5s paus emellan (vänta på 'ended'-event). Enklast, men prosodin bryts.</div>
-      <button class="btn-instr" onclick="playAudio('audio/v3-instr.mp3')">🔊 Fråga (samma källa som C)</button>
-      <button class="btn-answ" onclick="playAudio('audio/concept-forklaring-normer.mp3')">🔊 Svar (per-begrepp)</button>
-      <button class="btn-both" onclick="playTwoFiles('audio/v3-instr.mp3', 'audio/concept-forklaring-normer.mp3', 500)">▶️ Båda (0.5s paus)</button>
+      <div class="variant-num">Variant A — 2 separata filer, 0.5s JS-paus (pre-baked fallback)</div>
+      <div class="variant-desc">Fråga är RIKTIGT genererad "Förklara ordet normer" (inte spliced). Båda spelar pre-baked 1-fil med inbyggd 0.5s paus.</div>
+      <button class="btn-instr" onclick="playAudio('audio/v1-fraga-normer.mp3')">🔊 Fråga (genererad "Förklara ordet normer")</button>
+      <button class="btn-answ" onclick="playAudio('audio/concept-forklaring-normer.mp3')">🔊 Svar (per-begrepp förklaring)</button>
+      <button class="btn-both" onclick="playAudio('audio/v2-botha-normer-0.5s.mp3')">▶️ Båda (pre-baked 1 fil, 0.5s paus inbyggd)</button>
     </div>
 
     <div class="variant">
@@ -83,11 +83,11 @@
     <div class="prompt">Oskrivna regler.</div>
 
     <div class="variant">
-      <div class="variant-num">Variant A — 2 separata filer, 0.5s JS-paus</div>
-      <div class="variant-desc">Spelar 2 filer med 0.5s paus (vänta på 'ended'-event).</div>
-      <button class="btn-instr" onclick="playAudio('audio/concept-shared-instruction.mp3')">🔊 Fråga (shared)</button>
-      <button class="btn-answ" onclick="playAudio('audio/concept-forklaring-normer.mp3')">🔊 Svar (per-begrepp)</button>
-      <button class="btn-both" onclick="playTwoFiles('audio/concept-shared-instruction.mp3', 'audio/concept-forklaring-normer.mp3', 500)">▶️ Båda (0.5s paus)</button>
+      <div class="variant-num">Variant A — 2 separata filer, 0.5s JS-paus (pre-baked fallback)</div>
+      <div class="variant-desc">Fråga är RIKTIGT genererad shared "Vilket ord kan förklaras som" (standalone). Båda spelar pre-baked 1-fil med inbyggd 0.5s paus.</div>
+      <button class="btn-instr" onclick="playAudio('audio/v1-fraga-shared.mp3')">🔊 Fråga (genererad shared "Vilket ord...")</button>
+      <button class="btn-answ" onclick="playAudio('audio/concept-forklaring-normer.mp3')">🔊 Svar (per-begrepp förklaring)</button>
+      <button class="btn-both" onclick="playAudio('audio/v2-botha-shared-0.5s.mp3')">▶️ Båda (pre-baked 1 fil, 0.5s paus inbyggd)</button>
     </div>
 
     <div class="variant">
