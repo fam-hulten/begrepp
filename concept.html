@@ -110,7 +110,7 @@
         setTimeout(() => {
           audio.src = 'audio/concept-forklaring-normer.mp3';
           audio.play().catch(err => console.warn('Audio play failed:', err));
-        }, 1500); // 1.5s paus
+        }, 500); // 0.5s paus (Johanna-direktiv #14828)
       }
     });
   </script>
