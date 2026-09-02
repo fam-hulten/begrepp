@@ -91,6 +91,7 @@ def synth(text: str, out_path: Path) -> bool:
              "--voice", VOICE,
              "--model", MODEL,
              "--speed", SPEED,
+             "--language", "Swedish",
              "--out", str(out_path),
              "--quiet"],
             capture_output=True, text=True, timeout=60
