@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-gen_audio.py — Genererar 4 SV audio-filer per begrepp för V3-appen
+gen_audio.py — Genererar 4 SV audio-filer per begrepp för V3.1-appen
 
 Per begrepp genereras 4 MP3-filer:
   1. {id}-instr-forward.mp3   → "Förklara ordet {begrepp.lower()}"
@@ -11,12 +11,14 @@ Per begrepp genereras 4 MP3-filer:
 Voice: Swedish_male_1_v1  (MiniMax T2A)
 Model: speech-2.8-hd
 Speed: 0.85
+Language: Swedish  (V3.1 — löser loanword-problemet)
 
-V3-förändringar (2026-09-02):
+V3.1-förändringar (2026-09-02):
 - audio_instr_forward: enkel mening "Förklara ordet X" (lowercase substantiv)
 - audio_forklaring: prepended "{begrepp} är" + expand_abbrev() på förklaringen
-- audio_instr_reverse: fortfarande V2-prompt (INTE FIXAD — se STATE-OF-PLAY.md)
-- audio_begrepp: fortfarande standalone (INTE FIXAD — se STATE-OF-PLAY.md)
+- audio_instr_reverse: "Vilket ord kan förklaras såhär" + expand_abbrev()
+- audio_begrepp: standalone (lowercase substantiv)
+- ALLA prompts använder --language Swedish (löser auto-detect-felet för lånord)
 
 BUG att undvika (2026-09-02 #14792): regex med trailing \b efter period funkar inte
 (period är icke-ord-tecken). Använd r'\bt\.ex\.' UTAN trailing \b.
@@ -35,6 +37,7 @@ from pathlib import Path
 VOICE = "Swedish_male_1_v1"
 MODEL = "speech-2.8-hd"
 SPEED = "0.85"
+LANGUAGE = "Swedish"
 
 
 def check_mmx_auth() -> bool:
@@ -91,7 +94,7 @@ def synth(text: str, out_path: Path) -> bool:
              "--voice", VOICE,
              "--model", MODEL,
              "--speed", SPEED,
-             "--language", "Swedish",
+             "--language", LANGUAGE,
              "--out", str(out_path),
              "--quiet"],
             capture_output=True, text=True, timeout=60
@@ -134,8 +137,9 @@ def main():
     n_total = len(begrepp_list) * len(types_to_generate)
 
     print(f"Genererar {n_total} filer (types: {', '.join(types_to_generate)})")
-    print(f"Voice:  {VOICE}")
-    print(f"Output: {out_dir.resolve()}")
+    print(f"Voice:    {VOICE}")
+    print(f"Language: {LANGUAGE} (V3.1)")
+    print(f"Output:   {out_dir.resolve()}")
     print()
 
     if not args.dry_run:
@@ -152,13 +156,13 @@ def main():
         wid = b["id"]
         ord_text = b["begrepp"]
         forkl_text = b["forklaring"]
+        exp_forkl = expand_abbreviations(forkl_text.lower())
 
-        # V3 PROMPTS (Johanna-direktiv 2026-09-02)
+        # V3.1 PROMPTS (Johanna-direktiv 2026-09-02)
         prompts = {
             "instr-forward": f"Förklara ordet {ord_text.lower()}",
-            "forklaring": f"{ord_text} är {expand_abbreviations(forkl_text.lower())}",
-            # Reverse fortfarande V2 — INTE FIXAD (se STATE-OF-PLAY.md)
-            "instr-reverse": f"Vilket ord kan förklaras såhär: {forkl_text.lower()}",
+            "forklaring": f"{ord_text} är {exp_forkl}",
+            "instr-reverse": f"Vilket ord kan förklaras såhär: {exp_forkl}",
             "begrepp": ord_text.lower(),
         }
 
