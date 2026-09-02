@@ -8,7 +8,8 @@
   <link rel="stylesheet" href="styles.css?v=1">
   <style>
     body { padding: 1.5rem 1rem; max-width: 700px; margin: 0 auto; font-size: 0.95rem; }
-    .banner { background: #fbbf24; color: #78350f; padding: 0.6rem 1rem; border-radius: 10px; font-weight: 700; text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; }
+    .banner { background: #fbbf24; color: #78350f; padding: 0.6rem 1rem; border-radius: 10px; font-weight: 700; text-align: center; margin-bottom: 0.5rem; font-size: 0.9rem; }
+    .version { text-align: center; color: #78350f; font-size: 0.7rem; margin-bottom: 1.5rem; font-family: monospace; }
     h1 { font-size: 1.3rem; margin-bottom: 0.4rem; }
     .subtitle { color: #64748b; font-size: 0.85rem; margin-bottom: 1.5rem; line-height: 1.4; }
     .mode-section { background: white; padding: 1.25rem; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 1rem; border: 2px solid #e2e8f0; }
@@ -34,6 +35,7 @@
 </head>
 <body>
   <div class="banner">🧪 CONCEPT TEST V3.2 — Sekventiell 2-fils uppspelning vs 1 fil</div>
+  <div class="version">v7 · commit 7e1d431 · 2026-09-02 12:42</div>
 
   <h1>Test: normer</h1>
   <p class="subtitle">
@@ -52,11 +54,11 @@
     <div class="prompt">normer</div>
 
     <div class="variant">
-      <div class="variant-num">Variant A — 2 separata TTS-filer + 0.5s paus (playTwoFiles)</div>
-      <div class="variant-desc">Spelar v6-fraga-only ("Förklara ordet") → 0.5s paus → v6-svar-only ("normer"). Testar prosody-övergång mellan två SEPARATA TTS-filer.</div>
+      <div class="variant-num">Variant A — 2 separata TTS-filer, 0ms paus (playTwoFiles)</div>
+      <div class="variant-desc">Spelar v6-fraga-only ("Förklara ordet") → 0ms paus → v6-svar-only ("normer"). Testar prosody-övergång mellan två SEPARATA TTS-filer utan paus.</div>
       <button class="btn-instr" onclick="playAudio('audio/v6-fraga-only.mp3')">🔊 Fråga ("Förklara ordet")</button>
       <button class="btn-answ" onclick="playAudio('audio/v6-svar-only.mp3')">🔊 Svar ("normer")</button>
-      <button class="btn-both" onclick="playTwoFiles('audio/v6-fraga-only.mp3', 'audio/v6-svar-only.mp3', 500)">▶️ Båda (2 filer, 0.5s paus)</button>
+      <button class="btn-both" onclick="playTwoFiles('audio/v6-fraga-only.mp3', 'audio/v6-svar-only.mp3', 0)">▶️ Båda (2 filer, 0ms paus)</button>
     </div>
 
     <div class="variant">
@@ -66,8 +68,8 @@
     </div>
 
     <div class="variant">
-      <div class="variant-num">Variant C — 2 separata TTS-filer, 0s paus (playTwoFiles)</div>
-      <div class="variant-desc">Samma källinnehåll som A ("Förklara ordet" + "normer"), men 0s paus istället för 0.5s. Fråga + svar från SEPARATA TTS-filer, direkt efter varandra.</div>
+      <div class="variant-num">Variant C — 2 separata TTS-filer, 0ms paus (playTwoFiles)</div>
+      <div class="variant-desc">Samma källinnehåll som A ("Förklara ordet" + "normer"), 0s paus. Fråga + svar från SEPARATA TTS-filer, direkt efter varandra.</div>
       <button class="btn-instr" onclick="playAudio('audio/v6-fraga-only.mp3')">🔊 Fråga ("Förklara ordet")</button>
       <button class="btn-answ" onclick="playAudio('audio/v6-svar-only.mp3')">🔊 Svar ("normer")</button>
       <button class="btn-both" onclick="playTwoFiles('audio/v6-fraga-only.mp3', 'audio/v6-svar-only.mp3', 0)">▶️ Båda (2 filer, 0s paus)</button>
@@ -87,11 +89,11 @@
     <div class="prompt">Förklara ordet</div>
 
     <div class="variant">
-      <div class="variant-num">Variant A — 2 separata TTS-filer + 0.5s paus (playTwoFiles)</div>
-      <div class="variant-desc">Spelar v6-svar-only ("normer") → 0.5s paus → v6-fraga-only ("Förklara ordet"). Samma källinnehåll som forward.</div>
+      <div class="variant-num">Variant A — 2 separata TTS-filer, 0ms paus (playTwoFiles)</div>
+      <div class="variant-desc">Spelar v6-svar-only ("normer") → 0ms paus → v6-fraga-only ("Förklara ordet"). Samma källinnehåll som forward.</div>
       <button class="btn-instr" onclick="playAudio('audio/v6-svar-only.mp3')">🔊 Fråga ("normer", svar)</button>
       <button class="btn-answ" onclick="playAudio('audio/v6-fraga-only.mp3')">🔊 Svar ("Förklara ordet", fråga)</button>
-      <button class="btn-both" onclick="playTwoFiles('audio/v6-svar-only.mp3', 'audio/v6-fraga-only.mp3', 500)">▶️ Båda (2 filer, 0.5s paus)</button>
+      <button class="btn-both" onclick="playTwoFiles('audio/v6-svar-only.mp3', 'audio/v6-fraga-only.mp3', 0)">▶️ Båda (2 filer, 0ms paus)</button>
     </div>
 
     <div class="variant">
@@ -101,7 +103,7 @@
     </div>
 
     <div class="variant">
-      <div class="variant-num">Variant C — 2 separata TTS-filer, 0s paus (playTwoFiles)</div>
+      <div class="variant-num">Variant C — 2 separata TTS-filer, 0ms paus (playTwoFiles)</div>
       <div class="variant-desc">Samma källinnehåll, 0s paus mellan filerna. Fråga + svar från SEPARATA TTS-filer, direkt efter varandra.</div>
       <button class="btn-instr" onclick="playAudio('audio/v6-svar-only.mp3')">🔊 Fråga ("normer", svar)</button>
       <button class="btn-answ" onclick="playAudio('audio/v6-fraga-only.mp3')">🔊 Svar ("Förklara ordet", fråga)</button>
@@ -118,8 +120,8 @@
   <div class="info-box">
     <strong>Utvärdera:</strong>
     <ol style="margin: 0.4rem 0 0 1.25rem; padding: 0;">
-      <li>Låter "Förklara ordet" + 0.5s paus + "normer" (Variant A) som ett naturligt yttrande?</li>
-      <li>Låter Variant A bättre än Variant C (0s paus) eftersom pausen ger lyssnaren tid att bearbeta?</li>
+      <li>Låter "Förklara ordet" + 0ms paus + "normer" (Variant A) som ett naturligt yttrande?</li>
+      <li>Låter Variant A bättre än Variant C (båda 0ms paus, samma filer) med playTwoFiles?</li>
       <li>Låter Variant B (1 fil med marker) ännu bättre eftersom det är EN sammanhängande TTS-ström?</li>
       <li>Vilken variant är pedagogiskt bäst för Zacharias (DLD-vänligt)?</li>
     </ol>
@@ -133,31 +135,55 @@
     let isPlaying = false;
 
     function playAudio(src) {
-      if (isPlaying) { audio.pause(); }
+      if (isPlaying) {
+        audio.pause();
+        audio.onended = null;
+      }
       isPlaying = true;
       audio.src = src;
       audio.play().catch(err => {
         console.warn('Audio play failed:', err);
         isPlaying = false;
       });
+      audio.onended = () => { isPlaying = false; };
     }
 
     function playTwoFiles(src1, src2, pauseMs) {
-      if (isPlaying) { audio.pause(); }
+      if (isPlaying) {
+        audio.pause();
+        audio.onended = null;
+      }
       isPlaying = true;
+
+      // Closure-flagga: garanterar att playSecond bara anropas EN gång
+      // även om onended-rensningen skulle misslyckas av någon anledning
+      let secondPlayed = false;
+
+      const playSecond = () => {
+        if (secondPlayed) return; // Guard: skippa om redan spelad
+        secondPlayed = true;
+
+        // Rensa onended EFTER src2 är vald för att förhindra loop
+        audio.onended = null;
+        audio.src = src2;
+        audio.play().catch(err => {
+          console.warn('Audio play failed:', err);
+          isPlaying = false;
+        });
+        audio.onended = () => {
+          isPlaying = false;
+          audio.onended = null;
+        };
+      };
+
+      audio.onended = null;
       audio.src = src1;
       audio.play().catch(err => {
         console.warn('Audio play failed:', err);
         isPlaying = false;
       });
       audio.onended = () => {
-        const playSecond = () => {
-          audio.src = src2;
-          audio.play().catch(err => {
-            console.warn('Audio play failed:', err);
-            isPlaying = false;
-          });
-        };
+        audio.onended = null;
         if (pauseMs > 0) {
           setTimeout(playSecond, pauseMs);
         } else {
@@ -165,8 +191,6 @@
         }
       };
     }
-
-    audio.addEventListener('ended', () => { isPlaying = false; });
   </script>
 </body>
 </html>
