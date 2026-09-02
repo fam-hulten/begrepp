@@ -112,7 +112,7 @@ function renderCard() {
   audioAnswerBtn.classList.add('hidden');
   audioAnswerBtn.disabled = true;
   selfAssessEl.classList.add('hidden');
-  currentSpan.textContent = (masteredThisSession.length + 1) + ' av ' + data.begrepp.length;
+  currentSpan.textContent = masteredThisSession.length + 1;
 
   // Auto-spela INSTRUKTION när kort visas (Johanna-direktiv: varje gång)
   setTimeout(() => playInstruction(), 300);
