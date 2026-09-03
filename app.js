@@ -143,10 +143,13 @@ function playInitial() {
 // playAnswer: forward = audio_begrepp + AUDIO_AR + audio_forklaring (3 filer).
 //             reverse = audio_begrepp (1 fil).
 function playAnswer() {
-  if (!currentCard) return;
+  console.log('[playAnswer] called, currentCard:', !!currentCard, 'currentMode:', currentMode);
+  if (!currentCard) { console.log('[playAnswer] EARLY RETURN no currentCard'); return; }
   if (currentMode === 'forward') {
+    console.log('[playAnswer] forward → playChain 3 sources');
     playChain([currentCard.audio_begrepp, AUDIO_AR, currentCard.audio_forklaring]);
   } else {
+    console.log('[playAnswer] reverse → playChain 1 source');
     playChain([currentCard.audio_begrepp]);
   }
 }
@@ -182,7 +185,8 @@ function playChain(sources) {
 }
 
 function reveal() {
-  if (!currentCard || revealed) return;
+  console.log('[reveal] called, currentCard:', !!currentCard, 'revealed:', revealed);
+  if (!currentCard || revealed) { console.log('[reveal] EARLY RETURN'); return; }
   revealed = true;
   answerEl.classList.remove('hidden');
   revealBtn.classList.add('hidden');
@@ -190,7 +194,8 @@ function reveal() {
   audioAnswerBtn.disabled = false;
   selfAssessEl.classList.remove('hidden');
   // Spela SVAR efter 0.5s paus (Johanna-direktiv)
-  setTimeout(() => playAnswer(), ANSWER_PAUSE_MS);
+  console.log('[reveal] setting timeout for playAnswer');
+  setTimeout(() => { console.log('[reveal] timeout firing, calling playAnswer'); playAnswer(); }, ANSWER_PAUSE_MS);
 }
 
 function selfAssess(correct) {
