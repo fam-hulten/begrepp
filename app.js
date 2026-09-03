@@ -115,10 +115,8 @@ function renderCard() {
   selfAssessEl.classList.add('hidden');
   currentSpan.textContent = masteredThisSession.length + 1;
 
-  // Auto-spela ORDET (forward) när kort visas. Reverse spelar inget initialt.
-  if (currentMode === 'forward') {
-    setTimeout(() => playBegrepp(), 300);
-  }
+  // Auto-spela INITIAL: forward = instr-forward + audio_begrepp, reverse = instr-reverse + audio_forklaring
+  setTimeout(() => playInitial(), 300);
 }
 
 function getAnswerSrc() {
@@ -131,6 +129,27 @@ function getBegreppSrc() {
   return currentCard.audio_begrepp;
 }
 
+// playInitial: forward = INSTR_FORWARD + audio_begrepp. reverse = INSTR_REVERSE + audio_forklaring.
+function playInitial() {
+  if (!currentCard) return;
+  const instr = currentMode === 'forward' ? INSTR_FORWARD : INSTR_REVERSE;
+  const specific = currentMode === 'forward' ? currentCard.audio_begrepp : currentCard.audio_forklaring;
+  playTwoFiles(instr, specific);
+}
+
+// playAnswer: forward = audio_begrepp + AUDIO_AR + audio_forklaring (3 filer).
+//             reverse = audio_begrepp (1 fil).
+function playAnswer() {
+  if (!currentCard) return;
+  if (currentMode === 'forward') {
+    playThreeFiles(currentCard.audio_begrepp, AUDIO_AR, currentCard.audio_forklaring);
+  } else {
+    audio.src = currentCard.audio_begrepp;
+    audio.play().catch(err => console.warn('Audio play failed (answer/reverse):', err));
+  }
+}
+
+// playBegrepp: spela BARA begreppet (används av audioPromptBtn — replay-knappen)
 function playBegrepp() {
   const src = getBegreppSrc();
   if (!src) return;
@@ -138,11 +157,41 @@ function playBegrepp() {
   audio.play().catch(err => console.warn('Audio play failed (begrepp):', err));
 }
 
-function playAnswer() {
-  const src = getAnswerSrc();
-  if (!src) return;
-  audio.src = src;
-  audio.play().catch(err => console.warn('Audio play failed (answer):', err));
+// playTwoFiles: spela src1 → 0ms paus → src2 (DRY-sekvens)
+function playTwoFiles(src1, src2) {
+  if (!src1 || !src2) return;
+  audio.onended = null;
+  audio.src = src1;
+  let secondPlayed = false;
+  audio.onended = () => {
+    if (secondPlayed) return;
+    secondPlayed = true;
+    audio.onended = null;
+    audio.src = src2;
+    audio.play().catch(err => console.warn('Audio play failed (second):', err));
+  };
+  audio.play().catch(err => console.warn('Audio play failed (first):', err));
+}
+
+// playThreeFiles: spela src1 → src2 → src3 i sekvens med 0ms paus
+function playThreeFiles(src1, src2, src3) {
+  if (!src1 || !src2 || !src3) return;
+  audio.onended = null;
+  audio.src = src1;
+  let step = 0;
+  const playNext = () => {
+    if (step >= 2) {
+      audio.onended = null;
+      return;
+    }
+    step++;
+    const next = step === 1 ? src2 : src3;
+    audio.onended = () => playNext();
+    audio.src = next;
+    audio.play().catch(err => console.warn('Audio play failed (chain):', err));
+  };
+  audio.onended = () => playNext();
+  audio.play().catch(err => console.warn('Audio play failed (first):', err));
 }
 
 function reveal() {
@@ -237,7 +286,7 @@ revealBtn.addEventListener('click', reveal);
 rattBtn.addEventListener('click', () => selfAssess(true));
 felBtn.addEventListener('click', () => selfAssess(false));
 startOverBtn.addEventListener('click', startOver);
-audioPromptBtn.addEventListener('click', playBegrepp);
+audioPromptBtn.addEventListener('click', playInitial);
 audioAnswerBtn.addEventListener('click', playAnswer);
 dismissInstallBtn?.addEventListener('click', () => installHint.hidden = true);
 

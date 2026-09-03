@@ -1,7 +1,7 @@
 // Begrepp service worker
 // Strategy: cache-first for app shell, network-first for data (begrepp-data.json).
 
-const CACHE_NAME = 'begrepp-v8';
+const CACHE_NAME = 'begrepp-v9';
 const APP_SHELL = [
   './',
   'index.html',
@@ -9,7 +9,10 @@ const APP_SHELL = [
   'app.js',
   'manifest.json',
   'icons/icon-192.png',
-  'icons/icon-512.png'
+  'icons/icon-512.png',
+  'audio/instr-forward.mp3',
+  'audio/instr-reverse.mp3',
+  'audio/audio-ar.mp3'
 ];
 
 self.addEventListener('install', event => {
