@@ -185,6 +185,8 @@ function playChain(sources) {
 }
 
 function reveal() {
+  window.__revealCalled = (window.__revealCalled || 0) + 1;
+  window.__revealStack = new Error('REVEAL_STACK').stack;
   console.log('[reveal] called, currentCard:', !!currentCard, 'revealed:', revealed);
   if (!currentCard || revealed) { console.log('[reveal] EARLY RETURN'); return; }
   revealed = true;
