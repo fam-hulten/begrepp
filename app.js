@@ -165,6 +165,8 @@ function playBegrepp() {
 // Inga delade audio.onended-state. Robust mot race conditions och auto-play.
 let currentChainId = 0;
 function playChain(sources) {
+  window.__playChainCalled = (window.__playChainCalled || 0) + 1;
+  window.__playChainSources = sources;
   console.log('[playChain] called with', sources);
   if (!sources || sources.length === 0) return;
   // Inkrementera kedje-ID — äldre kedjor ignorar sina onended (förhindrar cross-chain-spöke)
