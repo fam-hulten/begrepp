@@ -112,7 +112,7 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="Visa utan att köra")
     parser.add_argument(
         "--type",
-        choices=["instr-forward", "forklaring", "instr-reverse", "begrepp", "all"],
+        choices=["begrepp", "forklaring", "all"],
         default="all",
         help="Vilken typ: specifik typ eller 'all' (default)"
     )
@@ -133,7 +133,7 @@ def main():
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    types_to_generate = ["instr-forward", "forklaring", "instr-reverse", "begrepp"] if args.type == "all" else [args.type]
+    types_to_generate = ["begrepp", "forklaring"] if args.type == "all" else [args.type]
     n_total = len(begrepp_list) * len(types_to_generate)
 
     print(f"Genererar {n_total} filer (types: {', '.join(types_to_generate)})")
@@ -158,12 +158,13 @@ def main():
         forkl_text = b["forklaring"]
         exp_forkl = expand_abbreviations(forkl_text.lower())
 
-        # V3.1 PROMPTS (Johanna-direktiv 2026-09-02)
+        # V3.7 PROMPTS (Johanna-direktiv 2026-09-03 08:39 — DRY: 2 filtyper/begrepp)
+        #   - audio_begrepp.mp3 → `#<ord>` (SV-specifik betoning/förtydligande-markör)
+        #   - audio_forklaring.mp3 → `<ord> är <förklaring>` (delas mellan forward+reverse)
+        #   - INGA audio_instr_* — instruktioner är visuella/på-skärmen
         prompts = {
-            "instr-forward": f"Förklara ordet {ord_text.lower()}",
+            "begrepp": f"#{ord_text.lower()}",
             "forklaring": f"{ord_text} är {exp_forkl}",
-            "instr-reverse": f"Vilket ord kan förklaras såhär: {exp_forkl}",
-            "begrepp": ord_text.lower(),
         }
 
         for typ in types_to_generate:

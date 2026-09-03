@@ -1,13 +1,14 @@
-// Begrepp — PWA V2
+// Begrepp — PWA V3.7 (DRY)
 // Laddar begrepp-data.json, presenterar 12 SO-begrepp med audio för recall-träning.
-// Läge 1 (forward): Instruktion ("Förklara ordet X") → användaren tänker/säger förklaring → tryck → visa + läs upp förklaring
-// Läge 2 (reverse): Instruktion ("Vilket ord kan förklaras såhär: ...") → användaren gissar ord → tryck → visa + läs upp begrepp
+// Läge 1 (forward): Visa begrepp på skärmen + auto-spela `#<ord>` → användaren tänker/säger förklaring → tryck → visa + läs upp förklaring
+// Läge 2 (reverse): Visa förklaring på skärmen (ingen audio) → användaren gissar ord → tryck → visa + läs upp `#<ord>`
 // Efter reveal: ✓ Rätt (tas ur kö) / ✗ Fel (flyttas till sist i kö)
 // Session klar när kön är tom. Cross-session mastery sparas i LocalStorage.
+// V3.7 (2026-09-03, Johanna-direktiv): DRY-arkitektur — 2 audio-filer/begrepp (bara ordet + bara förklaringen), inga audio_instr_*
 
-const STORAGE_KEY = 'begrepp-mastery-v2';
-const SW_VERSION = 'begrepp-v2';
-const ANSWER_PAUSE_MS = 500; // 0.5s paus efter reveal innan svar spelas
+const STORAGE_KEY = 'begrepp-mastery-v3';
+const SW_VERSION = 'begrepp-v3';
+const ANSWER_PAUSE_MS = 0; // 0ms paus — DRY: separata filer spelas direkt i sekvens
 
 let data = null;
 let queue = [];
@@ -114,13 +115,10 @@ function renderCard() {
   selfAssessEl.classList.add('hidden');
   currentSpan.textContent = masteredThisSession.length + 1;
 
-  // Auto-spela INSTRUKTION när kort visas (Johanna-direktiv: varje gång)
-  setTimeout(() => playInstruction(), 300);
-}
-
-function getInstructionSrc() {
-  if (!currentCard) return null;
-  return currentMode === 'forward' ? currentCard.audio_instr_forward : currentCard.audio_instr_reverse;
+  // Auto-spela ORDET (forward) när kort visas. Reverse spelar inget initialt.
+  if (currentMode === 'forward') {
+    setTimeout(() => playBegrepp(), 300);
+  }
 }
 
 function getAnswerSrc() {
@@ -128,11 +126,16 @@ function getAnswerSrc() {
   return currentMode === 'forward' ? currentCard.audio_forklaring : currentCard.audio_begrepp;
 }
 
-function playInstruction() {
-  const src = getInstructionSrc();
+function getBegreppSrc() {
+  if (!currentCard) return null;
+  return currentCard.audio_begrepp;
+}
+
+function playBegrepp() {
+  const src = getBegreppSrc();
   if (!src) return;
   audio.src = src;
-  audio.play().catch(err => console.warn('Audio play failed (instruction):', err));
+  audio.play().catch(err => console.warn('Audio play failed (begrepp):', err));
 }
 
 function playAnswer() {
@@ -234,7 +237,7 @@ revealBtn.addEventListener('click', reveal);
 rattBtn.addEventListener('click', () => selfAssess(true));
 felBtn.addEventListener('click', () => selfAssess(false));
 startOverBtn.addEventListener('click', startOver);
-audioPromptBtn.addEventListener('click', playInstruction);
+audioPromptBtn.addEventListener('click', playBegrepp);
 audioAnswerBtn.addEventListener('click', playAnswer);
 dismissInstallBtn?.addEventListener('click', () => installHint.hidden = true);
 
