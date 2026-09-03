@@ -1,10 +1,13 @@
-// Begrepp — PWA V3.7 (DRY)
+// Begrepp — PWA V3.8 (DRY + generella instruktions-MP3 + "är"-länk)
 // Laddar begrepp-data.json, presenterar 12 SO-begrepp med audio för recall-träning.
-// Läge 1 (forward): Visa begrepp på skärmen + auto-spela `#<ord>` → användaren tänker/säger förklaring → tryck → visa + läs upp förklaring
-// Läge 2 (reverse): Visa förklaring på skärmen (ingen audio) → användaren gissar ord → tryck → visa + läs upp `#<ord>`
+// Läge 1 (forward): Visa begrepp på skärmen + auto-spela INSTR_FORWARD + `#<ord>` → användaren tänker/säger förklaring → tryck → visa + läs upp `#<ord>` + AUDIO_AR + `<förklaring>` (3 filer)
+// Läge 2 (reverse): Visa förklaring på skärmen + auto-spela INSTR_REVERSE + `<förklaring>` → användaren gissar ord → tryck → visa + läs upp `#<ord>`
 // Efter reveal: ✓ Rätt (tas ur kö) / ✗ Fel (flyttas till sist i kö)
 // Session klar när kön är tom. Cross-session mastery sparas i LocalStorage.
-// V3.7 (2026-09-03, Johanna-direktiv): DRY-arkitektur — 2 audio-filer/begrepp (bara ordet + bara förklaringen), inga audio_instr_*
+// V3.8 (2026-09-03, Johanna-direktiv): playTwoFiles/playThreeFiles-arkitektur:
+//   - Generella instruktions-MP3 (instr-forward, instr-reverse) delas av alla 12 begrepp
+//   - Generell "är"-MP3 (audio-ar) delas av alla 12 begrepp (forward reveal)
+//   - 12 × audio_begrepp (`#<ord>`) + 12 × audio_forklaring (BARA förklaringen)
 
 const STORAGE_KEY = 'begrepp-mastery-v3';
 const SW_VERSION = 'begrepp-v3';
