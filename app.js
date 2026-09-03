@@ -1,13 +1,10 @@
-// Begrepp — PWA V3.8 (DRY + generella instruktions-MP3 + "är"-länk)
+// Begrepp — PWA V3.7 (DRY)
 // Laddar begrepp-data.json, presenterar 12 SO-begrepp med audio för recall-träning.
-// Läge 1 (forward): Visa begrepp på skärmen + auto-spela INSTR_FORWARD + `#<ord>` → användaren tänker/säger förklaring → tryck → visa + läs upp `#<ord>` + AUDIO_AR + `<förklaring>` (3 filer)
-// Läge 2 (reverse): Visa förklaring på skärmen + auto-spela INSTR_REVERSE + `<förklaring>` → användaren gissar ord → tryck → visa + läs upp `#<ord>`
+// Läge 1 (forward): Visa begrepp på skärmen + auto-spela `#<ord>` → användaren tänker/säger förklaring → tryck → visa + läs upp förklaring
+// Läge 2 (reverse): Visa förklaring på skärmen (ingen audio) → användaren gissar ord → tryck → visa + läs upp `#<ord>`
 // Efter reveal: ✓ Rätt (tas ur kö) / ✗ Fel (flyttas till sist i kö)
 // Session klar när kön är tom. Cross-session mastery sparas i LocalStorage.
-// V3.8 (2026-09-03, Johanna-direktiv): playTwoFiles/playThreeFiles-arkitektur:
-//   - Generella instruktions-MP3 (instr-forward, instr-reverse) delas av alla 12 begrepp
-//   - Generell "är"-MP3 (audio-ar) delas av alla 12 begrepp (forward reveal)
-//   - 12 × audio_begrepp (`#<ord>`) + 12 × audio_forklaring (BARA förklaringen)
+// V3.7 (2026-09-03, Johanna-direktiv): DRY-arkitektur — 2 audio-filer/begrepp (bara ordet + bara förklaringen), inga audio_instr_*
 
 const STORAGE_KEY = 'begrepp-mastery-v3';
 const SW_VERSION = 'begrepp-v3';
@@ -118,8 +115,10 @@ function renderCard() {
   selfAssessEl.classList.add('hidden');
   currentSpan.textContent = masteredThisSession.length + 1;
 
-  // Auto-spela INITIAL: forward = instr-forward + audio_begrepp, reverse = instr-reverse + audio_forklaring
-  setTimeout(() => playInitial(), 300);
+  // Auto-spela ORDET (forward) när kort visas. Reverse spelar inget initialt.
+  if (currentMode === 'forward') {
+    setTimeout(() => playBegrepp(), 300);
+  }
 }
 
 function getAnswerSrc() {
@@ -132,65 +131,22 @@ function getBegreppSrc() {
   return currentCard.audio_begrepp;
 }
 
-// playInitial: forward = INSTR_FORWARD + audio_begrepp. reverse = INSTR_REVERSE + audio_forklaring.
-function playInitial() {
-  if (!currentCard) return;
-  const instr = currentMode === 'forward' ? INSTR_FORWARD : INSTR_REVERSE;
-  const specific = currentMode === 'forward' ? currentCard.audio_begrepp : currentCard.audio_forklaring;
-  playChain([instr, specific]);
-}
-
-// playAnswer: forward = audio_begrepp + AUDIO_AR + audio_forklaring (3 filer).
-//             reverse = audio_begrepp (1 fil).
-function playAnswer() {
-  console.log('[playAnswer] called, currentCard:', !!currentCard, 'currentMode:', currentMode);
-  if (!currentCard) { console.log('[playAnswer] EARLY RETURN no currentCard'); return; }
-  if (currentMode === 'forward') {
-    console.log('[playAnswer] forward → playChain 3 sources');
-    playChain([currentCard.audio_begrepp, AUDIO_AR, currentCard.audio_forklaring]);
-  } else {
-    console.log('[playAnswer] reverse → playChain 1 source');
-    playChain([currentCard.audio_begrepp]);
-  }
-}
-
-// playBegrepp: spela BARA begreppet (används av audioPromptBtn — replay-knappen)
 function playBegrepp() {
   const src = getBegreppSrc();
   if (!src) return;
-  playChain([src]);
+  audio.src = src;
+  audio.play().catch(err => console.warn('Audio play failed (begrepp):', err));
 }
 
-// playChain: spela en sekvens av MP3-filer med NY Audio()-instans per fil.
-// Inga delade audio.onended-state. Robust mot race conditions och auto-play.
-let currentChainId = 0;
-function playChain(sources) {
-  window.__playChainCalled = (window.__playChainCalled || 0) + 1;
-  window.__playChainSources = sources;
-  console.log('[playChain] called with', sources);
-  if (!sources || sources.length === 0) return;
-  // Inkrementera kedje-ID — äldre kedjor ignorar sina onended (förhindrar cross-chain-spöke)
-  const chainId = ++currentChainId;
-  let i = 0;
-  const playNext = () => {
-    if (chainId !== currentChainId) return; // äldre kedja, ignorera
-    if (i >= sources.length) return;
-    const src = sources[i];
-    i++;
-    console.log('[playChain] step', i, 'src:', src);
-    const a = new Audio(src);
-    a.onended = () => { console.log('[playChain] ended step', i); playNext(); };
-    a.onerror = (e) => console.warn('[playChain] audio error step', i, e);
-    a.play().then(() => console.log('[playChain] playing step', i)).catch(err => console.warn(`[playChain] play failed step ${i}:`, err));
-  };
-  playNext();
+function playAnswer() {
+  const src = getAnswerSrc();
+  if (!src) return;
+  audio.src = src;
+  audio.play().catch(err => console.warn('Audio play failed (answer):', err));
 }
 
 function reveal() {
-  window.__revealCalled = (window.__revealCalled || 0) + 1;
-  window.__revealStack = new Error('REVEAL_STACK').stack;
-  console.log('[reveal] called, currentCard:', !!currentCard, 'revealed:', revealed);
-  if (!currentCard || revealed) { console.log('[reveal] EARLY RETURN'); return; }
+  if (!currentCard || revealed) return;
   revealed = true;
   answerEl.classList.remove('hidden');
   revealBtn.classList.add('hidden');
@@ -198,8 +154,7 @@ function reveal() {
   audioAnswerBtn.disabled = false;
   selfAssessEl.classList.remove('hidden');
   // Spela SVAR efter 0.5s paus (Johanna-direktiv)
-  console.log('[reveal] setting timeout for playAnswer');
-  setTimeout(() => { console.log('[reveal] timeout firing, calling playAnswer'); playAnswer(); }, ANSWER_PAUSE_MS);
+  setTimeout(() => playAnswer(), ANSWER_PAUSE_MS);
 }
 
 function selfAssess(correct) {
@@ -282,7 +237,7 @@ revealBtn.addEventListener('click', reveal);
 rattBtn.addEventListener('click', () => selfAssess(true));
 felBtn.addEventListener('click', () => selfAssess(false));
 startOverBtn.addEventListener('click', startOver);
-audioPromptBtn.addEventListener('click', playInitial);
+audioPromptBtn.addEventListener('click', playBegrepp);
 audioAnswerBtn.addEventListener('click', playAnswer);
 dismissInstallBtn?.addEventListener('click', () => installHint.hidden = true);
 
