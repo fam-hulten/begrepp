@@ -137,7 +137,7 @@ function playInitial() {
   if (!currentCard) return;
   const instr = currentMode === 'forward' ? INSTR_FORWARD : INSTR_REVERSE;
   const specific = currentMode === 'forward' ? currentCard.audio_begrepp : currentCard.audio_forklaring;
-  playTwoFiles(instr, specific);
+  playChain([instr, specific]);
 }
 
 // playAnswer: forward = audio_begrepp + AUDIO_AR + audio_forklaring (3 filer).
@@ -145,10 +145,9 @@ function playInitial() {
 function playAnswer() {
   if (!currentCard) return;
   if (currentMode === 'forward') {
-    playThreeFiles(currentCard.audio_begrepp, AUDIO_AR, currentCard.audio_forklaring);
+    playChain([currentCard.audio_begrepp, AUDIO_AR, currentCard.audio_forklaring]);
   } else {
-    audio.src = currentCard.audio_begrepp;
-    audio.play().catch(err => console.warn('Audio play failed (answer/reverse):', err));
+    playChain([currentCard.audio_begrepp]);
   }
 }
 
@@ -156,45 +155,30 @@ function playAnswer() {
 function playBegrepp() {
   const src = getBegreppSrc();
   if (!src) return;
-  audio.src = src;
-  audio.play().catch(err => console.warn('Audio play failed (begrepp):', err));
+  playChain([src]);
 }
 
-// playTwoFiles: spela src1 → 0ms paus → src2 (DRY-sekvens)
-function playTwoFiles(src1, src2) {
-  if (!src1 || !src2) return;
-  audio.onended = null;
-  audio.src = src1;
-  let secondPlayed = false;
-  audio.onended = () => {
-    if (secondPlayed) return;
-    secondPlayed = true;
-    audio.onended = null;
-    audio.src = src2;
-    audio.play().catch(err => console.warn('Audio play failed (second):', err));
-  };
-  audio.play().catch(err => console.warn('Audio play failed (first):', err));
-}
-
-// playThreeFiles: spela src1 → src2 → src3 i sekvens med 0ms paus
-function playThreeFiles(src1, src2, src3) {
-  if (!src1 || !src2 || !src3) return;
-  audio.onended = null;
-  audio.src = src1;
-  let step = 0;
+// playChain: spela en sekvens av MP3-filer med NY Audio()-instans per fil.
+// Inga delade audio.onended-state. Robust mot race conditions och auto-play.
+let currentChainId = 0;
+function playChain(sources) {
+  console.log('[playChain] called with', sources);
+  if (!sources || sources.length === 0) return;
+  // Inkrementera kedje-ID — äldre kedjor ignorar sina onended (förhindrar cross-chain-spöke)
+  const chainId = ++currentChainId;
+  let i = 0;
   const playNext = () => {
-    if (step >= 2) {
-      audio.onended = null;
-      return;
-    }
-    step++;
-    const next = step === 1 ? src2 : src3;
-    audio.onended = () => playNext();
-    audio.src = next;
-    audio.play().catch(err => console.warn('Audio play failed (chain):', err));
+    if (chainId !== currentChainId) return; // äldre kedja, ignorera
+    if (i >= sources.length) return;
+    const src = sources[i];
+    i++;
+    console.log('[playChain] step', i, 'src:', src);
+    const a = new Audio(src);
+    a.onended = () => { console.log('[playChain] ended step', i); playNext(); };
+    a.onerror = (e) => console.warn('[playChain] audio error step', i, e);
+    a.play().then(() => console.log('[playChain] playing step', i)).catch(err => console.warn(`[playChain] play failed step ${i}:`, err));
   };
-  audio.onended = () => playNext();
-  audio.play().catch(err => console.warn('Audio play failed (first):', err));
+  playNext();
 }
 
 function reveal() {
