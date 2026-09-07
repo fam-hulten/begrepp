@@ -77,23 +77,29 @@ function playChain(sources) {
   let index = 0;
 
   function playNext() {
+    console.log('[playChain] playNext', { index, total: sources.length, cancelled: chain.cancelled });
     if (chain.cancelled || index >= sources.length) {
       if (activeChain === chain) activeChain = null;
       return;
     }
     const src = sources[index++];
+    console.log('[playChain] playing', index - 1, src);
     const audio = new Audio();
     audio.preload = 'auto';
-    audio.onended = () => playNext();
-    audio.onerror = () => {
-      console.warn('[playChain] load failed:', src);
+    audio.onended = () => {
+      console.log('[playChain] ended', src);
+      playNext();
+    };
+    audio.onerror = (e) => {
+      console.warn('[playChain] load failed:', src, e && e.message);
       playNext();
     };
     audio.src = src;
-    audio.play().catch(err => {
-      console.warn('[playChain] play() rejected:', src, err && err.message);
-      // Auto-play block ELLER nätverksfel — gå vidare till nästa fil.
-    });
+    audio.play().then(() => console.log('[playChain] play() ok', src))
+      .catch(err => {
+        console.warn('[playChain] play() rejected:', src, err && err.message);
+        playNext();
+      });
   }
 
   playNext();
