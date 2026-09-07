@@ -72,8 +72,19 @@ function playChain(sources) {
   cancelChain();
   if (!sources || sources.length === 0) return;
 
-  const chain = { cancelled: false };
+  const chain = { cancelled: false, audios: [] };
   activeChain = chain;
+
+  // Preloada ALLA filer parallellt — eliminerar nätverks-/decode-paus mellan filer.
+  // När föregående fil ended är nästa redan buffrad → play() startar direkt.
+  sources.forEach(src => {
+    const a = new Audio();
+    a.preload = 'auto';
+    a.src = src;
+    try { a.load(); } catch (e) { /* ignore — play() kommer att fånga felet */ }
+    chain.audios.push(a);
+  });
+
   let index = 0;
 
   function playNext() {
@@ -81,17 +92,14 @@ function playChain(sources) {
       if (activeChain === chain) activeChain = null;
       return;
     }
-    const src = sources[index++];
-    const audio = new Audio();
-    audio.preload = 'auto';
+    const audio = chain.audios[index++];
     audio.onended = () => playNext();
     audio.onerror = (e) => {
-      console.warn('[playChain] load failed:', src, e && e.message);
+      console.warn('[playChain] load failed:', audio.src, e && e.message);
       playNext();
     };
-    audio.src = src;
     audio.play().catch(err => {
-      console.warn('[playChain] play() rejected:', src, err && err.message);
+      console.warn('[playChain] play() rejected:', audio.src, err && err.message);
       // Auto-play block eller nätverksfel — kedjan fortsätter till nästa fil.
       playNext();
     });

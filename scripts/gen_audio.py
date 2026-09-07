@@ -158,13 +158,15 @@ def main():
         forkl_text = b["forklaring"]
         exp_forkl = expand_abbreviations(forkl_text.lower())
 
-        # V3.7 PROMPTS (Johanna-direktiv 2026-09-03 08:39 — DRY: 2 filtyper/begrepp)
+        # V3.8.2 PROMPTS (Johanna-direktiv 2026-09-03 09:21 — DRY + playChain)
         #   - audio_begrepp.mp3 → `#<ord>` (SV-specifik betoning/förtydligande-markör)
-        #   - audio_forklaring.mp3 → `<ord> är <förklaring>` (delas mellan forward+reverse)
-        #   - INGA audio_instr_* — instruktioner är visuella/på-skärmen
+        #   - audio_forklaring.mp3 → `<förklaring>` BARA (delas av forward+reverse).
+        #     "är" spelas som egen fil (audio-ar.mp3) emellan, så forward reveal blir
+        #     `#ord → är → förklaring` (3 filer, ingen dubblering).
+        #   - INGA audio_instr_* i per-begrepp — generella delas (instr-forward, instr-reverse).
         prompts = {
             "begrepp": f"#{ord_text.lower()}",
-            "forklaring": f"{ord_text} är {exp_forkl}",
+            "forklaring": exp_forkl,
         }
 
         for typ in types_to_generate:
