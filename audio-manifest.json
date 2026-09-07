@@ -1,0 +1,263 @@
+{
+  "version": "1.0",
+  "generated_from": "begrepp-data.json",
+  "shared": [
+    "instr-forward.mp3",
+    "instr-reverse.mp3",
+    "audio-ar.mp3"
+  ],
+  "concepts": [
+    {
+      "id": "manniskor",
+      "begrepp": "manniskor-begrepp.mp3",
+      "forklaring": "manniskor-forklaring.mp3",
+      "forward_initial": [
+        "instr-forward.mp3",
+        "manniskor-begrepp.mp3"
+      ],
+      "forward_reveal": [
+        "manniskor-begrepp.mp3",
+        "audio-ar.mp3",
+        "manniskor-forklaring.mp3"
+      ],
+      "reverse_initial": [
+        "instr-reverse.mp3",
+        "manniskor-forklaring.mp3"
+      ],
+      "reverse_reveal": [
+        "manniskor-begrepp.mp3"
+      ]
+    },
+    {
+      "id": "media",
+      "begrepp": "media-begrepp.mp3",
+      "forklaring": "media-forklaring.mp3",
+      "forward_initial": [
+        "instr-forward.mp3",
+        "media-begrepp.mp3"
+      ],
+      "forward_reveal": [
+        "media-begrepp.mp3",
+        "audio-ar.mp3",
+        "media-forklaring.mp3"
+      ],
+      "reverse_initial": [
+        "instr-reverse.mp3",
+        "media-forklaring.mp3"
+      ],
+      "reverse_reveal": [
+        "media-begrepp.mp3"
+      ]
+    },
+    {
+      "id": "kultur",
+      "begrepp": "kultur-begrepp.mp3",
+      "forklaring": "kultur-forklaring.mp3",
+      "forward_initial": [
+        "instr-forward.mp3",
+        "kultur-begrepp.mp3"
+      ],
+      "forward_reveal": [
+        "kultur-begrepp.mp3",
+        "audio-ar.mp3",
+        "kultur-forklaring.mp3"
+      ],
+      "reverse_initial": [
+        "instr-reverse.mp3",
+        "kultur-forklaring.mp3"
+      ],
+      "reverse_reveal": [
+        "kultur-begrepp.mp3"
+      ]
+    },
+    {
+      "id": "historia",
+      "begrepp": "historia-begrepp.mp3",
+      "forklaring": "historia-forklaring.mp3",
+      "forward_initial": [
+        "instr-forward.mp3",
+        "historia-begrepp.mp3"
+      ],
+      "forward_reveal": [
+        "historia-begrepp.mp3",
+        "audio-ar.mp3",
+        "historia-forklaring.mp3"
+      ],
+      "reverse_initial": [
+        "instr-reverse.mp3",
+        "historia-forklaring.mp3"
+      ],
+      "reverse_reveal": [
+        "historia-begrepp.mp3"
+      ]
+    },
+    {
+      "id": "ekonomi",
+      "begrepp": "ekonomi-begrepp.mp3",
+      "forklaring": "ekonomi-forklaring.mp3",
+      "forward_initial": [
+        "instr-forward.mp3",
+        "ekonomi-begrepp.mp3"
+      ],
+      "forward_reveal": [
+        "ekonomi-begrepp.mp3",
+        "audio-ar.mp3",
+        "ekonomi-forklaring.mp3"
+      ],
+      "reverse_initial": [
+        "instr-reverse.mp3",
+        "ekonomi-forklaring.mp3"
+      ],
+      "reverse_reveal": [
+        "ekonomi-begrepp.mp3"
+      ]
+    },
+    {
+      "id": "politik",
+      "begrepp": "politik-begrepp.mp3",
+      "forklaring": "politik-forklaring.mp3",
+      "forward_initial": [
+        "instr-forward.mp3",
+        "politik-begrepp.mp3"
+      ],
+      "forward_reveal": [
+        "politik-begrepp.mp3",
+        "audio-ar.mp3",
+        "politik-forklaring.mp3"
+      ],
+      "reverse_initial": [
+        "instr-reverse.mp3",
+        "politik-forklaring.mp3"
+      ],
+      "reverse_reveal": [
+        "politik-begrepp.mp3"
+      ]
+    },
+    {
+      "id": "normer",
+      "begrepp": "normer-begrepp.mp3",
+      "forklaring": "normer-forklaring.mp3",
+      "forward_initial": [
+        "instr-forward.mp3",
+        "normer-begrepp.mp3"
+      ],
+      "forward_reveal": [
+        "normer-begrepp.mp3",
+        "audio-ar.mp3",
+        "normer-forklaring.mp3"
+      ],
+      "reverse_initial": [
+        "instr-reverse.mp3",
+        "normer-forklaring.mp3"
+      ],
+      "reverse_reveal": [
+        "normer-begrepp.mp3"
+      ]
+    },
+    {
+      "id": "regler",
+      "begrepp": "regler-begrepp.mp3",
+      "forklaring": "regler-forklaring.mp3",
+      "forward_initial": [
+        "instr-forward.mp3",
+        "regler-begrepp.mp3"
+      ],
+      "forward_reveal": [
+        "regler-begrepp.mp3",
+        "audio-ar.mp3",
+        "regler-forklaring.mp3"
+      ],
+      "reverse_initial": [
+        "instr-reverse.mp3",
+        "regler-forklaring.mp3"
+      ],
+      "reverse_reveal": [
+        "regler-begrepp.mp3"
+      ]
+    },
+    {
+      "id": "lagar",
+      "begrepp": "lagar-begrepp.mp3",
+      "forklaring": "lagar-forklaring.mp3",
+      "forward_initial": [
+        "instr-forward.mp3",
+        "lagar-begrepp.mp3"
+      ],
+      "forward_reveal": [
+        "lagar-begrepp.mp3",
+        "audio-ar.mp3",
+        "lagar-forklaring.mp3"
+      ],
+      "reverse_initial": [
+        "instr-reverse.mp3",
+        "lagar-forklaring.mp3"
+      ],
+      "reverse_reveal": [
+        "lagar-begrepp.mp3"
+      ]
+    },
+    {
+      "id": "gemenskap",
+      "begrepp": "gemenskap-begrepp.mp3",
+      "forklaring": "gemenskap-forklaring.mp3",
+      "forward_initial": [
+        "instr-forward.mp3",
+        "gemenskap-begrepp.mp3"
+      ],
+      "forward_reveal": [
+        "gemenskap-begrepp.mp3",
+        "audio-ar.mp3",
+        "gemenskap-forklaring.mp3"
+      ],
+      "reverse_initial": [
+        "instr-reverse.mp3",
+        "gemenskap-forklaring.mp3"
+      ],
+      "reverse_reveal": [
+        "gemenskap-begrepp.mp3"
+      ]
+    },
+    {
+      "id": "grupp",
+      "begrepp": "grupp-begrepp.mp3",
+      "forklaring": "grupp-forklaring.mp3",
+      "forward_initial": [
+        "instr-forward.mp3",
+        "grupp-begrepp.mp3"
+      ],
+      "forward_reveal": [
+        "grupp-begrepp.mp3",
+        "audio-ar.mp3",
+        "grupp-forklaring.mp3"
+      ],
+      "reverse_initial": [
+        "instr-reverse.mp3",
+        "grupp-forklaring.mp3"
+      ],
+      "reverse_reveal": [
+        "grupp-begrepp.mp3"
+      ]
+    },
+    {
+      "id": "tradition",
+      "begrepp": "tradition-begrepp.mp3",
+      "forklaring": "tradition-forklaring.mp3",
+      "forward_initial": [
+        "instr-forward.mp3",
+        "tradition-begrepp.mp3"
+      ],
+      "forward_reveal": [
+        "tradition-begrepp.mp3",
+        "audio-ar.mp3",
+        "tradition-forklaring.mp3"
+      ],
+      "reverse_initial": [
+        "instr-reverse.mp3",
+        "tradition-forklaring.mp3"
+      ],
+      "reverse_reveal": [
+        "tradition-begrepp.mp3"
+      ]
+    }
+  ]
+}
