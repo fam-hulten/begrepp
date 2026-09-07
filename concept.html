@@ -173,6 +173,52 @@
     </div>
   </div>
 
+  <!-- ========== WEB AUDIO API TEST: SEAMLESS PLAYBACK ========== -->
+  <h1 style="margin-top: 2rem;">🧪 Test: Web Audio API (seamless playback)</h1>
+  <p class="subtitle">
+    Jämför <code>playTwoFiles</code> (HTML5 Audio, onended + ny Audio = glapp) mot <code>playSeamless</code>
+    (Web Audio API, AudioBufferSourceNode.start(when) = exakt timing, inga glapp).
+    Klicka på knapparna och kolla konsolen för tidsmätning mellan filerna.
+  </p>
+
+  <div class="mode-section">
+    <div class="mode-title">📖 Forward reveal för "normer"</div>
+    <div class="mode-desc">
+      Kedja: <code>#normer</code> + <code>audio-ar.mp3</code> + <code>normer-forklaring.mp3</code>.
+      Samma 3 filer som appens forward reveal — testar seamless concat.
+    </div>
+
+    <div class="variant">
+      <div class="variant-num">Variant X1 — HTML5 Audio (playTwoFiles-glapp)</div>
+      <div class="variant-desc">Nuvarande playChain. Förväntat glapp: ~10-30ms mellan filer.</div>
+      <button class="btn-both" onclick="playChainChain(['audio/normer-begrepp.mp3', 'audio/audio-ar.mp3', 'audio/normer-forklaring.mp3'])">▶️ HTML5: 3 filer (nuvarande)</button>
+      <button class="btn-both" onclick="playChainChain(['audio/instr-forward.mp3', 'audio/normer-begrepp.mp3'])">▶️ HTML5: 2 filer (forward initial)</button>
+    </div>
+
+    <div class="variant">
+      <div class="variant-num">Variant X2 — Web Audio API (playSeamless)</div>
+      <div class="variant-desc">Ny seamless-version. Förväntat glapp: ~0ms (exakt timing via AudioBufferSourceNode.start).</div>
+      <button class="btn-both" onclick="playSeamless(['audio/normer-begrepp.mp3', 'audio/audio-ar.mp3', 'audio/normer-forklaring.mp3']).then(t => console.log('✅ seamless klar', t, 'ms'))">▶️ Web Audio: 3 filer (seamless)</button>
+      <button class="btn-both" onclick="playSeamless(['audio/instr-forward.mp3', 'audio/normer-begrepp.mp3']).then(t => console.log('✅ seamless klar', t, 'ms'))">▶️ Web Audio: 2 filer (forward initial)</button>
+    </div>
+
+    <div class="variant">
+      <div class="variant-num">Variant X3 — Web Audio API, lång kedja (5 filer)</div>
+      <div class="variant-desc">Stresstest: 5 filer i kedja för att se om glapp ackumuleras med HTML5 vs Web Audio.</div>
+      <button class="btn-both" onclick="playChainChain(['audio/instr-forward.mp3', 'audio/normer-begrepp.mp3', 'audio/audio-ar.mp3', 'audio/normer-forklaring.mp3', 'audio/instr-reverse.mp3'])">▶️ HTML5: 5 filer (stress)</button>
+      <button class="btn-both" onclick="playSeamless(['audio/instr-forward.mp3', 'audio/normer-begrepp.mp3', 'audio/audio-ar.mp3', 'audio/normer-forklaring.mp3', 'audio/instr-reverse.mp3']).then(t => console.log('✅ seamless klar', t, 'ms'))">▶️ Web Audio: 5 filer (stress)</button>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>Vad jag mäter:</strong> Tiden från det att fil N slutar tills fil N+1 börjar spela (ljudmässigt).
+    Med HTML5 Audio: onended → ny Audio() → load → play() = ~50-200ms glapp per filövergång.
+    Med Web Audio API: AudioBufferSourceNode.start(when) med exakt when = ~0ms glapp.
+    <br><br>
+    <strong>Hur man testar:</strong> Öppna DevTools → Console. Klicka på knappar och jämför konsolutdata.
+    Lyssna också med hörlurar — ska vara sömlöst med X2, tydliga pauser med X1.
+  </div>
+
   <div class="info-box">
     <strong>DRY-arkitektur (V3.6) — verifierad 2026-09-02:</strong>
     <ul style="margin: 0.4rem 0 0 1.25rem; padding: 0;">
@@ -248,6 +294,83 @@
           playSecond();
         }
       };
+    }
+
+    // ============================================================
+    // playChainChain: samma playChain-logik som app.js (HTML5 Audio)
+    // Används för jämförelse med Web Audio API-varianten.
+    // ============================================================
+    async function playChainChain(sources) {
+      const tStart = performance.now();
+      console.log(`[playChainChain] start, ${sources.length} filer`);
+      const audios = sources.map(src => {
+        const a = new Audio(src);
+        a.preload = 'auto';
+        try { a.load(); } catch (e) {}
+        return a;
+      });
+      let prevEndTime = null;
+      for (let i = 0; i < audios.length; i++) {
+        const a = audios[i];
+        await new Promise((resolve, reject) => {
+          a.onended = () => {
+            const endTime = performance.now();
+            const gap = prevEndTime !== null ? Math.round(endTime - prevEndTime) : 0;
+            console.log(`[playChainChain] fil ${i} (${sources[i].split('/').pop()}) ended efter ${Math.round(endTime - tStart)}ms, glapp=${gap}ms`);
+            prevEndTime = endTime;
+            resolve();
+          };
+          a.onerror = () => { console.warn(`[playChainChain] fel fil ${i}`); resolve(); };
+          a.play().catch(err => { console.warn(`[playChainChain] play() rejected fil ${i}:`, err && err.message); resolve(); });
+        });
+      }
+      const total = Math.round(performance.now() - tStart);
+      console.log(`[playChainChain] KLAR efter ${total}ms`);
+    }
+
+    // ============================================================
+    // playSeamless: Web Audio API-implementation.
+    // AudioBufferSourceNode.start(when) → exakt timing, inga glapp.
+    // ============================================================
+    let seamlessCtx = null;
+    let seamlessBuffers = new Map(); // cache: src → AudioBuffer
+
+    async function getBuffer(src) {
+      if (seamlessBuffers.has(src)) return seamlessBuffers.get(src);
+      if (!seamlessCtx) seamlessCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const resp = await fetch(src);
+      const arrayBuf = await resp.arrayBuffer();
+      const buffer = await seamlessCtx.decodeAudioData(arrayBuf);
+      seamlessBuffers.set(src, buffer);
+      return buffer;
+    }
+
+    async function playSeamless(sources) {
+      const tStart = performance.now();
+      console.log(`[playSeamless] start, ${sources.length} filer`);
+      if (!seamlessCtx) seamlessCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (seamlessCtx.state === 'suspended') {
+        await seamlessCtx.resume();
+      }
+      const buffers = await Promise.all(sources.map(getBuffer));
+      const tLoaded = performance.now();
+      console.log(`[playSeamless] alla ${buffers.length} buffrar klara efter ${Math.round(tLoaded - tStart)}ms (totalt ${buffers.map(b => b.duration.toFixed(2)).join(' + ')} sek)`);
+      const startAt = seamlessCtx.currentTime + 0.05; // 50ms buffer
+      let when = startAt;
+      for (const buffer of buffers) {
+        const src = seamlessCtx.createBufferSource();
+        src.buffer = buffer;
+        src.connect(seamlessCtx.destination);
+        src.start(when);
+        console.log(`[playSeamless] start(when=${when.toFixed(3)}) duration=${buffer.duration.toFixed(3)}s → slutar vid ${(when + buffer.duration).toFixed(3)}`);
+        when += buffer.duration;
+      }
+      const totalDuration = (when - startAt) * 1000;
+      console.log(`[playSeamless] beräknad total längd: ${Math.round(totalDuration)}ms (ingen glapp!)`);
+      await new Promise(resolve => setTimeout(resolve, totalDuration + 100));
+      const total = Math.round(performance.now() - tStart);
+      console.log(`[playSeamless] KLAR efter ${total}ms (väntat ${Math.round(totalDuration)}ms)`);
+      return total;
     }
   </script>
 </body>
