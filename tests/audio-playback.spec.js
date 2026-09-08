@@ -1,131 +1,78 @@
-// tests/audio-playback.spec.js
-// E2E audio playback verification for begrepp-app
-//
-// Usage: npx playwright test tests/audio-playback.spec.js
-// Exit: 0 = PASS, 1 = FAIL, 2 = ERROR
+/**
+ * audio-playback.spec.js — Playwright E2E test for begrepp-app audio playback.
+ * 
+ * Verifies audio sequences: forward instruction, forward reveal, reverse, no duplicates.
+ * Run: npx playwright test tests/audio-playback.spec.js
+ * Requires: Playwright 1.63.0+, begrepp repo at /home/node/.openclaw/repos/begrepp
+ */
 
+const { test, expect } = require('@playwright/test');
+const { AudioMonitor } = require('./audio-fixture');
 const path = require('path');
-const fs = require('fs');
-const { test, expect } = require('../fixtures/audio-fixture');
 
-// Load manifest to know which files should exist
-const manifestPath = path.join(__dirname, '..', 'audio-manifest.json');
-let manifest = null;
+const BEGREPP_DIR = '/home/node/.openclaw/repos/begrepp';
 
-try {
-  const raw = fs.readFileSync(manifestPath, 'utf8');
-  manifest = JSON.parse(raw);
-} catch (e) {
-  console.error('ERROR: audio-manifest.json not found. Run scripts/gen_audio_manifest.py first.');
-  process.exit(2);
-}
+test.describe('Begrepp audio playback', () => {
+  let audioMonitor;
 
-// Build list of all expected audio file IDs from manifest
-function getExpectedAudioIds() {
-  const ids = [];
-  if (manifest.begrepp) {
-    for (const item of manifest.begrepp) {
-      if (item.audio) {
-        const id = item.audio.split('/').pop()?.replace('.mp3', '');
-        if (id) ids.push(id);
-      }
-    }
-  }
-  if (manifest.generella) {
-    for (const item of manifest.generella) {
-      if (item.audio) {
-        const id = item.audio.split('/').pop()?.replace('.mp3', '');
-        if (id) ids.push(id);
-      }
-    }
-  }
-  return ids;
-}
-
-const expectedAudioIds = getExpectedAudioIds();
-
-test.describe('Audio playback verification', () => {
-
-  test('audio-manifest.json is valid and contains audio entries', async () => {
-    expect(expectedAudioIds.length).toBeGreaterThan(0);
-    // Verify all referenced files physically exist
-    const missing = [];
-    for (const id of expectedAudioIds) {
-      const mp3File = path.join(__dirname, '..', 'audio', `${id}.mp3`);
-      if (!fs.existsSync(mp3File)) {
-        missing.push(`${id}.mp3`);
-      }
-    }
-    expect(missing, `Missing audio files: ${missing.join(', ')}`).toHaveLength(0);
+  test.beforeEach(async ({ page }) => {
+    audioMonitor = new AudioMonitor();
+    await audioMonitor.install(page);
+    const filePath = path.join(BEGREPP_DIR, 'concept.html');
+    await page.goto(`file://${filePath}`);
+    await page.waitForSelector('#revealBtn:not([disabled])', { timeout: 5000 });
   });
 
-  test('playChain: page loads and fires initial playChain (getInitialSources)', async ({ page, audioMonitor }) => {
-    const filePath = path.join(__dirname, '..', 'index.html');
-    await page.goto(`file://${filePath}`);
-
-    // Wait for initial playChain to fire
-    await page.waitForTimeout(2000);
-
-    const sounds = await audioMonitor.getSoundNames();
-
-    // At minimum we expect at least one play() call from getInitialSources()
-    expect(sounds.length, `Expected ≥1 play() calls from getInitialSources, got: ${JSON.stringify(sounds)}`).toBeGreaterThan(0);
-
-    // All sounds that fired should reference existing files
-    const audioDir = path.join(__dirname, '..', 'audio');
-    const missingFiles = sounds.filter(s => {
-      const f = path.join(audioDir, `${s}.mp3`);
-      return !fs.existsSync(f);
-    });
-    expect(missingFiles, `Sounds fired for non-existent files: ${missingFiles.join(', ')}`).toHaveLength(0);
+  test('Forward mode: instr_forward audio plays on card render', async ({ page }) => {
+    await audioMonitor.reset(page);
+    await page.waitForTimeout(600);
+    const sounds = await audioMonitor.getSounds(page);
+    const forwardSounds = sounds.filter(s => s.name.includes('instr-forward'));
+    expect(forwardSounds.length).toBeGreaterThan(0);
   });
 
-  test('concept.html: loads and fires playChain calls without errors', async ({ page, audioMonitor }) => {
-    const filePath = path.join(__dirname, '..', 'concept.html');
-    await page.goto(`file://${filePath}`);
+  test('Forward reveal: forklaring audio plays after reveal click', async ({ page }) => {
+    await audioMonitor.reset(page);
+    await page.waitForTimeout(600);
+    await page.click('#revealBtn');
+    await page.waitForTimeout(1000);
+    const sounds = await audioMonitor.getSounds(page);
+    const forklaringSounds = sounds.filter(s => s.name.includes('forklaring'));
+    const begreppSounds = sounds.filter(s => s.name.includes('begrepp'));
+    expect(forklaringSounds.length).toBeGreaterThan(0);
+    expect(begreppSounds.length).toBe(0);
+  });
 
-    await page.waitForTimeout(2000);
-
-    const sounds = await audioMonitor.getSoundNames();
-    // concept.html may or may not auto-play on load
-    // We just verify no JS errors were thrown
-    const errors = [];
-    page.on('pageerror', err => errors.push(err.message));
+  test('Reverse reveal: begrepp audio plays after reveal', async ({ page }) => {
+    await page.click('#modeReverseBtn');
     await page.waitForTimeout(500);
-
-    expect(errors).toHaveLength(0);
+    await audioMonitor.reset(page);
+    await page.click('#revealBtn');
+    await page.waitForTimeout(1000);
+    const sounds = await audioMonitor.getSounds(page);
+    const begreppSounds = sounds.filter(s => s.name.includes('begrepp'));
+    expect(begreppSounds.length).toBeGreaterThan(0);
   });
 
-  test('verifyExpectedSounds: detects missing audio calls from manifest', async ({ page, audioMonitor }) => {
-    // This is a smoke test: if we call verifyExpected with ALL manifest IDs,
-    // we expect missing sounds (since we haven't triggered every playChain path).
-    // The key assertion is that the method itself works without throwing.
-    const filePath = path.join(__dirname, '..', 'index.html');
-    await page.goto(`file://${filePath}`);
-    await page.waitForTimeout(2000);
-
-    const { missing, played, extra } = await audioMonitor.verifyExpected(expectedAudioIds);
-
-    // played should contain at least something (getInitialSources)
-    expect(played.length, `Expected ≥1 played sound from getInitialSources`).toBeGreaterThan(0);
-
-    // The verifyExpected method itself should work without throwing
-    // (missing will be large since we only visited the page once)
-    console.log(`[audio-playback] played=${played.length}, missing=${missing.length}, extra=${extra.length}`);
-  });
-
-  test('play order: sounds are recorded in correct chronological order', async ({ page, audioMonitor }) => {
-    const filePath = path.join(__dirname, '..', 'index.html');
-    await page.goto(`file://${filePath}`);
-    await page.waitForTimeout(3000);
-
-    const ordered = await audioMonitor.getSoundsOrdered();
-    expect(ordered.length).toBeGreaterThan(0);
-
-    // Verify timestamps are monotonically increasing
-    for (let i = 1; i < ordered.length; i++) {
-      expect(ordered[i].timestamp).toBeGreaterThanOrEqual(ordered[i-1].timestamp);
+  test('No duplicate play() calls for same audio', async ({ page }) => {
+    await audioMonitor.reset(page);
+    for (let i = 0; i < 3; i++) {
+      await page.waitForTimeout(600);
+      if (await page.$('#revealBtn:not([disabled])')) {
+        await page.click('#revealBtn');
+        await page.waitForTimeout(200);
+        await page.click('#rattBtn');
+        await page.waitForTimeout(300);
+      }
     }
-    console.log(`[audio-playback] playback order: ${ordered.map(s => s.name).join(' → ')}`);
+    const sounds = await audioMonitor.getSounds(page);
+    const duplicates = [];
+    for (let i = 1; i < sounds.length; i++) {
+      if (sounds[i].name === sounds[i - 1].name &&
+          sounds[i].timestamp - sounds[i - 1].timestamp < 100) {
+        duplicates.push(sounds[i].name);
+      }
+    }
+    expect(duplicates).toHaveLength(0);
   });
 });
