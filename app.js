@@ -8,7 +8,27 @@
 //   onended → nästa. Robust mot auto-play-block (webbläsare tillåter efter första user-gesture).
 
 const STORAGE_KEY = 'begrepp-mastery-v3';
-const SW_VERSION = 'begrepp-v13';
+const SW_VERSION = 'begrepp-v14';
+
+// === AUDIO PRIMING ===
+// Webbläsarens autoplay-policy kräver user gesture för att aktivera audio context.
+// Vi spelar en kort tyst priming-ljud (volym 0) vid FÖRSTA user-interaktion.
+// Efter det fungerar all autoplay — inkl. första instruktionen som autospelar
+// 300 ms efter att kortet visas. (Johanna-direktiv 2026-09-10: "bara fixa det".)
+let audioPrimed = false;
+function primeAudio() {
+  if (audioPrimed) return;
+  audioPrimed = true;
+  const priming = new Audio('audio/priming.mp3');
+  priming.volume = 0;
+  priming.play().catch(() => {});
+  document.removeEventListener('pointerdown', primeAudio);
+  document.removeEventListener('touchstart', primeAudio);
+  document.removeEventListener('keydown', primeAudio);
+}
+document.addEventListener('pointerdown', primeAudio, { once: true, passive: true });
+document.addEventListener('touchstart', primeAudio, { once: true, passive: true });
+document.addEventListener('keydown', primeAudio, { once: true, passive: true });
 const INITIAL_DELAY_MS = 300;
 
 // V4: 4 audio-filer per begrepp (audio_fraga / audio_svar / audio_reverse_fraga / audio_reverse_svar).
