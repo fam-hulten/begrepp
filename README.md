@@ -102,6 +102,16 @@ python3 scripts/gen_audio_v4.py --dry-run  # INGEN dry-run-flagga i V4 — anvä
 python3 scripts/verify_audio_manifest.py
 ```
 
+## Veckovis uppdatering
+
+Se **[WORKFLOW.md](WORKFLOW.md)** för steg-för-steg-guide:
+1. Uppdatera `begrepp-data.json`
+2. Generera audio (`gen_audio_v4.py`)
+3. Generera manifest (`gen_audio_manifest_v4.py`)
+4. Validera (`verify_audio_manifest.py`)
+5. Test lokalt
+6. Commit + push
+
 ## Build / Deploy
 
 ```bash
