@@ -1,199 +1,177 @@
 {
   "version": "1.0",
   "generated_from": "begrepp-data.json",
-  "shared": [
-    "instr-forward.mp3",
-    "instr-reverse.mp3",
-    "audio-ar.mp3"
-  ],
+  "shared": [],
   "concepts": [
     {
       "id": "summa",
-      "begrepp": "summa-begrepp.mp3",
-      "forklaring": "summa-forklaring.mp3",
+      "fraga": "audio/summa-fraga.mp3",
+      "svar": "audio/summa-svar.mp3",
+      "reverse_fraga": "audio/summa-reverse-fraga.mp3",
+      "reverse_svar": "audio/summa-reverse-svar.mp3",
       "forward_initial": [
-        "instr-forward.mp3",
-        "summa-begrepp.mp3"
+        "audio/summa-fraga.mp3"
       ],
       "forward_reveal": [
-        "summa-begrepp.mp3",
-        "audio-ar.mp3",
-        "summa-forklaring.mp3"
+        "audio/summa-svar.mp3"
       ],
       "reverse_initial": [
-        "instr-reverse.mp3",
-        "summa-forklaring.mp3"
+        "audio/summa-reverse-fraga.mp3"
       ],
       "reverse_reveal": [
-        "summa-begrepp.mp3"
+        "audio/summa-reverse-svar.mp3"
       ]
     },
     {
       "id": "differens",
-      "begrepp": "differens-begrepp.mp3",
-      "forklaring": "differens-forklaring.mp3",
+      "fraga": "audio/differens-fraga.mp3",
+      "svar": "audio/differens-svar.mp3",
+      "reverse_fraga": "audio/differens-reverse-fraga.mp3",
+      "reverse_svar": "audio/differens-reverse-svar.mp3",
       "forward_initial": [
-        "instr-forward.mp3",
-        "differens-begrepp.mp3"
+        "audio/differens-fraga.mp3"
       ],
       "forward_reveal": [
-        "differens-begrepp.mp3",
-        "audio-ar.mp3",
-        "differens-forklaring.mp3"
+        "audio/differens-svar.mp3"
       ],
       "reverse_initial": [
-        "instr-reverse.mp3",
-        "differens-forklaring.mp3"
+        "audio/differens-reverse-fraga.mp3"
       ],
       "reverse_reveal": [
-        "differens-begrepp.mp3"
+        "audio/differens-reverse-svar.mp3"
       ]
     },
     {
       "id": "multiplikation",
-      "begrepp": "multiplikation-begrepp.mp3",
-      "forklaring": "multiplikation-forklaring.mp3",
+      "fraga": "audio/multiplikation-fraga.mp3",
+      "svar": "audio/multiplikation-svar.mp3",
+      "reverse_fraga": "audio/multiplikation-reverse-fraga.mp3",
+      "reverse_svar": "audio/multiplikation-reverse-svar.mp3",
       "forward_initial": [
-        "instr-forward.mp3",
-        "multiplikation-begrepp.mp3"
+        "audio/multiplikation-fraga.mp3"
       ],
       "forward_reveal": [
-        "multiplikation-begrepp.mp3",
-        "audio-ar.mp3",
-        "multiplikation-forklaring.mp3"
+        "audio/multiplikation-svar.mp3"
       ],
       "reverse_initial": [
-        "instr-reverse.mp3",
-        "multiplikation-forklaring.mp3"
+        "audio/multiplikation-reverse-fraga.mp3"
       ],
       "reverse_reveal": [
-        "multiplikation-begrepp.mp3"
+        "audio/multiplikation-reverse-svar.mp3"
       ]
     },
     {
       "id": "jamna-tal",
-      "begrepp": "jamna-tal-begrepp.mp3",
-      "forklaring": "jamna-tal-forklaring.mp3",
+      "fraga": "audio/jamna-tal-fraga.mp3",
+      "svar": "audio/jamna-tal-svar.mp3",
+      "reverse_fraga": "audio/jamna-tal-reverse-fraga.mp3",
+      "reverse_svar": "audio/jamna-tal-reverse-svar.mp3",
       "forward_initial": [
-        "instr-forward.mp3",
-        "jamna-tal-begrepp.mp3"
+        "audio/jamna-tal-fraga.mp3"
       ],
       "forward_reveal": [
-        "jamna-tal-begrepp.mp3",
-        "audio-ar.mp3",
-        "jamna-tal-forklaring.mp3"
+        "audio/jamna-tal-svar.mp3"
       ],
       "reverse_initial": [
-        "instr-reverse.mp3",
-        "jamna-tal-forklaring.mp3"
+        "audio/jamna-tal-reverse-fraga.mp3"
       ],
       "reverse_reveal": [
-        "jamna-tal-begrepp.mp3"
+        "audio/jamna-tal-reverse-svar.mp3"
       ]
     },
     {
       "id": "produkt",
-      "begrepp": "produkt-begrepp.mp3",
-      "forklaring": "produkt-forklaring.mp3",
+      "fraga": "audio/produkt-fraga.mp3",
+      "svar": "audio/produkt-svar.mp3",
+      "reverse_fraga": "audio/produkt-reverse-fraga.mp3",
+      "reverse_svar": "audio/produkt-reverse-svar.mp3",
       "forward_initial": [
-        "instr-forward.mp3",
-        "produkt-begrepp.mp3"
+        "audio/produkt-fraga.mp3"
       ],
       "forward_reveal": [
-        "produkt-begrepp.mp3",
-        "audio-ar.mp3",
-        "produkt-forklaring.mp3"
+        "audio/produkt-svar.mp3"
       ],
       "reverse_initial": [
-        "instr-reverse.mp3",
-        "produkt-forklaring.mp3"
+        "audio/produkt-reverse-fraga.mp3"
       ],
       "reverse_reveal": [
-        "produkt-begrepp.mp3"
+        "audio/produkt-reverse-svar.mp3"
       ]
     },
     {
       "id": "udda-tal",
-      "begrepp": "udda-tal-begrepp.mp3",
-      "forklaring": "udda-tal-forklaring.mp3",
+      "fraga": "audio/udda-tal-fraga.mp3",
+      "svar": "audio/udda-tal-svar.mp3",
+      "reverse_fraga": "audio/udda-tal-reverse-fraga.mp3",
+      "reverse_svar": "audio/udda-tal-reverse-svar.mp3",
       "forward_initial": [
-        "instr-forward.mp3",
-        "udda-tal-begrepp.mp3"
+        "audio/udda-tal-fraga.mp3"
       ],
       "forward_reveal": [
-        "udda-tal-begrepp.mp3",
-        "audio-ar.mp3",
-        "udda-tal-forklaring.mp3"
+        "audio/udda-tal-svar.mp3"
       ],
       "reverse_initial": [
-        "instr-reverse.mp3",
-        "udda-tal-forklaring.mp3"
+        "audio/udda-tal-reverse-fraga.mp3"
       ],
       "reverse_reveal": [
-        "udda-tal-begrepp.mp3"
+        "audio/udda-tal-reverse-svar.mp3"
       ]
     },
     {
       "id": "division",
-      "begrepp": "division-begrepp.mp3",
-      "forklaring": "division-forklaring.mp3",
+      "fraga": "audio/division-fraga.mp3",
+      "svar": "audio/division-svar.mp3",
+      "reverse_fraga": "audio/division-reverse-fraga.mp3",
+      "reverse_svar": "audio/division-reverse-svar.mp3",
       "forward_initial": [
-        "instr-forward.mp3",
-        "division-begrepp.mp3"
+        "audio/division-fraga.mp3"
       ],
       "forward_reveal": [
-        "division-begrepp.mp3",
-        "audio-ar.mp3",
-        "division-forklaring.mp3"
+        "audio/division-svar.mp3"
       ],
       "reverse_initial": [
-        "instr-reverse.mp3",
-        "division-forklaring.mp3"
+        "audio/division-reverse-fraga.mp3"
       ],
       "reverse_reveal": [
-        "division-begrepp.mp3"
+        "audio/division-reverse-svar.mp3"
       ]
     },
     {
       "id": "addition",
-      "begrepp": "addition-begrepp.mp3",
-      "forklaring": "addition-forklaring.mp3",
+      "fraga": "audio/addition-fraga.mp3",
+      "svar": "audio/addition-svar.mp3",
+      "reverse_fraga": "audio/addition-reverse-fraga.mp3",
+      "reverse_svar": "audio/addition-reverse-svar.mp3",
       "forward_initial": [
-        "instr-forward.mp3",
-        "addition-begrepp.mp3"
+        "audio/addition-fraga.mp3"
       ],
       "forward_reveal": [
-        "addition-begrepp.mp3",
-        "audio-ar.mp3",
-        "addition-forklaring.mp3"
+        "audio/addition-svar.mp3"
       ],
       "reverse_initial": [
-        "instr-reverse.mp3",
-        "addition-forklaring.mp3"
+        "audio/addition-reverse-fraga.mp3"
       ],
       "reverse_reveal": [
-        "addition-begrepp.mp3"
+        "audio/addition-reverse-svar.mp3"
       ]
     },
     {
       "id": "subtraktion",
-      "begrepp": "subtraktion-begrepp.mp3",
-      "forklaring": "subtraktion-forklaring.mp3",
+      "fraga": "audio/subtraktion-fraga.mp3",
+      "svar": "audio/subtraktion-svar.mp3",
+      "reverse_fraga": "audio/subtraktion-reverse-fraga.mp3",
+      "reverse_svar": "audio/subtraktion-reverse-svar.mp3",
       "forward_initial": [
-        "instr-forward.mp3",
-        "subtraktion-begrepp.mp3"
+        "audio/subtraktion-fraga.mp3"
       ],
       "forward_reveal": [
-        "subtraktion-begrepp.mp3",
-        "audio-ar.mp3",
-        "subtraktion-forklaring.mp3"
+        "audio/subtraktion-svar.mp3"
       ],
       "reverse_initial": [
-        "instr-reverse.mp3",
-        "subtraktion-forklaring.mp3"
+        "audio/subtraktion-reverse-fraga.mp3"
       ],
       "reverse_reveal": [
-        "subtraktion-begrepp.mp3"
+        "audio/subtraktion-reverse-svar.mp3"
       ]
     }
   ]

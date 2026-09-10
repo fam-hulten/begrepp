@@ -8,64 +8,82 @@
       "id": "summa",
       "begrepp": "Summa",
       "forklaring": "Svaret när man lägger ihop tal med addition. Till exempel: tre plus fyra är sju. Summan är sju.",
-      "audio_forklaring": "audio/summa-forklaring.mp3",
-      "audio_begrepp": "audio/summa-begrepp.mp3"
+      "audio_fraga": "audio/summa-fraga.mp3",
+      "audio_svar": "audio/summa-svar.mp3",
+      "audio_reverse_fraga": "audio/summa-reverse-fraga.mp3",
+      "audio_reverse_svar": "audio/summa-reverse-svar.mp3"
     },
     {
       "id": "differens",
       "begrepp": "Differens",
       "forklaring": "Svaret när man drar ifrån ett tal från ett annat. Till exempel: tio minus tre är sju. Differensen är sju.",
-      "audio_forklaring": "audio/differens-forklaring.mp3",
-      "audio_begrepp": "audio/differens-begrepp.mp3"
+      "audio_fraga": "audio/differens-fraga.mp3",
+      "audio_svar": "audio/differens-svar.mp3",
+      "audio_reverse_fraga": "audio/differens-reverse-fraga.mp3",
+      "audio_reverse_svar": "audio/differens-reverse-svar.mp3"
     },
     {
       "id": "multiplikation",
       "begrepp": "Multiplikation",
       "forklaring": "Att lägga ihop samma tal flera gånger. Till exempel: tre gånger fyra är samma som tre plus tre plus tre plus tre.",
-      "audio_forklaring": "audio/multiplikation-forklaring.mp3",
-      "audio_begrepp": "audio/multiplikation-begrepp.mp3"
+      "audio_fraga": "audio/multiplikation-fraga.mp3",
+      "audio_svar": "audio/multiplikation-svar.mp3",
+      "audio_reverse_fraga": "audio/multiplikation-reverse-fraga.mp3",
+      "audio_reverse_svar": "audio/multiplikation-reverse-svar.mp3"
     },
     {
       "id": "jamna-tal",
       "begrepp": "Jämna tal",
       "forklaring": "Tal som kan delas med två utan att det blir något över. Till exempel: två, fyra, sex och åtta.",
-      "audio_forklaring": "audio/jamna-tal-forklaring.mp3",
-      "audio_begrepp": "audio/jamna-tal-begrepp.mp3"
+      "audio_fraga": "audio/jamna-tal-fraga.mp3",
+      "audio_svar": "audio/jamna-tal-svar.mp3",
+      "audio_reverse_fraga": "audio/jamna-tal-reverse-fraga.mp3",
+      "audio_reverse_svar": "audio/jamna-tal-reverse-svar.mp3"
     },
     {
       "id": "produkt",
       "begrepp": "Produkt",
       "forklaring": "Svaret i en multiplikation. Till exempel: tre gånger fyra är tolv. Produkten är tolv.",
-      "audio_forklaring": "audio/produkt-forklaring.mp3",
-      "audio_begrepp": "audio/produkt-begrepp.mp3"
+      "audio_fraga": "audio/produkt-fraga.mp3",
+      "audio_svar": "audio/produkt-svar.mp3",
+      "audio_reverse_fraga": "audio/produkt-reverse-fraga.mp3",
+      "audio_reverse_svar": "audio/produkt-reverse-svar.mp3"
     },
     {
       "id": "udda-tal",
       "begrepp": "Udda tal",
       "forklaring": "Tal som har en kvar när man delar dem med två. Till exempel: ett, tre, fem och sju.",
-      "audio_forklaring": "audio/udda-tal-forklaring.mp3",
-      "audio_begrepp": "audio/udda-tal-begrepp.mp3"
+      "audio_fraga": "audio/udda-tal-fraga.mp3",
+      "audio_svar": "audio/udda-tal-svar.mp3",
+      "audio_reverse_fraga": "audio/udda-tal-reverse-fraga.mp3",
+      "audio_reverse_svar": "audio/udda-tal-reverse-svar.mp3"
     },
     {
       "id": "division",
       "begrepp": "Division",
       "forklaring": "Att dela upp ett antal i lika stora grupper. Till exempel: tolv delat med tre är fyra.",
-      "audio_forklaring": "audio/division-forklaring.mp3",
-      "audio_begrepp": "audio/division-begrepp.mp3"
+      "audio_fraga": "audio/division-fraga.mp3",
+      "audio_svar": "audio/division-svar.mp3",
+      "audio_reverse_fraga": "audio/division-reverse-fraga.mp3",
+      "audio_reverse_svar": "audio/division-reverse-svar.mp3"
     },
     {
       "id": "addition",
       "begrepp": "Addition",
       "forklaring": "Att lägga ihop tal. Till exempel: tre plus fyra är sju.",
-      "audio_forklaring": "audio/addition-forklaring.mp3",
-      "audio_begrepp": "audio/addition-begrepp.mp3"
+      "audio_fraga": "audio/addition-fraga.mp3",
+      "audio_svar": "audio/addition-svar.mp3",
+      "audio_reverse_fraga": "audio/addition-reverse-fraga.mp3",
+      "audio_reverse_svar": "audio/addition-reverse-svar.mp3"
     },
     {
       "id": "subtraktion",
       "begrepp": "Subtraktion",
       "forklaring": "Att ta bort eller minska med ett tal. Till exempel: tio minus tre är sju.",
-      "audio_forklaring": "audio/subtraktion-forklaring.mp3",
-      "audio_begrepp": "audio/subtraktion-begrepp.mp3"
+      "audio_fraga": "audio/subtraktion-fraga.mp3",
+      "audio_svar": "audio/subtraktion-svar.mp3",
+      "audio_reverse_fraga": "audio/subtraktion-reverse-fraga.mp3",
+      "audio_reverse_svar": "audio/subtraktion-reverse-svar.mp3"
     }
   ]
 }

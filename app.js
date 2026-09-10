@@ -8,13 +8,11 @@
 //   onended → nästa. Robust mot auto-play-block (webbläsare tillåter efter första user-gesture).
 
 const STORAGE_KEY = 'begrepp-mastery-v3';
-const SW_VERSION = 'begrepp-v9';
+const SW_VERSION = 'begrepp-v12';
 const INITIAL_DELAY_MS = 300;
 
-// Generella (delade) audio-filer
-const AUDIO_INSTR_FORWARD = 'audio/instr-forward.mp3';
-const AUDIO_INSTR_REVERSE = 'audio/instr-reverse.mp3';
-const AUDIO_AR = 'audio/audio-ar.mp3';
+// V4: 4 audio-filer per begrepp (audio_fraga / audio_svar / audio_reverse_fraga / audio_reverse_svar).
+// Inga delade filer — varje läge har sin egen korta/långa fråga + svar.
 
 let data = null;
 let queue = [];
@@ -113,17 +111,17 @@ function playChain(sources) {
 function getInitialSources() {
   if (!currentCard) return [];
   if (currentMode === 'forward') {
-    return [AUDIO_INSTR_FORWARD, currentCard.audio_begrepp];
+    return [currentCard.audio_fraga];
   }
-  return [AUDIO_INSTR_REVERSE, currentCard.audio_forklaring];
+  return [currentCard.audio_reverse_fraga];
 }
 
 function getAnswerSources() {
   if (!currentCard) return [];
   if (currentMode === 'forward') {
-    return [currentCard.audio_begrepp, AUDIO_AR, currentCard.audio_forklaring];
+    return [currentCard.audio_svar];
   }
-  return [currentCard.audio_begrepp];
+  return [currentCard.audio_reverse_svar];
 }
 
 // Användar-knappar (replay)
