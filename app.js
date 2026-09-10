@@ -8,7 +8,7 @@
 //   onended → nästa. Robust mot auto-play-block (webbläsare tillåter efter första user-gesture).
 
 const STORAGE_KEY = 'begrepp-mastery-v3';
-const SW_VERSION = 'begrepp-v12';
+const SW_VERSION = 'begrepp-v13';
 const INITIAL_DELAY_MS = 300;
 
 // V4: 4 audio-filer per begrepp (audio_fraga / audio_svar / audio_reverse_fraga / audio_reverse_svar).
@@ -84,6 +84,7 @@ function playChain(sources) {
   });
 
   let index = 0;
+  let started = false;
 
   function playNext() {
     if (chain.cancelled || index >= sources.length) {
@@ -103,7 +104,23 @@ function playChain(sources) {
     });
   }
 
-  playNext();
+  // Vänta på att FÖRSTA filen har tillräckligt med data (canplay) innan play().
+  // Fixar "första gången tappar början" — utan detta kan play() starta innan
+  // filen är nedladdad och början klipps av. readyState >= 3 = HAVE_FUTURE_DATA.
+  const firstAudio = chain.audios[0];
+  const startWhenReady = () => {
+    if (chain.cancelled || started) return;
+    started = true;
+    playNext();
+  };
+  if (firstAudio.readyState >= 3) {
+    startWhenReady();
+  } else {
+    firstAudio.addEventListener('canplaythrough', startWhenReady, { once: true });
+    firstAudio.addEventListener('canplay', startWhenReady, { once: true });
+    // Fallback: om eventlyssnarna inte fire:ar (t.ex. redan cachad men readyState felrapporterad)
+    setTimeout(startWhenReady, 1500);
+  }
 }
 
 // Sekvens-byggare (per Johannas design 2026-09-03 09:21)
