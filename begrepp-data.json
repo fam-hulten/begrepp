@@ -1,92 +1,71 @@
 {
   "meta": {
     "title": "Begrepp — Klass 4 Lejonskolan",
-    "subtitle": "Samhällskunskap v.37 — träna begrepp med audio, självbedöm rätt/fel"
+    "subtitle": "Matte v.37 — träna begrepp med audio, självbedöm rätt/fel"
   },
   "begrepp": [
     {
-      "id": "manniskor",
-      "begrepp": "Människor",
-      "forklaring": "En del av olika typer av grupper som familj, släkt, skolklass, förening med mera.",
-      "audio_forklaring": "audio/manniskor-forklaring.mp3",
-      "audio_begrepp": "audio/manniskor-begrepp.mp3"
+      "id": "summa",
+      "begrepp": "Summa",
+      "forklaring": "Svaret när man lägger ihop tal med addition. Till exempel: tre plus fyra är sju. Summan är sju.",
+      "audio_forklaring": "audio/summa-forklaring.mp3",
+      "audio_begrepp": "audio/summa-begrepp.mp3"
     },
     {
-      "id": "media",
-      "begrepp": "Media",
-      "forklaring": "Alla sätt som vi får och ger information i ett samhälle. T.ex. från internet, tidningar och sociala medier.",
-      "audio_forklaring": "audio/media-forklaring.mp3",
-      "audio_begrepp": "audio/media-begrepp.mp3"
+      "id": "differens",
+      "begrepp": "Differens",
+      "forklaring": "Svaret när man drar ifrån ett tal från ett annat. Till exempel: tio minus tre är sju. Differensen är sju.",
+      "audio_forklaring": "audio/differens-forklaring.mp3",
+      "audio_begrepp": "audio/differens-begrepp.mp3"
     },
     {
-      "id": "kultur",
-      "begrepp": "Kultur",
-      "forklaring": "Levnadssätt, seder och traditioner (även böcker, musik, film och teater).",
-      "audio_forklaring": "audio/kultur-forklaring.mp3",
-      "audio_begrepp": "audio/kultur-begrepp.mp3"
+      "id": "multiplikation",
+      "begrepp": "Multiplikation",
+      "forklaring": "Att lägga ihop samma tal flera gånger. Till exempel: tre gånger fyra är samma som tre plus tre plus tre plus tre.",
+      "audio_forklaring": "audio/multiplikation-forklaring.mp3",
+      "audio_begrepp": "audio/multiplikation-begrepp.mp3"
     },
     {
-      "id": "historia",
-      "begrepp": "Historia",
-      "forklaring": "Äldre saker som har vuxit fram genom tid som till exempel gamla hus, berättelser, tavlor och prydnadssaker.",
-      "audio_forklaring": "audio/historia-forklaring.mp3",
-      "audio_begrepp": "audio/historia-begrepp.mp3"
+      "id": "jamna-tal",
+      "begrepp": "Jämna tal",
+      "forklaring": "Tal som kan delas med två utan att det blir något över. Till exempel: två, fyra, sex och åtta.",
+      "audio_forklaring": "audio/jamna-tal-forklaring.mp3",
+      "audio_begrepp": "audio/jamna-tal-begrepp.mp3"
     },
     {
-      "id": "ekonomi",
-      "begrepp": "Ekonomi",
-      "forklaring": "Hur människor arbetar med att tillverka, köpa och sälja saker.",
-      "audio_forklaring": "audio/ekonomi-forklaring.mp3",
-      "audio_begrepp": "audio/ekonomi-begrepp.mp3"
+      "id": "produkt",
+      "begrepp": "Produkt",
+      "forklaring": "Svaret i en multiplikation. Till exempel: tre gånger fyra är tolv. Produkten är tolv.",
+      "audio_forklaring": "audio/produkt-forklaring.mp3",
+      "audio_begrepp": "audio/produkt-begrepp.mp3"
     },
     {
-      "id": "politik",
-      "begrepp": "Politik",
-      "forklaring": "Hur samhället ska styras och vem som har rätt att bestämma.",
-      "audio_forklaring": "audio/politik-forklaring.mp3",
-      "audio_begrepp": "audio/politik-begrepp.mp3"
+      "id": "udda-tal",
+      "begrepp": "Udda tal",
+      "forklaring": "Tal som har en kvar när man delar dem med två. Till exempel: ett, tre, fem och sju.",
+      "audio_forklaring": "audio/udda-tal-forklaring.mp3",
+      "audio_begrepp": "audio/udda-tal-begrepp.mp3"
     },
     {
-      "id": "normer",
-      "begrepp": "Normer",
-      "forklaring": "Oskrivna regler.",
-      "audio_forklaring": "audio/normer-forklaring.mp3",
-      "audio_begrepp": "audio/normer-begrepp.mp3"
+      "id": "division",
+      "begrepp": "Division",
+      "forklaring": "Att dela upp ett antal i lika stora grupper. Till exempel: tolv delat med tre är fyra.",
+      "audio_forklaring": "audio/division-forklaring.mp3",
+      "audio_begrepp": "audio/division-begrepp.mp3"
     },
     {
-      "id": "regler",
-      "begrepp": "Regler",
-      "forklaring": "Något som finns nerskrivet och man följer i t.ex. skolan eller på en arbetsplats.",
-      "audio_forklaring": "audio/regler-forklaring.mp3",
-      "audio_begrepp": "audio/regler-begrepp.mp3"
+      "id": "addition",
+      "begrepp": "Addition",
+      "forklaring": "Att lägga ihop tal. Till exempel: tre plus fyra är sju.",
+      "audio_forklaring": "audio/addition-forklaring.mp3",
+      "audio_begrepp": "audio/addition-begrepp.mp3"
     },
     {
-      "id": "lagar",
-      "begrepp": "Lagar",
-      "forklaring": "Regler som alla i samhället måste följa.",
-      "audio_forklaring": "audio/lagar-forklaring.mp3",
-      "audio_begrepp": "audio/lagar-begrepp.mp3"
-    },
-    {
-      "id": "gemenskap",
-      "begrepp": "Gemenskap",
-      "forklaring": "Att känna när man tillhör en grupp t.ex. i en förening eller med sina närmsta kompisar eller familj.",
-      "audio_forklaring": "audio/gemenskap-forklaring.mp3",
-      "audio_begrepp": "audio/gemenskap-begrepp.mp3"
-    },
-    {
-      "id": "grupp",
-      "begrepp": "Grupp",
-      "forklaring": "När man är fler än två personer.",
-      "audio_forklaring": "audio/grupp-forklaring.mp3",
-      "audio_begrepp": "audio/grupp-begrepp.mp3"
-    },
-    {
-      "id": "tradition",
-      "begrepp": "Tradition",
-      "forklaring": "Något man firar år efter år på samma sätt. T.ex. att fira midsommar eller valborg.",
-      "audio_forklaring": "audio/tradition-forklaring.mp3",
-      "audio_begrepp": "audio/tradition-begrepp.mp3"
+      "id": "subtraktion",
+      "begrepp": "Subtraktion",
+      "forklaring": "Att ta bort eller minska med ett tal. Till exempel: tio minus tre är sju.",
+      "audio_forklaring": "audio/subtraktion-forklaring.mp3",
+      "audio_begrepp": "audio/subtraktion-begrepp.mp3"
     }
   ]
 }
