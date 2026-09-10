@@ -8,7 +8,7 @@
 //   onended → nästa. Robust mot auto-play-block (webbläsare tillåter efter första user-gesture).
 
 const STORAGE_KEY = 'begrepp-mastery-v3';
-const SW_VERSION = 'begrepp-v14';
+const SW_VERSION = 'begrepp-v15';
 
 // === AUDIO PRIMING ===
 // Webbläsarens autoplay-policy kräver user gesture för att aktivera audio context.
@@ -75,6 +75,16 @@ let deferredInstallPrompt = null;
 function cancelChain() {
   if (activeChain) {
     activeChain.cancelled = true;
+    // Pausa ALLA audios i kedjan (även pågående) så de inte fortsätter spela
+    // och spliicar med nästa ljud. (Johanna-direktiv 2026-09-10 #15219:
+    // "när jag trycker på nästa eller rätt och svaret spelas så bör det ju
+    // sluta splea så det inte blir dubbelt".)
+    for (const audio of activeChain.audios) {
+      try {
+        audio.pause();
+        audio.currentTime = 0;
+      } catch (e) { /* ignore */ }
+    }
     activeChain = null;
   }
 }
