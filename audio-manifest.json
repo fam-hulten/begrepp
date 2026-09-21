@@ -5,173 +5,344 @@
   "concepts": [
     {
       "id": "summa",
-      "fraga": "audio/summa-fraga.mp3",
-      "svar": "audio/summa-svar.mp3",
-      "reverse_fraga": "audio/summa-reverse-fraga.mp3",
-      "reverse_svar": "audio/summa-reverse-svar.mp3",
+      "fraga": "summa-fraga.mp3",
+      "svar": "summa-svar.mp3",
+      "reverse_fraga": "summa-reverse-fraga.mp3",
+      "reverse_svar": "summa-reverse-svar.mp3",
       "forward_initial": [
-        "audio/summa-fraga.mp3"
+        "summa-fraga.mp3"
       ],
       "forward_reveal": [
-        "audio/summa-svar.mp3"
+        "summa-svar.mp3"
       ],
       "reverse_initial": [
-        "audio/summa-reverse-fraga.mp3"
+        "summa-reverse-fraga.mp3"
       ],
       "reverse_reveal": [
-        "audio/summa-reverse-svar.mp3"
+        "summa-reverse-svar.mp3"
       ]
     },
     {
       "id": "differens",
-      "fraga": "audio/differens-fraga.mp3",
-      "svar": "audio/differens-svar.mp3",
-      "reverse_fraga": "audio/differens-reverse-fraga.mp3",
-      "reverse_svar": "audio/differens-reverse-svar.mp3",
+      "fraga": "differens-fraga.mp3",
+      "svar": "differens-svar.mp3",
+      "reverse_fraga": "differens-reverse-fraga.mp3",
+      "reverse_svar": "differens-reverse-svar.mp3",
       "forward_initial": [
-        "audio/differens-fraga.mp3"
+        "differens-fraga.mp3"
       ],
       "forward_reveal": [
-        "audio/differens-svar.mp3"
+        "differens-svar.mp3"
       ],
       "reverse_initial": [
-        "audio/differens-reverse-fraga.mp3"
+        "differens-reverse-fraga.mp3"
       ],
       "reverse_reveal": [
-        "audio/differens-reverse-svar.mp3"
+        "differens-reverse-svar.mp3"
       ]
     },
     {
       "id": "multiplikation",
-      "fraga": "audio/multiplikation-fraga.mp3",
-      "svar": "audio/multiplikation-svar.mp3",
-      "reverse_fraga": "audio/multiplikation-reverse-fraga.mp3",
-      "reverse_svar": "audio/multiplikation-reverse-svar.mp3",
+      "fraga": "multiplikation-fraga.mp3",
+      "svar": "multiplikation-svar.mp3",
+      "reverse_fraga": "multiplikation-reverse-fraga.mp3",
+      "reverse_svar": "multiplikation-reverse-svar.mp3",
       "forward_initial": [
-        "audio/multiplikation-fraga.mp3"
+        "multiplikation-fraga.mp3"
       ],
       "forward_reveal": [
-        "audio/multiplikation-svar.mp3"
+        "multiplikation-svar.mp3"
       ],
       "reverse_initial": [
-        "audio/multiplikation-reverse-fraga.mp3"
+        "multiplikation-reverse-fraga.mp3"
       ],
       "reverse_reveal": [
-        "audio/multiplikation-reverse-svar.mp3"
+        "multiplikation-reverse-svar.mp3"
       ]
     },
     {
       "id": "jamna-tal",
-      "fraga": "audio/jamna-tal-fraga.mp3",
-      "svar": "audio/jamna-tal-svar.mp3",
-      "reverse_fraga": "audio/jamna-tal-reverse-fraga.mp3",
-      "reverse_svar": "audio/jamna-tal-reverse-svar.mp3",
+      "fraga": "jamna-tal-fraga.mp3",
+      "svar": "jamna-tal-svar.mp3",
+      "reverse_fraga": "jamna-tal-reverse-fraga.mp3",
+      "reverse_svar": "jamna-tal-reverse-svar.mp3",
       "forward_initial": [
-        "audio/jamna-tal-fraga.mp3"
+        "jamna-tal-fraga.mp3"
       ],
       "forward_reveal": [
-        "audio/jamna-tal-svar.mp3"
+        "jamna-tal-svar.mp3"
       ],
       "reverse_initial": [
-        "audio/jamna-tal-reverse-fraga.mp3"
+        "jamna-tal-reverse-fraga.mp3"
       ],
       "reverse_reveal": [
-        "audio/jamna-tal-reverse-svar.mp3"
+        "jamna-tal-reverse-svar.mp3"
       ]
     },
     {
       "id": "produkt",
-      "fraga": "audio/produkt-fraga.mp3",
-      "svar": "audio/produkt-svar.mp3",
-      "reverse_fraga": "audio/produkt-reverse-fraga.mp3",
-      "reverse_svar": "audio/produkt-reverse-svar.mp3",
+      "fraga": "produkt-fraga.mp3",
+      "svar": "produkt-svar.mp3",
+      "reverse_fraga": "produkt-reverse-fraga.mp3",
+      "reverse_svar": "produkt-reverse-svar.mp3",
       "forward_initial": [
-        "audio/produkt-fraga.mp3"
+        "produkt-fraga.mp3"
       ],
       "forward_reveal": [
-        "audio/produkt-svar.mp3"
+        "produkt-svar.mp3"
       ],
       "reverse_initial": [
-        "audio/produkt-reverse-fraga.mp3"
+        "produkt-reverse-fraga.mp3"
       ],
       "reverse_reveal": [
-        "audio/produkt-reverse-svar.mp3"
+        "produkt-reverse-svar.mp3"
       ]
     },
     {
       "id": "udda-tal",
-      "fraga": "audio/udda-tal-fraga.mp3",
-      "svar": "audio/udda-tal-svar.mp3",
-      "reverse_fraga": "audio/udda-tal-reverse-fraga.mp3",
-      "reverse_svar": "audio/udda-tal-reverse-svar.mp3",
+      "fraga": "udda-tal-fraga.mp3",
+      "svar": "udda-tal-svar.mp3",
+      "reverse_fraga": "udda-tal-reverse-fraga.mp3",
+      "reverse_svar": "udda-tal-reverse-svar.mp3",
       "forward_initial": [
-        "audio/udda-tal-fraga.mp3"
+        "udda-tal-fraga.mp3"
       ],
       "forward_reveal": [
-        "audio/udda-tal-svar.mp3"
+        "udda-tal-svar.mp3"
       ],
       "reverse_initial": [
-        "audio/udda-tal-reverse-fraga.mp3"
+        "udda-tal-reverse-fraga.mp3"
       ],
       "reverse_reveal": [
-        "audio/udda-tal-reverse-svar.mp3"
+        "udda-tal-reverse-svar.mp3"
       ]
     },
     {
       "id": "division",
-      "fraga": "audio/division-fraga.mp3",
-      "svar": "audio/division-svar.mp3",
-      "reverse_fraga": "audio/division-reverse-fraga.mp3",
-      "reverse_svar": "audio/division-reverse-svar.mp3",
+      "fraga": "division-fraga.mp3",
+      "svar": "division-svar.mp3",
+      "reverse_fraga": "division-reverse-fraga.mp3",
+      "reverse_svar": "division-reverse-svar.mp3",
       "forward_initial": [
-        "audio/division-fraga.mp3"
+        "division-fraga.mp3"
       ],
       "forward_reveal": [
-        "audio/division-svar.mp3"
+        "division-svar.mp3"
       ],
       "reverse_initial": [
-        "audio/division-reverse-fraga.mp3"
+        "division-reverse-fraga.mp3"
       ],
       "reverse_reveal": [
-        "audio/division-reverse-svar.mp3"
+        "division-reverse-svar.mp3"
       ]
     },
     {
       "id": "addition",
-      "fraga": "audio/addition-fraga.mp3",
-      "svar": "audio/addition-svar.mp3",
-      "reverse_fraga": "audio/addition-reverse-fraga.mp3",
-      "reverse_svar": "audio/addition-reverse-svar.mp3",
+      "fraga": "addition-fraga.mp3",
+      "svar": "addition-svar.mp3",
+      "reverse_fraga": "addition-reverse-fraga.mp3",
+      "reverse_svar": "addition-reverse-svar.mp3",
       "forward_initial": [
-        "audio/addition-fraga.mp3"
+        "addition-fraga.mp3"
       ],
       "forward_reveal": [
-        "audio/addition-svar.mp3"
+        "addition-svar.mp3"
       ],
       "reverse_initial": [
-        "audio/addition-reverse-fraga.mp3"
+        "addition-reverse-fraga.mp3"
       ],
       "reverse_reveal": [
-        "audio/addition-reverse-svar.mp3"
+        "addition-reverse-svar.mp3"
       ]
     },
     {
       "id": "subtraktion",
-      "fraga": "audio/subtraktion-fraga.mp3",
-      "svar": "audio/subtraktion-svar.mp3",
-      "reverse_fraga": "audio/subtraktion-reverse-fraga.mp3",
-      "reverse_svar": "audio/subtraktion-reverse-svar.mp3",
+      "fraga": "subtraktion-fraga.mp3",
+      "svar": "subtraktion-svar.mp3",
+      "reverse_fraga": "subtraktion-reverse-fraga.mp3",
+      "reverse_svar": "subtraktion-reverse-svar.mp3",
       "forward_initial": [
-        "audio/subtraktion-fraga.mp3"
+        "subtraktion-fraga.mp3"
       ],
       "forward_reveal": [
-        "audio/subtraktion-svar.mp3"
+        "subtraktion-svar.mp3"
       ],
       "reverse_initial": [
-        "audio/subtraktion-reverse-fraga.mp3"
+        "subtraktion-reverse-fraga.mp3"
       ],
       "reverse_reveal": [
-        "audio/subtraktion-reverse-svar.mp3"
+        "subtraktion-reverse-svar.mp3"
+      ]
+    },
+    {
+      "id": "siffra",
+      "fraga": "siffra-fraga.mp3",
+      "svar": "siffra-svar.mp3",
+      "reverse_fraga": "siffra-reverse-fraga.mp3",
+      "reverse_svar": "siffra-reverse-svar.mp3",
+      "forward_initial": [
+        "siffra-fraga.mp3"
+      ],
+      "forward_reveal": [
+        "siffra-svar.mp3"
+      ],
+      "reverse_initial": [
+        "siffra-reverse-fraga.mp3"
+      ],
+      "reverse_reveal": [
+        "siffra-reverse-svar.mp3"
+      ]
+    },
+    {
+      "id": "tal",
+      "fraga": "tal-fraga.mp3",
+      "svar": "tal-svar.mp3",
+      "reverse_fraga": "tal-reverse-fraga.mp3",
+      "reverse_svar": "tal-reverse-svar.mp3",
+      "forward_initial": [
+        "tal-fraga.mp3"
+      ],
+      "forward_reveal": [
+        "tal-svar.mp3"
+      ],
+      "reverse_initial": [
+        "tal-reverse-fraga.mp3"
+      ],
+      "reverse_reveal": [
+        "tal-reverse-svar.mp3"
+      ]
+    },
+    {
+      "id": "platsvarde",
+      "fraga": "platsvarde-fraga.mp3",
+      "svar": "platsvarde-svar.mp3",
+      "reverse_fraga": "platsvarde-reverse-fraga.mp3",
+      "reverse_svar": "platsvarde-reverse-svar.mp3",
+      "forward_initial": [
+        "platsvarde-fraga.mp3"
+      ],
+      "forward_reveal": [
+        "platsvarde-svar.mp3"
+      ],
+      "reverse_initial": [
+        "platsvarde-reverse-fraga.mp3"
+      ],
+      "reverse_reveal": [
+        "platsvarde-reverse-svar.mp3"
+      ]
+    },
+    {
+      "id": "tallinje",
+      "fraga": "tallinje-fraga.mp3",
+      "svar": "tallinje-svar.mp3",
+      "reverse_fraga": "tallinje-reverse-fraga.mp3",
+      "reverse_svar": "tallinje-reverse-svar.mp3",
+      "forward_initial": [
+        "tallinje-fraga.mp3"
+      ],
+      "forward_reveal": [
+        "tallinje-svar.mp3"
+      ],
+      "reverse_initial": [
+        "tallinje-reverse-fraga.mp3"
+      ],
+      "reverse_reveal": [
+        "tallinje-reverse-svar.mp3"
+      ]
+    },
+    {
+      "id": "faktor",
+      "fraga": "faktor-fraga.mp3",
+      "svar": "faktor-svar.mp3",
+      "reverse_fraga": "faktor-reverse-fraga.mp3",
+      "reverse_svar": "faktor-reverse-svar.mp3",
+      "forward_initial": [
+        "faktor-fraga.mp3"
+      ],
+      "forward_reveal": [
+        "faktor-svar.mp3"
+      ],
+      "reverse_initial": [
+        "faktor-reverse-fraga.mp3"
+      ],
+      "reverse_reveal": [
+        "faktor-reverse-svar.mp3"
+      ]
+    },
+    {
+      "id": "taljare",
+      "fraga": "taljare-fraga.mp3",
+      "svar": "taljare-svar.mp3",
+      "reverse_fraga": "taljare-reverse-fraga.mp3",
+      "reverse_svar": "taljare-reverse-svar.mp3",
+      "forward_initial": [
+        "taljare-fraga.mp3"
+      ],
+      "forward_reveal": [
+        "taljare-svar.mp3"
+      ],
+      "reverse_initial": [
+        "taljare-reverse-fraga.mp3"
+      ],
+      "reverse_reveal": [
+        "taljare-reverse-svar.mp3"
+      ]
+    },
+    {
+      "id": "namnare",
+      "fraga": "namnare-fraga.mp3",
+      "svar": "namnare-svar.mp3",
+      "reverse_fraga": "namnare-reverse-fraga.mp3",
+      "reverse_svar": "namnare-reverse-svar.mp3",
+      "forward_initial": [
+        "namnare-fraga.mp3"
+      ],
+      "forward_reveal": [
+        "namnare-svar.mp3"
+      ],
+      "reverse_initial": [
+        "namnare-reverse-fraga.mp3"
+      ],
+      "reverse_reveal": [
+        "namnare-reverse-svar.mp3"
+      ]
+    },
+    {
+      "id": "kvot",
+      "fraga": "kvot-fraga.mp3",
+      "svar": "kvot-svar.mp3",
+      "reverse_fraga": "kvot-reverse-fraga.mp3",
+      "reverse_svar": "kvot-reverse-svar.mp3",
+      "forward_initial": [
+        "kvot-fraga.mp3"
+      ],
+      "forward_reveal": [
+        "kvot-svar.mp3"
+      ],
+      "reverse_initial": [
+        "kvot-reverse-fraga.mp3"
+      ],
+      "reverse_reveal": [
+        "kvot-reverse-svar.mp3"
+      ]
+    },
+    {
+      "id": "term",
+      "fraga": "term-fraga.mp3",
+      "svar": "term-svar.mp3",
+      "reverse_fraga": "term-reverse-fraga.mp3",
+      "reverse_svar": "term-reverse-svar.mp3",
+      "forward_initial": [
+        "term-fraga.mp3"
+      ],
+      "forward_reveal": [
+        "term-svar.mp3"
+      ],
+      "reverse_initial": [
+        "term-reverse-fraga.mp3"
+      ],
+      "reverse_reveal": [
+        "term-reverse-svar.mp3"
       ]
     }
   ]

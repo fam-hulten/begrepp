@@ -7,7 +7,7 @@
     {
       "id": "summa",
       "begrepp": "Summa",
-      "forklaring": "Svaret när man lägger ihop tal med addition. Till exempel: tre plus fyra är sju. Summan är sju.",
+      "forklaring": "Svaret i en addition.",
       "audio_fraga": "audio/summa-fraga.mp3",
       "audio_svar": "audio/summa-svar.mp3",
       "audio_reverse_fraga": "audio/summa-reverse-fraga.mp3",
@@ -16,7 +16,7 @@
     {
       "id": "differens",
       "begrepp": "Differens",
-      "forklaring": "Svaret när man drar ifrån ett tal från ett annat. Till exempel: tio minus tre är sju. Differensen är sju.",
+      "forklaring": "Svaret i en subtraktion.",
       "audio_fraga": "audio/differens-fraga.mp3",
       "audio_svar": "audio/differens-svar.mp3",
       "audio_reverse_fraga": "audio/differens-reverse-fraga.mp3",
@@ -25,7 +25,7 @@
     {
       "id": "multiplikation",
       "begrepp": "Multiplikation",
-      "forklaring": "Att lägga ihop samma tal flera gånger. Till exempel: tre gånger fyra är samma som tre plus tre plus tre plus tre.",
+      "forklaring": "Räknesätt som används för att beräkna upprepade additioner.",
       "audio_fraga": "audio/multiplikation-fraga.mp3",
       "audio_svar": "audio/multiplikation-svar.mp3",
       "audio_reverse_fraga": "audio/multiplikation-reverse-fraga.mp3",
@@ -34,7 +34,7 @@
     {
       "id": "jamna-tal",
       "begrepp": "Jämna tal",
-      "forklaring": "Tal som kan delas med två utan att det blir något över. Till exempel: två, fyra, sex och åtta.",
+      "forklaring": "Hela tal som är delbara med 2.",
       "audio_fraga": "audio/jamna-tal-fraga.mp3",
       "audio_svar": "audio/jamna-tal-svar.mp3",
       "audio_reverse_fraga": "audio/jamna-tal-reverse-fraga.mp3",
@@ -43,7 +43,7 @@
     {
       "id": "produkt",
       "begrepp": "Produkt",
-      "forklaring": "Svaret i en multiplikation. Till exempel: tre gånger fyra är tolv. Produkten är tolv.",
+      "forklaring": "Svaret i en multiplikation.",
       "audio_fraga": "audio/produkt-fraga.mp3",
       "audio_svar": "audio/produkt-svar.mp3",
       "audio_reverse_fraga": "audio/produkt-reverse-fraga.mp3",
@@ -52,7 +52,7 @@
     {
       "id": "udda-tal",
       "begrepp": "Udda tal",
-      "forklaring": "Tal som har en kvar när man delar dem med två. Till exempel: ett, tre, fem och sju.",
+      "forklaring": "Hela tal som inte är delbara med 2.",
       "audio_fraga": "audio/udda-tal-fraga.mp3",
       "audio_svar": "audio/udda-tal-svar.mp3",
       "audio_reverse_fraga": "audio/udda-tal-reverse-fraga.mp3",
@@ -61,7 +61,7 @@
     {
       "id": "division",
       "begrepp": "Division",
-      "forklaring": "Att dela upp ett antal i lika stora grupper. Till exempel: tolv delat med tre är fyra.",
+      "forklaring": "Räknesätt för att se hur många gånger ett tal ryms i ett annat tal.",
       "audio_fraga": "audio/division-fraga.mp3",
       "audio_svar": "audio/division-svar.mp3",
       "audio_reverse_fraga": "audio/division-reverse-fraga.mp3",
@@ -70,7 +70,7 @@
     {
       "id": "addition",
       "begrepp": "Addition",
-      "forklaring": "Att lägga ihop tal. Till exempel: tre plus fyra är sju.",
+      "forklaring": "Räknesätt där tal läggs ihop.",
       "audio_fraga": "audio/addition-fraga.mp3",
       "audio_svar": "audio/addition-svar.mp3",
       "audio_reverse_fraga": "audio/addition-reverse-fraga.mp3",
@@ -79,11 +79,92 @@
     {
       "id": "subtraktion",
       "begrepp": "Subtraktion",
-      "forklaring": "Att ta bort eller minska med ett tal. Till exempel: tio minus tre är sju.",
+      "forklaring": "Räknesätt där ett tal dras från ett annat tal.",
       "audio_fraga": "audio/subtraktion-fraga.mp3",
       "audio_svar": "audio/subtraktion-svar.mp3",
       "audio_reverse_fraga": "audio/subtraktion-reverse-fraga.mp3",
       "audio_reverse_svar": "audio/subtraktion-reverse-svar.mp3"
+    },
+    {
+      "id": "siffra",
+      "begrepp": "Siffra",
+      "forklaring": "En av de tio symbolerna 0 till 9 som används för att bygga upp tal.",
+      "audio_fraga": "audio/siffra-fraga.mp3",
+      "audio_svar": "audio/siffra-svar.mp3",
+      "audio_reverse_fraga": "audio/siffra-reverse-fraga.mp3",
+      "audio_reverse_svar": "audio/siffra-reverse-svar.mp3"
+    },
+    {
+      "id": "tal",
+      "begrepp": "Tal",
+      "forklaring": "Består av minst en siffra.",
+      "audio_fraga": "audio/tal-fraga.mp3",
+      "audio_svar": "audio/tal-svar.mp3",
+      "audio_reverse_fraga": "audio/tal-reverse-fraga.mp3",
+      "audio_reverse_svar": "audio/tal-reverse-svar.mp3"
+    },
+    {
+      "id": "platsvarde",
+      "begrepp": "Platsvärde",
+      "forklaring": "Den plats en siffra har i ett tal bestämmer dess värde.",
+      "audio_fraga": "audio/platsvarde-fraga.mp3",
+      "audio_svar": "audio/platsvarde-svar.mp3",
+      "audio_reverse_fraga": "audio/platsvarde-reverse-fraga.mp3",
+      "audio_reverse_svar": "audio/platsvarde-reverse-svar.mp3"
+    },
+    {
+      "id": "tallinje",
+      "begrepp": "Tallinje",
+      "forklaring": "En rät linje där varje punkt motsvarar ett tal.",
+      "audio_fraga": "audio/tallinje-fraga.mp3",
+      "audio_svar": "audio/tallinje-svar.mp3",
+      "audio_reverse_fraga": "audio/tallinje-reverse-fraga.mp3",
+      "audio_reverse_svar": "audio/tallinje-reverse-svar.mp3"
+    },
+    {
+      "id": "faktor",
+      "begrepp": "Faktor",
+      "forklaring": "Tal som multipliceras i en multiplikation.",
+      "audio_fraga": "audio/faktor-fraga.mp3",
+      "audio_svar": "audio/faktor-svar.mp3",
+      "audio_reverse_fraga": "audio/faktor-reverse-fraga.mp3",
+      "audio_reverse_svar": "audio/faktor-reverse-svar.mp3"
+    },
+    {
+      "id": "taljare",
+      "begrepp": "Täljare",
+      "forklaring": "Talet som delas i en division.",
+      "audio_fraga": "audio/taljare-fraga.mp3",
+      "audio_svar": "audio/taljare-svar.mp3",
+      "audio_reverse_fraga": "audio/taljare-reverse-fraga.mp3",
+      "audio_reverse_svar": "audio/taljare-reverse-svar.mp3"
+    },
+    {
+      "id": "namnare",
+      "begrepp": "Nämnare",
+      "forklaring": "Talet som delas med i en division.",
+      "audio_fraga": "audio/namnare-fraga.mp3",
+      "audio_svar": "audio/namnare-svar.mp3",
+      "audio_reverse_fraga": "audio/namnare-reverse-fraga.mp3",
+      "audio_reverse_svar": "audio/namnare-reverse-svar.mp3"
+    },
+    {
+      "id": "kvot",
+      "begrepp": "Kvot",
+      "forklaring": "Svaret i en division.",
+      "audio_fraga": "audio/kvot-fraga.mp3",
+      "audio_svar": "audio/kvot-svar.mp3",
+      "audio_reverse_fraga": "audio/kvot-reverse-fraga.mp3",
+      "audio_reverse_svar": "audio/kvot-reverse-svar.mp3"
+    },
+    {
+      "id": "term",
+      "begrepp": "Term",
+      "forklaring": "Tal som adderas eller subtraheras.",
+      "audio_fraga": "audio/term-fraga.mp3",
+      "audio_svar": "audio/term-svar.mp3",
+      "audio_reverse_fraga": "audio/term-reverse-fraga.mp3",
+      "audio_reverse_svar": "audio/term-reverse-svar.mp3"
     }
   ]
 }

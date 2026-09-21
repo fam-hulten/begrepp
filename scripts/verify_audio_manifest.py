@@ -71,8 +71,14 @@ def main():
         expected.add(shared_file)
 
     for concept in manifest.get("concepts", []):
-        expected.add(concept["begrepp"])
-        expected.add(concept["forklaring"])
+        # V4: 4 filer per begrepp (fraga, svar, reverse-fraga, reverse-svar)
+        # Bakåtkompatibelt: stöd också V3 (begrepp, forklaring) om de finns
+        for key in ("fraga", "svar", "reverse_fraga", "reverse_svar"):
+            if key in concept:
+                expected.add(concept[key])
+        for key in ("begrepp", "forklaring"):
+            if key in concept:
+                expected.add(concept[key])
 
     # 2. Check for missing files
     missing = []

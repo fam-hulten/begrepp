@@ -28,16 +28,28 @@ def generate_manifest(data_json: Path, out_path: Path, dry_run: bool = False) ->
 
     for b in begrepp_list:
         wid = b["id"]
+
+        # Manifest lagrar filnamn UTAN "audio/"-prefix — verify_audio_manifest.py
+        # letar via `audio_dir / fname` där audio_dir="audio". Med prefix blir det
+        # dubbel-uppslag ("audio/audio/...") → alla filer rapporteras missing.
+        def strip_prefix(p: str) -> str:
+            return p[len("audio/"):] if p.startswith("audio/") else p
+
+        fraga = strip_prefix(b["audio_fraga"])
+        svar = strip_prefix(b["audio_svar"])
+        reverse_fraga = strip_prefix(b["audio_reverse_fraga"])
+        reverse_svar = strip_prefix(b["audio_reverse_svar"])
+
         concept = {
             "id": wid,
-            "fraga": b["audio_fraga"],
-            "svar": b["audio_svar"],
-            "reverse_fraga": b["audio_reverse_fraga"],
-            "reverse_svar": b["audio_reverse_svar"],
-            "forward_initial": [b["audio_fraga"]],
-            "forward_reveal": [b["audio_svar"]],
-            "reverse_initial": [b["audio_reverse_fraga"]],
-            "reverse_reveal": [b["audio_reverse_svar"]],
+            "fraga": fraga,
+            "svar": svar,
+            "reverse_fraga": reverse_fraga,
+            "reverse_svar": reverse_svar,
+            "forward_initial": [fraga],
+            "forward_reveal": [svar],
+            "reverse_initial": [reverse_fraga],
+            "reverse_reveal": [reverse_svar],
         }
         manifest["concepts"].append(concept)
 
