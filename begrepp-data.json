@@ -34,7 +34,7 @@
     {
       "id": "jamna-tal",
       "begrepp": "Jämna tal",
-      "forklaring": "Hela tal som är delbara med 2.",
+      "forklaring": "Jämna tal är noll och andra hela tal som är delbara med 2.",
       "audio_fraga": "audio/jamna-tal-fraga.mp3",
       "audio_svar": "audio/jamna-tal-svar.mp3",
       "audio_reverse_fraga": "audio/jamna-tal-reverse-fraga.mp3",
@@ -52,7 +52,7 @@
     {
       "id": "udda-tal",
       "begrepp": "Udda tal",
-      "forklaring": "Hela tal som inte är delbara med 2.",
+      "forklaring": "Udda tal är de hela tal som inte är delbara med 2.",
       "audio_fraga": "audio/udda-tal-fraga.mp3",
       "audio_svar": "audio/udda-tal-svar.mp3",
       "audio_reverse_fraga": "audio/udda-tal-reverse-fraga.mp3",
@@ -88,7 +88,7 @@
     {
       "id": "siffra",
       "begrepp": "Siffra",
-      "forklaring": "En av de tio symbolerna 0 till 9 som används för att bygga upp tal.",
+      "forklaring": "I vårt talsystem finns 10 siffror, 0, 1, 2, 3, 4, 5, 6, 7, 8 och 9.",
       "audio_fraga": "audio/siffra-fraga.mp3",
       "audio_svar": "audio/siffra-svar.mp3",
       "audio_reverse_fraga": "audio/siffra-reverse-fraga.mp3",
@@ -97,7 +97,7 @@
     {
       "id": "tal",
       "begrepp": "Tal",
-      "forklaring": "Består av minst en siffra.",
+      "forklaring": "Ett tal består av minst en siffra.",
       "audio_fraga": "audio/tal-fraga.mp3",
       "audio_svar": "audio/tal-svar.mp3",
       "audio_reverse_fraga": "audio/tal-reverse-fraga.mp3",
@@ -106,7 +106,7 @@
     {
       "id": "platsvarde",
       "begrepp": "Platsvärde",
-      "forklaring": "Den plats en siffra har i ett tal bestämmer dess värde.",
+      "forklaring": "Den plats som en siffra har i ett tal avgör siffrans värde.",
       "audio_fraga": "audio/platsvarde-fraga.mp3",
       "audio_svar": "audio/platsvarde-svar.mp3",
       "audio_reverse_fraga": "audio/platsvarde-reverse-fraga.mp3",
@@ -115,7 +115,7 @@
     {
       "id": "tallinje",
       "begrepp": "Tallinje",
-      "forklaring": "En rät linje där varje punkt motsvarar ett tal.",
+      "forklaring": "En rät linje där varje punkt på tallinjen motsvarar ett tal.",
       "audio_fraga": "audio/tallinje-fraga.mp3",
       "audio_svar": "audio/tallinje-svar.mp3",
       "audio_reverse_fraga": "audio/tallinje-reverse-fraga.mp3",
@@ -124,7 +124,7 @@
     {
       "id": "faktor",
       "begrepp": "Faktor",
-      "forklaring": "Tal som multipliceras i en multiplikation.",
+      "forklaring": "Tal som ska multipliceras.",
       "audio_fraga": "audio/faktor-fraga.mp3",
       "audio_svar": "audio/faktor-svar.mp3",
       "audio_reverse_fraga": "audio/faktor-reverse-fraga.mp3",
@@ -133,7 +133,7 @@
     {
       "id": "taljare",
       "begrepp": "Täljare",
-      "forklaring": "Talet som delas i en division.",
+      "forklaring": "Talen i en division.",
       "audio_fraga": "audio/taljare-fraga.mp3",
       "audio_svar": "audio/taljare-svar.mp3",
       "audio_reverse_fraga": "audio/taljare-reverse-fraga.mp3",
@@ -142,7 +142,7 @@
     {
       "id": "namnare",
       "begrepp": "Nämnare",
-      "forklaring": "Talet som delas med i en division.",
+      "forklaring": "Talen i en division.",
       "audio_fraga": "audio/namnare-fraga.mp3",
       "audio_svar": "audio/namnare-svar.mp3",
       "audio_reverse_fraga": "audio/namnare-reverse-fraga.mp3",
@@ -160,7 +160,7 @@
     {
       "id": "term",
       "begrepp": "Term",
-      "forklaring": "Tal som adderas eller subtraheras.",
+      "forklaring": "Tal som ska adderas eller subtraheras.",
       "audio_fraga": "audio/term-fraga.mp3",
       "audio_svar": "audio/term-svar.mp3",
       "audio_reverse_fraga": "audio/term-reverse-fraga.mp3",
