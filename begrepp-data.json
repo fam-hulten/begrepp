@@ -133,7 +133,7 @@
     {
       "id": "taljare",
       "begrepp": "Täljare",
-      "forklaring": "Talen i en division.",
+      "forklaring": "Talet som delas i en division.",
       "audio_fraga": "audio/taljare-fraga.mp3",
       "audio_svar": "audio/taljare-svar.mp3",
       "audio_reverse_fraga": "audio/taljare-reverse-fraga.mp3",
@@ -142,7 +142,7 @@
     {
       "id": "namnare",
       "begrepp": "Nämnare",
-      "forklaring": "Talen i en division.",
+      "forklaring": "Talet som delas med i en division.",
       "audio_fraga": "audio/namnare-fraga.mp3",
       "audio_svar": "audio/namnare-svar.mp3",
       "audio_reverse_fraga": "audio/namnare-reverse-fraga.mp3",
