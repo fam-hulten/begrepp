@@ -259,7 +259,7 @@
     {
       "id": "hantverkare",
       "begrepp": "Hantverkare",
-      "forklaring": "Person som tillverkar saker från början till slut, tex skor",
+      "forklaring": "Person som tillverkar saker från början till slut, till exempel skor",
       "audio_fraga": "audio/hantverkare-fraga.mp3",
       "audio_svar": "audio/hantverkare-svar.mp3",
       "audio_reverse_fraga": "audio/hantverkare-reverse-fraga.mp3",
