@@ -99,6 +99,9 @@ def main():
     ok = fail = 0
 
     for b in begrepp_list:
+        # Hoppa över arkiverade begrepp (active: false) — deras audio finns redan.
+        if b.get("active") is False:
+            continue
         wid = b["id"]
         ord_text = b["begrepp"]
         forkl_text = b["forklaring"]

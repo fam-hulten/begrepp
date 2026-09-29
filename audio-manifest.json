@@ -344,6 +344,291 @@
       "reverse_reveal": [
         "term-reverse-svar.mp3"
       ]
+    },
+    {
+      "id": "langhus",
+      "fraga": "langhus-fraga.mp3",
+      "svar": "langhus-svar.mp3",
+      "reverse_fraga": "langhus-reverse-fraga.mp3",
+      "reverse_svar": "langhus-reverse-svar.mp3",
+      "forward_initial": [
+        "langhus-fraga.mp3"
+      ],
+      "forward_reveal": [
+        "langhus-svar.mp3"
+      ],
+      "reverse_initial": [
+        "langhus-reverse-fraga.mp3"
+      ],
+      "reverse_reveal": [
+        "langhus-reverse-svar.mp3"
+      ]
+    },
+    {
+      "id": "munk",
+      "fraga": "munk-fraga.mp3",
+      "svar": "munk-svar.mp3",
+      "reverse_fraga": "munk-reverse-fraga.mp3",
+      "reverse_svar": "munk-reverse-svar.mp3",
+      "forward_initial": [
+        "munk-fraga.mp3"
+      ],
+      "forward_reveal": [
+        "munk-svar.mp3"
+      ],
+      "reverse_initial": [
+        "munk-reverse-fraga.mp3"
+      ],
+      "reverse_reveal": [
+        "munk-reverse-svar.mp3"
+      ]
+    },
+    {
+      "id": "plundra",
+      "fraga": "plundra-fraga.mp3",
+      "svar": "plundra-svar.mp3",
+      "reverse_fraga": "plundra-reverse-fraga.mp3",
+      "reverse_svar": "plundra-reverse-svar.mp3",
+      "forward_initial": [
+        "plundra-fraga.mp3"
+      ],
+      "forward_reveal": [
+        "plundra-svar.mp3"
+      ],
+      "reverse_initial": [
+        "plundra-reverse-fraga.mp3"
+      ],
+      "reverse_reveal": [
+        "plundra-reverse-svar.mp3"
+      ]
+    },
+    {
+      "id": "saga",
+      "fraga": "saga-fraga.mp3",
+      "svar": "saga-svar.mp3",
+      "reverse_fraga": "saga-reverse-fraga.mp3",
+      "reverse_svar": "saga-reverse-svar.mp3",
+      "forward_initial": [
+        "saga-fraga.mp3"
+      ],
+      "forward_reveal": [
+        "saga-svar.mp3"
+      ],
+      "reverse_initial": [
+        "saga-reverse-fraga.mp3"
+      ],
+      "reverse_reveal": [
+        "saga-reverse-svar.mp3"
+      ]
+    },
+    {
+      "id": "marknad",
+      "fraga": "marknad-fraga.mp3",
+      "svar": "marknad-svar.mp3",
+      "reverse_fraga": "marknad-reverse-fraga.mp3",
+      "reverse_svar": "marknad-reverse-svar.mp3",
+      "forward_initial": [
+        "marknad-fraga.mp3"
+      ],
+      "forward_reveal": [
+        "marknad-svar.mp3"
+      ],
+      "reverse_initial": [
+        "marknad-reverse-fraga.mp3"
+      ],
+      "reverse_reveal": [
+        "marknad-reverse-svar.mp3"
+      ]
+    },
+    {
+      "id": "kloster",
+      "fraga": "kloster-fraga.mp3",
+      "svar": "kloster-svar.mp3",
+      "reverse_fraga": "kloster-reverse-fraga.mp3",
+      "reverse_svar": "kloster-reverse-svar.mp3",
+      "forward_initial": [
+        "kloster-fraga.mp3"
+      ],
+      "forward_reveal": [
+        "kloster-svar.mp3"
+      ],
+      "reverse_initial": [
+        "kloster-reverse-fraga.mp3"
+      ],
+      "reverse_reveal": [
+        "kloster-reverse-svar.mp3"
+      ]
+    },
+    {
+      "id": "vikingatag",
+      "fraga": "vikingatag-fraga.mp3",
+      "svar": "vikingatag-svar.mp3",
+      "reverse_fraga": "vikingatag-reverse-fraga.mp3",
+      "reverse_svar": "vikingatag-reverse-svar.mp3",
+      "forward_initial": [
+        "vikingatag-fraga.mp3"
+      ],
+      "forward_reveal": [
+        "vikingatag-svar.mp3"
+      ],
+      "reverse_initial": [
+        "vikingatag-reverse-fraga.mp3"
+      ],
+      "reverse_reveal": [
+        "vikingatag-reverse-svar.mp3"
+      ]
+    },
+    {
+      "id": "tral",
+      "fraga": "tral-fraga.mp3",
+      "svar": "tral-svar.mp3",
+      "reverse_fraga": "tral-reverse-fraga.mp3",
+      "reverse_svar": "tral-reverse-svar.mp3",
+      "forward_initial": [
+        "tral-fraga.mp3"
+      ],
+      "forward_reveal": [
+        "tral-svar.mp3"
+      ],
+      "reverse_initial": [
+        "tral-reverse-fraga.mp3"
+      ],
+      "reverse_reveal": [
+        "tral-reverse-svar.mp3"
+      ]
+    },
+    {
+      "id": "hantverkare",
+      "fraga": "hantverkare-fraga.mp3",
+      "svar": "hantverkare-svar.mp3",
+      "reverse_fraga": "hantverkare-reverse-fraga.mp3",
+      "reverse_svar": "hantverkare-reverse-svar.mp3",
+      "forward_initial": [
+        "hantverkare-fraga.mp3"
+      ],
+      "forward_reveal": [
+        "hantverkare-svar.mp3"
+      ],
+      "reverse_initial": [
+        "hantverkare-reverse-fraga.mp3"
+      ],
+      "reverse_reveal": [
+        "hantverkare-reverse-svar.mp3"
+      ]
+    },
+    {
+      "id": "bofast",
+      "fraga": "bofast-fraga.mp3",
+      "svar": "bofast-svar.mp3",
+      "reverse_fraga": "bofast-reverse-fraga.mp3",
+      "reverse_svar": "bofast-reverse-svar.mp3",
+      "forward_initial": [
+        "bofast-fraga.mp3"
+      ],
+      "forward_reveal": [
+        "bofast-svar.mp3"
+      ],
+      "reverse_initial": [
+        "bofast-reverse-fraga.mp3"
+      ],
+      "reverse_reveal": [
+        "bofast-reverse-svar.mp3"
+      ]
+    },
+    {
+      "id": "blot",
+      "fraga": "blot-fraga.mp3",
+      "svar": "blot-svar.mp3",
+      "reverse_fraga": "blot-reverse-fraga.mp3",
+      "reverse_svar": "blot-reverse-svar.mp3",
+      "forward_initial": [
+        "blot-fraga.mp3"
+      ],
+      "forward_reveal": [
+        "blot-svar.mp3"
+      ],
+      "reverse_initial": [
+        "blot-reverse-fraga.mp3"
+      ],
+      "reverse_reveal": [
+        "blot-reverse-svar.mp3"
+      ]
+    },
+    {
+      "id": "att",
+      "fraga": "att-fraga.mp3",
+      "svar": "att-svar.mp3",
+      "reverse_fraga": "att-reverse-fraga.mp3",
+      "reverse_svar": "att-reverse-svar.mp3",
+      "forward_initial": [
+        "att-fraga.mp3"
+      ],
+      "forward_reveal": [
+        "att-svar.mp3"
+      ],
+      "reverse_initial": [
+        "att-reverse-fraga.mp3"
+      ],
+      "reverse_reveal": [
+        "att-reverse-svar.mp3"
+      ]
+    },
+    {
+      "id": "ting",
+      "fraga": "ting-fraga.mp3",
+      "svar": "ting-svar.mp3",
+      "reverse_fraga": "ting-reverse-fraga.mp3",
+      "reverse_svar": "ting-reverse-svar.mp3",
+      "forward_initial": [
+        "ting-fraga.mp3"
+      ],
+      "forward_reveal": [
+        "ting-svar.mp3"
+      ],
+      "reverse_initial": [
+        "ting-reverse-fraga.mp3"
+      ],
+      "reverse_reveal": [
+        "ting-reverse-svar.mp3"
+      ]
+    },
+    {
+      "id": "gotar",
+      "fraga": "gotar-fraga.mp3",
+      "svar": "gotar-svar.mp3",
+      "reverse_fraga": "gotar-reverse-fraga.mp3",
+      "reverse_svar": "gotar-reverse-svar.mp3",
+      "forward_initial": [
+        "gotar-fraga.mp3"
+      ],
+      "forward_reveal": [
+        "gotar-svar.mp3"
+      ],
+      "reverse_initial": [
+        "gotar-reverse-fraga.mp3"
+      ],
+      "reverse_reveal": [
+        "gotar-reverse-svar.mp3"
+      ]
+    },
+    {
+      "id": "svear",
+      "fraga": "svear-fraga.mp3",
+      "svar": "svear-svar.mp3",
+      "reverse_fraga": "svear-reverse-fraga.mp3",
+      "reverse_svar": "svear-reverse-svar.mp3",
+      "forward_initial": [
+        "svear-fraga.mp3"
+      ],
+      "forward_reveal": [
+        "svear-svar.mp3"
+      ],
+      "reverse_initial": [
+        "svear-reverse-fraga.mp3"
+      ],
+      "reverse_reveal": [
+        "svear-reverse-svar.mp3"
+      ]
     }
   ]
 }

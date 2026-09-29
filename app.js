@@ -190,6 +190,9 @@ async function loadData() {
     const json = await res.json();
     data = json;
     if (!data.begrepp || !data.begrepp.length) throw new Error('Inga begrepp i datafilen');
+    // Filtrera bort arkiverade begrepp (active: false). Mastery sparas separat
+    // per id i localStorage — om man återaktiverar ett begrepp kommer statistiken tillbaka.
+    data.begrepp = data.begrepp.filter(b => b.active !== false);
     if (data.meta?.title) titleEl.textContent = data.meta.title;
     init();
   } catch (err) {
