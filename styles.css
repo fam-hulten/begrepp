@@ -269,6 +269,132 @@ button.danger:hover:not(:disabled) {
   box-shadow: 0 10px 28px rgba(245, 158, 11, 0.4);
 }
 
+/* V4: Paper/app mode toggle (bara synlig i reverse) */
+.paper-app-toggle {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.paper-app-toggle .mode-btn {
+  padding: 0.4rem 0.7rem;
+  font-size: 0.82rem;
+}
+
+.paper-app-toggle[hidden] { display: none; }
+
+/* V4: Input-row + guess-input (app-läge) */
+.input-row {
+  margin-bottom: 1rem;
+}
+
+.input-row[hidden] { display: none; }
+
+.guess-input {
+  width: 100%;
+  font-family: inherit;
+  font-size: 1.25rem;
+  font-weight: 500;
+  padding: 0.85rem 1.1rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: #fffbeb;
+  color: var(--text);
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+.guess-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.18);
+}
+
+.guess-input::placeholder {
+  color: var(--text-subtle);
+  font-weight: 400;
+}
+
+.guess-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #fef3c7;
+}
+
+/* V4: Feedback area (app-läge Rätta-resultat) */
+.feedback {
+  text-align: center;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.6rem 0.9rem;
+  border-radius: 10px;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.feedback:empty { padding: 0; margin-bottom: 0; }
+.feedback.hidden { display: none; }
+
+.feedback-correct {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.feedback-wrong {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.feedback-hint {
+  background: #f1f5f9;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* V4: Bokstav-för-bokstav diff-markering (samma som rättstavning/glosor) */
+.wrong-letter {
+  background-color: #fee2e2;
+  color: #dc2626;
+  text-decoration: line-through;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+.missing-letter {
+  background-color: #dcfce7;
+  color: #16a34a;
+  text-decoration: underline;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+/* V4: ← Bak / Nästa → navigation */
+.nav {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.nav button {
+  font-size: 0.95rem;
+}
+
+.primary-next {
+  font-weight: 600;
+  font-size: 1.05rem;
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.25);
+}
+
+.primary-next:hover:not(:disabled) {
+  background: var(--primary-hover);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+}
+
 /* Self-assessment panel */
 .self-assess {
   margin-top: 1.25rem;
@@ -437,6 +563,12 @@ button.danger:hover:not(:disabled) {
   .reveal-main { width: calc(100% - 1.5rem); font-size: 1rem; padding: 0.75rem 0.8rem; margin-bottom: 0.75rem; }
   .assess-buttons button.big { padding: 0.85rem 1rem; font-size: 1rem; }
   .kbd-hint { display: none; }
+  .nav { grid-template-columns: 1fr 2fr; gap: 0.4rem; margin-top: 0.5rem; margin-bottom: 0.5rem; }
+  .nav button { padding: 0.6rem 0.5rem; font-size: 0.85rem; min-height: 42px; }
+  .primary-next { padding: 0.7rem; font-size: 0.95rem; }
+  .guess-input { font-size: 1.05rem; padding: 0.65rem 0.85rem; }
+  .feedback { font-size: 0.85rem; padding: 0.4rem 0.6rem; margin-bottom: 0.5rem; }
+  .paper-app-toggle .mode-btn { padding: 0.4rem 0.6rem; font-size: 0.75rem; }
   h1 { font-size: 1.2rem; }
   .subtitle { font-size: 0.85rem; }
   header { margin-bottom: 1rem; }
@@ -461,4 +593,11 @@ button.danger:hover:not(:disabled) {
   button:hover:not(:disabled) { background: #57534e; }
   .self-assess { background: #292524; }
   .stat { background: var(--primary-soft); }
+  /* V4: Dark mode för input + paper/app toggle */
+  .guess-input { background: #1c1917; border-color: #57534e; color: var(--text); }
+  .guess-input:focus { background: #292524; }
+  .guess-input:disabled { background: var(--primary-soft); }
+  .feedback-hint { background: #44403c; }
+  .paper-app-toggle .mode-btn { background: transparent; color: var(--text-muted); }
+  .paper-app-toggle .mode-btn:hover:not(.active) { background: rgba(245, 158, 11, 0.2); }
 }

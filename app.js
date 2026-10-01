@@ -1,20 +1,23 @@
-// Begrepp — PWA V3.9 (playChain)
-// Laddar begrepp-data.json, presenterar 12 SO-begrepp med audio för recall-träning.
-// Läge 1 (forward): Nytt kort → auto-spela "Förklara ordet" + "#<ord>" → användaren tänker → tryck → visa + spela "#<ord> är <förklaring>"
-// Läge 2 (reverse): Nytt kort → auto-spela "Vilket ord kan förklaras såhär" + "<förklaring>" → användaren gissar → tryck → visa + spela "#<ord>"
-// Efter reveal: ✓ Rätt (tas ur kö) / ✗ Fel (flyttas till sist i kö)
-// Session klar när kön är tom. Cross-session mastery sparas i LocalStorage.
-// V3.9 (2026-09-07, Johanna-direktiv): playChain för fler-fils-sekvenser — NY Audio() per fil,
-//   onended → nästa. Robust mot auto-play-block (webbläsare tillåter efter första user-gesture).
+// Begrepp — PWA V4 (mode-toggle + prev/next + app-läge för reverse)
+//
+// Läge:
+//   • Forward (Begrepp → Förklaring): reading explanation — INGET app-läge.
+//   • Reverse (Förklaring → Begrepp): recall begreppet — app-läge möjligt.
+//
+// App-läge (bara reverse):
+//   • Input + Rätta jämför mot begreppet.
+//   • Rätt → ✓ Rät!, auto-advance ~0.8s, saveMastery(true).
+//   • Fel → ✗ Inte rätt med diff, [Nästa →] manuell, saveMastery(false), ordet till slutet.
+//
+// Papper-läge (båda riktningar):
+//   • Befintligt flöde: Visa svaret → reveal + self-mark.
+//
+// Navigation: ← Bak / Nästa → fritt genom listan. Rätta påverkar listan oavsett position.
 
 const STORAGE_KEY = 'begrepp-mastery-v3';
-const SW_VERSION = 'begrepp-v15';
+const APP_MODE_KEY = 'begrepp-app-mode';
 
 // === AUDIO PRIMING ===
-// Webbläsarens autoplay-policy kräver user gesture för att aktivera audio context.
-// Vi spelar en kort tyst priming-ljud (volym 0) vid FÖRSTA user-interaktion.
-// Efter det fungerar all autoplay — inkl. första instruktionen som autospelar
-// 300 ms efter att kortet visas. (Johanna-direktiv 2026-09-10: "bara fixa det".)
 let audioPrimed = false;
 function primeAudio() {
   if (audioPrimed) return;
@@ -31,28 +34,32 @@ document.addEventListener('touchstart', primeAudio, { once: true, passive: true 
 document.addEventListener('keydown', primeAudio, { once: true, passive: true });
 const INITIAL_DELAY_MS = 300;
 
-// V4: 4 audio-filer per begrepp (audio_fraga / audio_svar / audio_reverse_fraga / audio_reverse_svar).
-// Inga delade filer — varje läge har sin egen korta/långa fråga + svar.
-
 let data = null;
-let queue = [];
+let order = [];              // dynamisk ordning (shufflas en gång, fel-ord flyttas till slutet)
+let currentIndex = 0;
 let masteredThisSession = [];
 let sessionRepeats = 0;
 let sessionAttempts = [];
 let currentCard = null;
 let currentMode = 'forward';
+let appMode = 'paper';        // 'paper' | 'app' (endast relevant i reverse)
 let revealed = false;
-let activeChain = null; // för att kunna avbryta en pågående kedja
+let activeChain = null;
 
 const cardEl = document.getElementById('card');
 const promptEl = document.getElementById('prompt');
 const answerEl = document.getElementById('answer');
+const feedbackEl = document.getElementById('feedback');
 const audioPromptBtn = document.getElementById('audioPromptBtn');
 const audioAnswerBtn = document.getElementById('audioAnswerBtn');
 const revealBtn = document.getElementById('revealBtn');
 const selfAssessEl = document.getElementById('selfAssess');
 const rattBtn = document.getElementById('rattBtn');
 const felBtn = document.getElementById('felBtn');
+const guessInput = document.getElementById('guessInput');
+const inputRow = document.getElementById('inputRow');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
 const progressBar = document.getElementById('progressBar');
 const currentSpan = document.getElementById('current');
 const totalSpan = document.getElementById('total');
@@ -60,6 +67,9 @@ const streakCounter = document.getElementById('streakCounter');
 const streakNum = document.getElementById('streakNum');
 const modeForwardBtn = document.getElementById('modeForwardBtn');
 const modeReverseBtn = document.getElementById('modeReverseBtn');
+const paperAppToggle = document.getElementById('paperAppToggle');
+const appModePaperBtn = document.getElementById('appModePaperBtn');
+const appModeAppBtn = document.getElementById('appModeAppBtn');
 const summaryEl = document.getElementById('summary');
 const startOverBtn = document.getElementById('startOverBtn');
 const installHint = document.getElementById('installHint');
@@ -70,15 +80,11 @@ const titleEl = document.getElementById('title');
 let streak = 0;
 let deferredInstallPrompt = null;
 
-// --- AUDIO ENGINE (V3.9 playChain) ---
+// --- AUDIO ENGINE (oförändrad från V3.9) ---
 
 function cancelChain() {
   if (activeChain) {
     activeChain.cancelled = true;
-    // Pausa ALLA audios i kedjan (även pågående) så de inte fortsätter spela
-    // och spliicar med nästa ljud. (Johanna-direktiv 2026-09-10 #15219:
-    // "när jag trycker på nästa eller rätt och svaret spelas så bör det ju
-    // sluta splea så det inte blir dubbelt".)
     for (const audio of activeChain.audios) {
       try {
         audio.pause();
@@ -89,13 +95,6 @@ function cancelChain() {
   }
 }
 
-/**
- * Spela en sekvens av MP3-filer i kedja.
- * - NY Audio()-instans per fil (ingen delad state, ingen race condition).
- * - onended → nästa fil. onerror → nästa fil (kedjan fortsätter).
- * - play().catch() hanterar auto-play-block gracefullt.
- * - Avbryter automatiskt föregående kedja om en ny startar.
- */
 function playChain(sources) {
   cancelChain();
   if (!sources || sources.length === 0) return;
@@ -103,13 +102,11 @@ function playChain(sources) {
   const chain = { cancelled: false, audios: [] };
   activeChain = chain;
 
-  // Preloada ALLA filer parallellt — eliminerar nätverks-/decode-paus mellan filer.
-  // När föregående fil ended är nästa redan buffrad → play() startar direkt.
   sources.forEach(src => {
     const a = new Audio();
     a.preload = 'auto';
     a.src = src;
-    try { a.load(); } catch (e) { /* ignore — play() kommer att fånga felet */ }
+    try { a.load(); } catch (e) { /* ignore */ }
     chain.audios.push(a);
   });
 
@@ -123,20 +120,10 @@ function playChain(sources) {
     }
     const audio = chain.audios[index++];
     audio.onended = () => playNext();
-    audio.onerror = (e) => {
-      console.warn('[playChain] load failed:', audio.src, e && e.message);
-      playNext();
-    };
-    audio.play().catch(err => {
-      console.warn('[playChain] play() rejected:', audio.src, err && err.message);
-      // Auto-play block eller nätverksfel — kedjan fortsätter till nästa fil.
-      playNext();
-    });
+    audio.onerror = () => playNext();
+    audio.play().catch(() => playNext());
   }
 
-  // Vänta på att FÖRSTA filen har tillräckligt med data (canplay) innan play().
-  // Fixar "första gången tappar början" — utan detta kan play() starta innan
-  // filen är nedladdad och början klipps av. readyState >= 3 = HAVE_FUTURE_DATA.
   const firstAudio = chain.audios[0];
   const startWhenReady = () => {
     if (chain.cancelled || started) return;
@@ -148,12 +135,9 @@ function playChain(sources) {
   } else {
     firstAudio.addEventListener('canplaythrough', startWhenReady, { once: true });
     firstAudio.addEventListener('canplay', startWhenReady, { once: true });
-    // Fallback: om eventlyssnarna inte fire:ar (t.ex. redan cachad men readyState felrapporterad)
     setTimeout(startWhenReady, 1500);
   }
 }
-
-// Sekvens-byggare (per Johannas design 2026-09-03 09:21)
 
 function getInitialSources() {
   if (!currentCard) return [];
@@ -171,15 +155,8 @@ function getAnswerSources() {
   return [currentCard.audio_reverse_svar];
 }
 
-// Användar-knappar (replay)
-
-function playPrompt() {
-  playChain(getInitialSources());
-}
-
-function playAnswer() {
-  playChain(getAnswerSources());
-}
+function playPrompt() { playChain(getInitialSources()); }
+function playAnswer() { playChain(getAnswerSources()); }
 
 // --- DATA + UI ---
 
@@ -190,8 +167,6 @@ async function loadData() {
     const json = await res.json();
     data = json;
     if (!data.begrepp || !data.begrepp.length) throw new Error('Inga begrepp i datafilen');
-    // Filtrera bort arkiverade begrepp (active: false). Mastery sparas separat
-    // per id i localStorage — om man återaktiverar ett begrepp kommer statistiken tillbaka.
     data.begrepp = data.begrepp.filter(b => b.active !== false);
     if (data.meta?.title) titleEl.textContent = data.meta.title;
     init();
@@ -204,13 +179,46 @@ async function loadData() {
   }
 }
 
+function loadAppMode() {
+  try {
+    const stored = localStorage.getItem(APP_MODE_KEY);
+    if (stored === 'paper' || stored === 'app') appMode = stored;
+  } catch {}
+}
+
+function saveAppMode() {
+  try {
+    localStorage.setItem(APP_MODE_KEY, appMode);
+  } catch {}
+}
+
+function setAppMode(mode) {
+  appMode = mode;
+  saveAppMode();
+  appModePaperBtn?.classList.toggle('active', mode === 'paper');
+  appModeAppBtn?.classList.toggle('active', mode === 'app');
+  appModePaperBtn?.setAttribute('aria-pressed', mode === 'paper' ? 'true' : 'false');
+  appModeAppBtn?.setAttribute('aria-pressed', mode === 'app' ? 'true' : 'false');
+  // Reset transient state
+  feedbackEl.textContent = '';
+  feedbackEl.className = 'feedback hidden';
+  if (guessInput) {
+    guessInput.value = '';
+    guessInput.disabled = false;
+  }
+  selfAssessEl.classList.add('hidden');
+  revealed = false;
+  renderCard();
+}
+
 function init() {
   const all = [...data.begrepp];
   for (let i = all.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [all[i], all[j]] = [all[j], all[i]];
   }
-  queue = all.map(b => b.id);
+  order = all.map(b => b.id);
+  currentIndex = 0;
   masteredThisSession = [];
   sessionRepeats = 0;
   sessionAttempts = [];
@@ -218,27 +226,38 @@ function init() {
   totalSpan.textContent = data.begrepp.length;
   renderProgress();
   updateStreak();
-  nextCard();
-}
-
-function nextCard() {
-  if (queue.length === 0) {
-    showSummary();
-    return;
-  }
-  const id = queue[0];
-  currentCard = data.begrepp.find(b => b.id === id);
-  if (!currentCard) {
-    queue.shift();
-    nextCard();
-    return;
-  }
-  revealed = false;
   renderCard();
 }
 
+function nextWord() {
+  if (currentIndex < order.length - 1) {
+    currentIndex++;
+    renderCard();
+  } else if (currentIndex === order.length - 1) {
+    showSummary();
+  }
+}
+
+function prevWord() {
+  if (currentIndex > 0) {
+    currentIndex--;
+    renderCard();
+  }
+}
+
 function renderCard() {
-  if (!currentCard) return;
+  if (currentIndex >= order.length) {
+    showSummary();
+    return;
+  }
+  const id = order[currentIndex];
+  currentCard = data.begrepp.find(b => b.id === id);
+  if (!currentCard) {
+    currentIndex++;
+    renderCard();
+    return;
+  }
+
   if (currentMode === 'forward') {
     promptEl.textContent = currentCard.begrepp;
     answerEl.textContent = currentCard.forklaring;
@@ -246,48 +265,148 @@ function renderCard() {
     promptEl.textContent = currentCard.forklaring;
     answerEl.textContent = currentCard.begrepp;
   }
+
+  // Reset state
   answerEl.classList.add('hidden');
-  revealBtn.classList.remove('hidden');
+  feedbackEl.textContent = '';
+  feedbackEl.className = 'feedback hidden';
   audioAnswerBtn.classList.add('hidden');
   audioAnswerBtn.disabled = true;
   selfAssessEl.classList.add('hidden');
-  currentSpan.textContent = masteredThisSession.length + 1;
+  if (guessInput) {
+    guessInput.value = '';
+    guessInput.disabled = false;
+  }
+  revealed = false;
 
-  // Auto-spela INSTRUKTION + specifik audio efter 300ms (båda moder)
+  // App-läge är ENDAST tillgängligt i reverse (forward har långa svar)
+  const useAppMode = (currentMode === 'reverse' && appMode === 'app');
+  if (inputRow) inputRow.hidden = !useAppMode;
+  revealBtn.classList.toggle('hidden', useAppMode);
+
+  currentSpan.textContent = currentIndex + 1;
+
+  // Nav-knappar
+  if (prevBtn) prevBtn.disabled = currentIndex === 0;
+  if (nextBtn) nextBtn.disabled = currentIndex >= order.length - 1;
+
+  renderProgress();
+
   cancelChain();
   setTimeout(() => playPrompt(), INITIAL_DELAY_MS);
+
+  // Fokusera input i app-läge
+  if (useAppMode && guessInput) {
+    setTimeout(() => guessInput.focus(), 500);
+  }
 }
 
 function reveal() {
   if (!currentCard || revealed) return;
+  // Reveal är bara pappers-läge; i app-läge används Rätta istället
+  if (currentMode === 'reverse' && appMode === 'app') return;
   revealed = true;
   answerEl.classList.remove('hidden');
   revealBtn.classList.add('hidden');
   audioAnswerBtn.classList.remove('hidden');
   audioAnswerBtn.disabled = false;
   selfAssessEl.classList.remove('hidden');
-  // Spela SVAR-sekvens
   cancelChain();
   setTimeout(() => playAnswer(), 0);
+}
+
+function normalize(str) {
+  return str.toLowerCase().trim();
+}
+
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, m => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  })[m]);
+}
+
+function buildDiffFeedback(guessText, correctText) {
+  let highlightedGuess = '';
+  let i = 0;
+  while (i < guessText.length && i < correctText.length) {
+    if (guessText[i].toLowerCase() === correctText[i].toLowerCase()) {
+      highlightedGuess += escapeHtml(guessText[i]);
+    } else {
+      highlightedGuess += `<span class="wrong-letter">${escapeHtml(guessText[i])}</span>`;
+    }
+    i++;
+  }
+  if (guessText.length > correctText.length) {
+    highlightedGuess += `<span class="wrong-letter">${escapeHtml(guessText.slice(i))}</span>`;
+  } else if (guessText.length < correctText.length) {
+    highlightedGuess += `<span class="missing-letter">${escapeHtml(correctText.slice(i))}</span>`;
+  }
+  return `✗ Inte rätt.<br>Du skrev: <strong>${highlightedGuess}</strong><br>Rätt: <strong>${escapeHtml(correctText)}</strong>`;
+}
+
+function checkGuess() {
+  if (!currentCard || revealed) return;
+  // Bara app-läge reverse
+  if (currentMode !== 'reverse' || appMode !== 'app') return;
+
+  const guess = normalize(guessInput.value);
+  if (!guess) {
+    feedbackEl.textContent = 'Skriv ditt svar först';
+    feedbackEl.className = 'feedback feedback-hint';
+    return;
+  }
+
+  const correct = normalize(currentCard.begrepp);
+
+  if (guess === correct) {
+    // Rätt: ✓ Rät!, auto-advance, saveMastery(true), mastera
+    feedbackEl.innerHTML = `✓ Rätt! <strong>${escapeHtml(currentCard.begrepp)}</strong>`;
+    feedbackEl.className = 'feedback feedback-correct';
+    guessInput.disabled = true;
+    revealed = true;
+    masteredThisSession.push(currentCard.id);
+    streak++;
+    updateStreak();
+    saveMastery(currentCard.id, true);
+    sessionAttempts.push({ id: currentCard.id, correct: true, mode: currentMode });
+    renderProgress();
+    setTimeout(() => nextWord(), 800);
+  } else {
+    // Fel: ✗ Inte rätt med diff, saveMastery(false), ordet till slutet
+    feedbackEl.innerHTML = buildDiffFeedback(guessInput.value.trim(), currentCard.begrepp);
+    feedbackEl.className = 'feedback feedback-wrong';
+    guessInput.disabled = true;
+    revealed = true;
+    streak = 0;
+    updateStreak();
+    sessionRepeats++;
+    saveMastery(currentCard.id, false);
+    sessionAttempts.push({ id: currentCard.id, correct: false, mode: currentMode });
+    // Flytta ordet till slutet av listan (currentIndex pekar på nästa)
+    const wordId = order.splice(currentIndex, 1)[0];
+    order.push(wordId);
+    renderProgress();
+    if (nextBtn) nextBtn.disabled = false;
+    if (nextBtn) nextBtn.focus();
+  }
 }
 
 function selfAssess(correct) {
   if (!currentCard || !revealed) return;
   if (correct) {
-    queue.shift();
     masteredThisSession.push(currentCard.id);
     streak++;
   } else {
-    const cardId = queue.shift();
-    queue.push(cardId);
+    const wordId = order.splice(currentIndex, 1)[0];
+    order.push(wordId);
     sessionRepeats++;
     streak = 0;
   }
-  sessionAttempts.push({ id: currentCard.id, correct, mode: currentMode });
-  saveMastery(currentCard.id, correct);
-  renderProgress();
   updateStreak();
-  nextCard();
+  renderProgress();
+  saveMastery(currentCard.id, correct);
+  sessionAttempts.push({ id: currentCard.id, correct, mode: currentMode });
+  nextWord();
 }
 
 function saveMastery(cardId, correct) {
@@ -311,11 +430,12 @@ function updateStreak() {
 
 function renderProgress() {
   progressBar.innerHTML = '';
-  for (let i = 0; i < data.begrepp.length; i++) {
+  const masteredSet = new Set(masteredThisSession);
+  for (let i = 0; i < order.length; i++) {
     const dot = document.createElement('div');
     dot.className = 'progress-dot';
-    if (i < masteredThisSession.length) dot.classList.add('completed');
-    else if (i === masteredThisSession.length) dot.classList.add('active');
+    if (masteredSet.has(order[i])) dot.classList.add('completed');
+    else if (i === currentIndex) dot.classList.add('active');
     progressBar.appendChild(dot);
   }
 }
@@ -341,19 +461,47 @@ function setMode(mode) {
   modeForwardBtn.setAttribute('aria-selected', mode === 'forward');
   modeReverseBtn.classList.toggle('active', mode === 'reverse');
   modeReverseBtn.setAttribute('aria-selected', mode === 'reverse');
+  // Visa/dölj paper/app-toggle beroende på riktning
+  if (paperAppToggle) {
+    paperAppToggle.hidden = (mode === 'forward');
+  }
+  // Om vi byter till forward och är i app-läge, återställ till papper
+  if (mode === 'forward' && appMode === 'app') {
+    setAppMode('paper');
+    return;  // setAppMode anropar redan renderCard
+  }
   init();
 }
 
 // Event listeners
 modeForwardBtn.addEventListener('click', () => setMode('forward'));
 modeReverseBtn.addEventListener('click', () => setMode('reverse'));
+appModePaperBtn?.addEventListener('click', () => setAppMode('paper'));
+appModeAppBtn?.addEventListener('click', () => setAppMode('app'));
 revealBtn.addEventListener('click', reveal);
 rattBtn.addEventListener('click', () => selfAssess(true));
 felBtn.addEventListener('click', () => selfAssess(false));
+prevBtn?.addEventListener('click', prevWord);
+nextBtn?.addEventListener('click', () => {
+  if (!revealed) {
+    nextWord();
+    return;
+  }
+  // Båda läge + revealed: om i app-läge efter fel är ordet redan flyttat
+  nextWord();
+});
 startOverBtn.addEventListener('click', startOver);
 audioPromptBtn.addEventListener('click', playPrompt);
 audioAnswerBtn.addEventListener('click', playAnswer);
 dismissInstallBtn?.addEventListener('click', () => installHint.hidden = true);
+
+// Enter i input-fältet → Rätta (app-läge)
+guessInput?.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    if (!revealed) checkGuess();
+  }
+});
 
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
@@ -372,16 +520,33 @@ installBtn?.addEventListener('click', async () => {
 
 // Keyboard shortcuts
 document.addEventListener('keydown', (e) => {
-  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  // Skip om target är input eller contenteditable
+  if (e.target.tagName === 'INPUT' || e.target.isContentEditable) {
+    // Tillåt piltangenter för cursor-rörelse i input
+    return;
+  }
   if (e.key === ' ' || e.key === 'Enter') {
+    // I app-läge reverse: Enter triggar checkGuess via input-hanteraren
+    // Här hanterar vi pappers-läge (reveal) och app-läge (om input ej fokuserad)
     if (!revealed) {
       e.preventDefault();
-      reveal();
+      if (currentMode === 'reverse' && appMode === 'app') {
+        // Försök checkGuess (om guessInput har värde)
+        checkGuess();
+      } else {
+        reveal();
+      }
     }
   } else if (e.key === 'r' || e.key === 'R') {
     if (revealed) rattBtn.click();
   } else if (e.key === 'f' || e.key === 'F') {
     if (revealed) felBtn.click();
+  } else if (e.key === 'ArrowLeft') {
+    e.preventDefault();
+    prevWord();
+  } else if (e.key === 'ArrowRight') {
+    e.preventDefault();
+    nextWord();
   } else if (e.key === '1') {
     modeForwardBtn.click();
   } else if (e.key === '2') {
@@ -394,6 +559,14 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js').catch(err => console.warn('SW registration failed:', err));
   });
+}
+
+// Initiera läge från localStorage
+loadAppMode();
+setAppMode(appMode);  // uppdaterar UI baserat på laddat appMode
+// Visa paper/app-toggle om vi startar i reverse
+if (paperAppToggle) {
+  paperAppToggle.hidden = (currentMode === 'forward');
 }
 
 loadData();
