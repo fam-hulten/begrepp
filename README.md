@@ -4,11 +4,15 @@ Träna SO-begrepp (Matematik v.37+) med audio. För Zacharias (åk 4, misstänkt
 
 ## Funktioner
 
-- **Två lägen:**
-  - **Begrepp → Förklaring** — hör "Förklara ordet X", tänk förklaringen, tryck för att se + höra svaret
-  - **Förklaring → Begrepp** — hör "Vilket ord betyder: <förklaring>", gissa ordet, tryck för att se + höra
-- **Självbedömning:** ✓ Rätt (tas ur kö) / ✗ Fel (flyttas till sist i kö)
+- **Två huvudlägen:**
+  - **Begrepp → Förklaring** (forward) — hör "Förklara ordet X", tänk förklaringen, tryck för att se + höra svaret
+  - **Förklaring → Begrepp** (reverse) — hör "Vilket ord betyder: <förklaring>", gissa ordet, tryck för att se + höra
+- **Papper-läge (default, båda riktningar):** Visa svaret → reveal + self-mark ✓ Rätt / ✗ Fel
+- **App-läge (bara reverse, valfritt):** Skriv in begreppet, Rätta jämför mot facit med bokstav-för-bokstav diff. Rätt → ✓ Rät, auto-advance. Fel → ✗ Inte rätt, manuell Nästa, ordet flyttas till slutet av listan.
+- **← Bak / Nästa → navigation** — alltid synlig, fritt genom listan
+- **Självbedömning (papper):** ✓ Rätt (masteras) / ✗ Fel (flyttas till slutet av listan)
 - **Audio:** MiniMax TTS, svensk röst (`Swedish_male_1_v1`), V4-struktur (4 filer per begrepp)
+- **Mastery-tracking:** sparas i LocalStorage (`begrep…y-v3`) oavsett papper/app-läge
 - **Progress:** streck-räknare, progress dots, session summary
 - **PWA:** installable, offline-stöd
 - **Privacy:** ingen analytics, inga rekram, LocalStorage för mastery
@@ -119,6 +123,66 @@ Se **[WORKFLOW.md](WORKFLOW.md)** för steg-för-steg-guide:
 # Deploy: push till GitHub Pages (auto-deploy via fam-hulten/begrepp)
 ```
 
+## V4 Arkitektur — mode-toggle + prev/next + app-läge (2026-10-01)
+
+**Bakgrund:** Samma mönster som `fam-hulten/glosor` v6+v7 — konsistent UX i tre appar (glosor, begrepp, rättstavning). Johanna ville ha input-fält + auto-advance i reverse-läget (aktiv återgivning slår passiv reveal pedagogiskt). Forward-läget har långa svar (förklaringar) så app-läge är inte meningsfullt där.
+
+**Tekniska ändringar:**
+
+- **HTML (`index.html`):**
+  - Paper/app-mode-toggle infogad i headern efter forward/reverse-toggle: `<div class="mode-toggle paper-app-toggle" id="paperAppToggle" hidden>` med `appModePaperBtn` / `appModeAppBtn`. Initialt gömd (visas bara i reverse).
+  - Input-row återinförd i `.card` efter `audio-buttons`: `<div class="input-row" id="inputRow" hidden>` med `<input id="guessInput">` (`hidden`-attribut = döljd i papper-läge och forward).
+  - Feedback-div infogad efter `audio-buttons` / före `self-assess`: `<div class="feedback hidden" id="feedback">` — visar ✓/✗ med diff i app-läge.
+  - Nav-knappar tillagda efter `self-assess`: `<div class="nav">` med `prevBtn` (`← Bak`) + `nextBtn` (`Nästa →`, primary-next-styling).
+  - Kbd-hint utökad med `←` / `→` navigera + `Enter` rätta.
+  - Cache-bust `?v=2` → `?v=3`.
+- **JS (`app.js`):**
+  - Datamodell ändrad: `queue[]` + `nextCard()` → `order[]` + `currentIndex` + `renderCard()`. `order` shufflas en gång i `init()`, fel-ord flyttas till slutet via `order.splice(currentIndex, 1)` + `order.push(wordId)`.
+  - Nya state: `let appMode = 'paper'` + `const APP_MODE_KEY` (localStorage-persistens).
+  - Nya funktioner: `loadAppMode()`, `saveAppMode()`, `setAppMode(mode)` — uppdaterar UI, visar/dölj input/reveal.
+  - Nya navigation: `prevWord()` / `nextWord()` — justerar currentIndex, anropar renderCard().
+  - `renderCard()` hanterar fyra kombinationer (forward/reverse × papper/app):
+    - **Forward + papper:** prompt = begrepp, revealBtn synlig, input gömd.
+    - **Reverse + papper:** prompt = förklaring, revealBtn synlig, input gömd.
+    - **Reverse + app:** prompt = förklaring, input synlig, revealBtn gömd.
+    - **Forward + app:** (auto-återställs till papper om man byter riktning medan man är i app-läge).
+  - `reveal()` blockerad i app-läge (return tidigt om `currentMode === 'reverse' && appMode === 'app'`).
+  - Ny `checkGuess()` — ENDAST för reverse + app-läge:
+    - Input tomt → feedback "Skriv ditt svar först".
+    - Rätt (`normalize(guess) === normalize(begrepp)`): feedback "✓ Rätt!", `saveMastery(true)`, `masteredThisSession.push`, `setTimeout(nextWord, 800)`.
+    - Fel: feedback med `buildDiffFeedback` (rättstavning-mönster), `saveMastery(false)`, `sessionRepeats++`, ordet flyttas till slutet, `nextBtn.focus()`.
+  - `selfAssess(correct)` används BARA i papper-läge (app-läge använder `checkGuess()` direkt). Mastery-trackning sparas i båda.
+  - `renderProgress()` använder `Set(masteredThisSession)` för completed dots (så fel-ord som flyttats till slutet inte visar grön prick).
+  - `setMode(mode)` uppdaterar paper-app-toggle visibility: gömd i forward, synlig i reverse. Om man byter till forward och är i app-läge → auto-återställ till papper.
+  - Tangentbord: ArrowLeft/ArrowRight för prev/next (skippar om target är INPUT). Enter i input → `checkGuess()`. Mellanslag/Enter globalt → `reveal()` (papper) eller `checkGuess()` (app-läge om input har värde).
+- **CSS (`styles.css`):**
+  - `.paper-app-toggle` + `.paper-app-toggle[hidden]` — mindre variant av forward/reverse-toggle.
+  - `.input-row` + `.guess-input` (focus-ring primary-orange, dark mode-anpassad).
+  - `.feedback` + `.feedback-correct` / `.feedback-wrong` / `.feedback-hint` (samma mönster som glosor).
+  - `.wrong-letter` + `.missing-letter` (bokstav-för-bokstav diff-markering).
+  - `.nav` + `.primary-next` (grid 1fr 2fr, prominent Nästa-knapp).
+  - 480px media query: `.nav` margin tightare, `.primary-next` mindre, `.guess-input` fontstorlek ned, `.paper-app-toggle .mode-btn` mindre.
+  - Dark mode: `.guess-input` mörk bakgrund, `.paper-app-toggle .mode-btn` transparent bakgrund.
+
+**Skillnad mot rättstavning/glosor:**
+
+- Rättstavning har forward-mode-toggle men ingen app/papper-toggle (single flow per mode).
+- Glosor har mode-toggle som alltid syns (eftersom båda lägen passar input — SV→EN).
+- Begrepp har paper/app-toggle som BARA syns i reverse (forward-svar för långa för input).
+
+**Backward-kompatibilitet:**
+
+- `STORAGE_KEY = 'begrep…y-v3'` oförändrad — mastery-data från tidigare sessioner läses in korrekt.
+- `APP_MODE_KEY` ny — default 'paper' om nyckeln saknas (bryter inget för användare som bara kör papper-läge).
+- `setMode('forward')` återställer appMode till 'paper' om det var 'app' (användare hamnar inte i app-läge i forward).
+
+**Läge-persistens (V4):**
+
+- `begrep…y-v3` (mastery per begrepp-ID: `{correct, wrong, lastSeen}`) — befintlig, oförändrad.
+- `***` (paper/app-läge) — ny, värde 'paper' eller 'app'.
+
+---
+
 ## V1 scope (ursprunglig)
 
 - 9 begrepp (Matematik v.37, addition till subtraktion)
@@ -132,6 +196,7 @@ Se **[WORKFLOW.md](WORKFLOW.md)** för steg-för-steg-guide:
 - Kluster-jämförelseläge (kommer i V2)
 - Bildstöd med WidgetGen (kommer i V2)
 - Adaptive SRS (kommer i V3)
+- Mode-toggle + app-läge (kommer i V4) ← **LEVERERAT 2026-10-01**
 
 ## Läxor / versioner
 
@@ -139,6 +204,7 @@ Se **[WORKFLOW.md](WORKFLOW.md)** för steg-för-steg-guide:
 |-------|------|---------|------------|
 | 2026-09-09 | Samhällskunskap v.37 | 12 SO-begrepp (demokrati, normer, etc.) | V1, V2, V3 splice-experiment |
 | 2026-09-16 | Matematik v.37 | 9 matte-begrepp (summa, differens, etc.) | V4 hela-meningar-struktur |
+| 2026-10-01 | (UI-förbättring) | (oförändrat) | V4.1 mode-toggle (papper/app) + ← Bak / Nästa → + app-läge reverse (samma mönster som `fam-hulten/glosor` v6+v7). Konsistent UX i tre appar (glosor, begrepp, rättstavning). |
 
 ## Datum / Kontext
 
