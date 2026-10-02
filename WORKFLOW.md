@@ -109,6 +109,8 @@ python3 -c "import json; d=json.load(open('begrepp-data.json')); print(f'{len(d[
 
 **INTE via regex-script** — hand-curra permade begrepp. Regex missar edge cases (substantiv i mitten, "X består av", etc.) och gav feltolkning tidigare (2026-10-02).
 
+**VIKTIG PRINCIP: Håll `reverse_forklaring` så nära original-forklaringen som möjligt.** Ta bort minimum. Skriv inte om från början. Det eleven hör i framåt-läge ska matcha det eleven ser i reverse-läge (bortsett från begrepp-namnet).
+
 **GÖR MANUELLERT per begrepp:**
 
 1. **Läs forklaringen.** Innehåller den begreppet?
@@ -116,11 +118,13 @@ python3 -c "import json; d=json.load(open('begrepp-data.json')); print(f'{len(d[
    - **Via artikel:** "En/Ett X..." ✓
    - **Saknas:** "Vi får vara i naturen..." → skriv om med naturlig connector ("X innebär att...", "X betyder att...")
 
-2. **Bestäm `reverse_forklaring`** — beskrivningen UTAN begreppet. Ta bort "X" eller "En X"/"Ett X" + ev. "är/betyder" i början. Hand-curra om auto-mönstånggget inte regel-.
+2. **Bestäm `reverse_forklaring`** — beskrivningen UTAN begreppet. **Ta bort minimum** — resten av forklaringen förblir orörd. Exempel: "En näringskedja visar vem som..." → "visar vem som..." (bara "En näringskedja" borta, allt annat identiskt). Hand-curra om auto-mönstånggget inte regel-.
 
 4. **Capitalisera första bokstaven** — barn ska se korrekt skrivning ("Att vi får..." inte "att vi får...").
 
 5. **Läs högt i huvudet** — later det bra? Inget text "eller " som första ord (när "att vi får..." är OK men "att..." ensamt är inte).
+
+6. **Verifiera mot originalet** — jämför reverse_forklaring med forklaringen rad för rad. Endast begrepp-namnet (och ev. "är") ska vara borttaget. Resten identiskt.
 
 6. **Sätt i `reverse_forklaring`-fält per begrepp i JSON**
 
