@@ -179,7 +179,8 @@
           "audio_fraga": "audio/naringskedja-fraga.mp3",
           "audio_svar": "audio/naringskedja-svar.mp3",
           "audio_reverse_fraga": "audio/naringskedja-reverse-fraga.mp3",
-          "audio_reverse_svar": "audio/naringskedja-reverse-svar.mp3"
+          "audio_reverse_svar": "audio/naringskedja-reverse-svar.mp3",
+          "image": "images/naringskedja.png"
         },
         {
           "id": "naturreservat",
