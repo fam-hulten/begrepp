@@ -168,7 +168,8 @@
           "audio_fraga": "audio/urskog-fraga.mp3",
           "audio_svar": "audio/urskog-svar.mp3",
           "audio_reverse_fraga": "audio/urskog-reverse-fraga.mp3",
-          "audio_reverse_svar": "audio/urskog-reverse-svar.mp3"
+          "audio_reverse_svar": "audio/urskog-reverse-svar.mp3",
+          "image": "images/urskog.png"
         },
         {
           "id": "naringskedja",
@@ -188,7 +189,8 @@
           "audio_fraga": "audio/naturreservat-fraga.mp3",
           "audio_svar": "audio/naturreservat-svar.mp3",
           "audio_reverse_fraga": "audio/naturreservat-reverse-fraga.mp3",
-          "audio_reverse_svar": "audio/naturreservat-reverse-svar.mp3"
+          "audio_reverse_svar": "audio/naturreservat-reverse-svar.mp3",
+          "image": "images/naturreservat.png"
         },
         {
           "id": "mycel",
@@ -198,7 +200,8 @@
           "audio_fraga": "audio/mycel-fraga.mp3",
           "audio_svar": "audio/mycel-svar.mp3",
           "audio_reverse_fraga": "audio/mycel-reverse-fraga.mp3",
-          "audio_reverse_svar": "audio/mycel-reverse-svar.mp3"
+          "audio_reverse_svar": "audio/mycel-reverse-svar.mp3",
+          "image": "images/mycel.png"
         },
         {
           "id": "allemansratt",
@@ -208,7 +211,8 @@
           "audio_fraga": "audio/allemansratt-fraga.mp3",
           "audio_svar": "audio/allemansratt-svar.mp3",
           "audio_reverse_fraga": "audio/allemansratt-reverse-fraga.mp3",
-          "audio_reverse_svar": "audio/allemansratt-reverse-svar.mp3"
+          "audio_reverse_svar": "audio/allemansratt-reverse-svar.mp3",
+          "image": "images/allemansratt.png"
         },
         {
           "id": "atervinna",
@@ -218,7 +222,8 @@
           "audio_fraga": "audio/atervinna-fraga.mp3",
           "audio_svar": "audio/atervinna-svar.mp3",
           "audio_reverse_fraga": "audio/atervinna-reverse-fraga.mp3",
-          "audio_reverse_svar": "audio/atervinna-reverse-svar.mp3"
+          "audio_reverse_svar": "audio/atervinna-reverse-svar.mp3",
+          "image": "images/atervinna.png"
         },
         {
           "id": "nationalpark",
@@ -228,7 +233,8 @@
           "audio_fraga": "audio/nationalpark-fraga.mp3",
           "audio_svar": "audio/nationalpark-svar.mp3",
           "audio_reverse_fraga": "audio/nationalpark-reverse-fraga.mp3",
-          "audio_reverse_svar": "audio/nationalpark-reverse-svar.mp3"
+          "audio_reverse_svar": "audio/nationalpark-reverse-svar.mp3",
+          "image": "images/nationalpark.png"
         },
         {
           "id": "odlad-skog",
@@ -238,7 +244,8 @@
           "audio_fraga": "audio/odlad-skog-fraga.mp3",
           "audio_svar": "audio/odlad-skog-svar.mp3",
           "audio_reverse_fraga": "audio/odlad-skog-reverse-fraga.mp3",
-          "audio_reverse_svar": "audio/odlad-skog-reverse-svar.mp3"
+          "audio_reverse_svar": "audio/odlad-skog-reverse-svar.mp3",
+          "image": "images/odlad-skog.png"
         },
         {
           "id": "palrot",
@@ -248,7 +255,8 @@
           "audio_fraga": "audio/palrot-fraga.mp3",
           "audio_svar": "audio/palrot-svar.mp3",
           "audio_reverse_fraga": "audio/palrot-reverse-fraga.mp3",
-          "audio_reverse_svar": "audio/palrot-reverse-svar.mp3"
+          "audio_reverse_svar": "audio/palrot-reverse-svar.mp3",
+          "image": "images/palrot.png"
         },
         {
           "id": "daeggdjur",
@@ -258,7 +266,8 @@
           "audio_fraga": "audio/daeggdjur-fraga.mp3",
           "audio_svar": "audio/daeggdjur-svar.mp3",
           "audio_reverse_fraga": "audio/daeggdjur-reverse-fraga.mp3",
-          "audio_reverse_svar": "audio/daeggdjur-reverse-svar.mp3"
+          "audio_reverse_svar": "audio/daeggdjur-reverse-svar.mp3",
+          "image": "images/daggdjur.png"
         },
         {
           "id": "kretslopp",
@@ -288,7 +297,8 @@
           "audio_fraga": "audio/nedbrytare-fraga.mp3",
           "audio_svar": "audio/nedbrytare-svar.mp3",
           "audio_reverse_fraga": "audio/nedbrytare-reverse-fraga.mp3",
-          "audio_reverse_svar": "audio/nedbrytare-reverse-svar.mp3"
+          "audio_reverse_svar": "audio/nedbrytare-reverse-svar.mp3",
+          "image": "images/nedbrytare.png"
         },
         {
           "id": "bytesdjur",
@@ -298,7 +308,8 @@
           "audio_fraga": "audio/bytesdjur-fraga.mp3",
           "audio_svar": "audio/bytesdjur-svar.mp3",
           "audio_reverse_fraga": "audio/bytesdjur-reverse-fraga.mp3",
-          "audio_reverse_svar": "audio/bytesdjur-reverse-svar.mp3"
+          "audio_reverse_svar": "audio/bytesdjur-reverse-svar.mp3",
+          "image": "images/bytesdjur.png"
         },
         {
           "id": "vaxtatare",
@@ -308,7 +319,8 @@
           "audio_fraga": "audio/vaxtatare-fraga.mp3",
           "audio_svar": "audio/vaxtatare-svar.mp3",
           "audio_reverse_fraga": "audio/vaxtatare-reverse-fraga.mp3",
-          "audio_reverse_svar": "audio/vaxtatare-reverse-svar.mp3"
+          "audio_reverse_svar": "audio/vaxtatare-reverse-svar.mp3",
+          "image": "images/vaxtatare.png"
         },
         {
           "id": "rovdjur",
@@ -318,7 +330,8 @@
           "audio_fraga": "audio/rovdjur-fraga.mp3",
           "audio_svar": "audio/rovdjur-svar.mp3",
           "audio_reverse_fraga": "audio/rovdjur-reverse-fraga.mp3",
-          "audio_reverse_svar": "audio/rovdjur-reverse-svar.mp3"
+          "audio_reverse_svar": "audio/rovdjur-reverse-svar.mp3",
+          "image": "images/rovdjur.png"
         }
       ]
     },

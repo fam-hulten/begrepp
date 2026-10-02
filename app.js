@@ -458,12 +458,17 @@ function renderCard() {
     answerEl.textContent = currentCard.begrepp;
   }
 
-  // V5.5: Opt-in bild (emoji eller filnamn) — visas om begrepp.image finns
+  // V5.5→v5.6: Opt-in bild (emoji ELLER filnamn). Filnamn renderas som <img>, emoji som textContent.
   if (currentCard.image) {
-    imageAreaEl.textContent = currentCard.image;
+    const isFile = /\.(png|jpe?g|gif|webp|svg)$/i.test(currentCard.image) || currentCard.image.startsWith('images/');
+    if (isFile) {
+      imageAreaEl.innerHTML = `<img src="${currentCard.image}" alt="" class="begrepp-image">`;
+    } else {
+      imageAreaEl.textContent = currentCard.image;
+    }
     imageAreaEl.hidden = false;
   } else {
-    imageAreaEl.textContent = '';
+    imageAreaEl.innerHTML = '';
     imageAreaEl.hidden = true;
   }
 
