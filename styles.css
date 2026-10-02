@@ -237,6 +237,17 @@ h1 {
   text-transform: uppercase;
 }
 
+/* V5.5: Opt-in bild-area (valfri emoji/bild, visas om begrepp.image finns) */
+.image-area {
+  text-align: center;
+  font-size: 3.5rem;
+  line-height: 1.1;
+  margin-bottom: 0.85rem;
+  min-height: 0;
+}
+
+.image-area[hidden] { display: none; }
+
 /* Prompt (the active side of the card: begrepp OR förklaring) */
 .prompt {
   text-align: center;
@@ -795,6 +806,7 @@ button.danger:hover:not(:disabled) {
   h1 { font-size: 1.2rem; }
   .subtitle { font-size: 0.85rem; }
   header { margin-bottom: 1rem; }
+  .image-area { font-size: 2.8rem; margin-bottom: 0.6rem; }
   .summary-card { padding: 1.5rem 1rem; }
   .stat-num { font-size: 2rem; }
   /* V5 mobile */

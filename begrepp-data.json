@@ -162,12 +162,14 @@
         {
           "id": "vaxt",
           "begrepp": "Växt",
-          "forklaring": "Levande varelse som gör sin egen mat med solljus"
+          "forklaring": "Levande varelse som gör sin egen mat med solljus",
+          "image": "\ud83c\udf31"
         },
         {
           "id": "daeggdjur",
           "begrepp": "Däggdjur",
-          "forklaring": "Djur som har päls och diar sina ungar"
+          "forklaring": "Djur som har päls och diar sina ungar",
+          "image": "\ud83d\udc3e"
         },
         {
           "id": "rovdjur",
@@ -187,7 +189,8 @@
         {
           "id": "gas",
           "begrepp": "Gas",
-          "forklaring": "Ett ämne som sprider ut sig i luften, till exempel luft själv"
+          "forklaring": "Ett ämne som sprider ut sig i luften, till exempel luft själv",
+          "image": "\u2601\ufe0f"
         },
         {
           "id": "smaelta",
@@ -197,7 +200,8 @@
         {
           "id": "magnet",
           "begrepp": "Magnet",
-          "forklaring": "Något som drar till sig järn och vissa metaller"
+          "forklaring": "Något som drar till sig järn och vissa metaller",
+          "image": "\ud83e\uddf2"
         },
         {
           "id": "friktion",
@@ -212,7 +216,8 @@
         {
           "id": "energi",
           "begrepp": "Energi",
-          "forklaring": "Kraft som gör att saker rör sig eller fungerar"
+          "forklaring": "Kraft som gör att saker rör sig eller fungerar",
+          "image": "\u26a1"
         }
       ]
     },

@@ -62,6 +62,7 @@ let deferredInstallPrompt = null;
 const cardEl = document.getElementById('card');
 const promptEl = document.getElementById('prompt');
 const answerEl = document.getElementById('answer');
+const imageAreaEl = document.getElementById('imageArea');
 const feedbackEl = document.getElementById('feedback');
 const audioPromptBtn = document.getElementById('audioPromptBtn');
 const audioAnswerBtn = document.getElementById('audioAnswerBtn');
@@ -451,6 +452,15 @@ function renderCard() {
   } else {
     promptEl.textContent = currentCard.forklaring;
     answerEl.textContent = currentCard.begrepp;
+  }
+
+  // V5.5: Opt-in bild (emoji eller filnamn) — visas om begrepp.image finns
+  if (currentCard.image) {
+    imageAreaEl.textContent = currentCard.image;
+    imageAreaEl.hidden = false;
+  } else {
+    imageAreaEl.textContent = '';
+    imageAreaEl.hidden = true;
   }
 
   // Reset state
