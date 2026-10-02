@@ -105,51 +105,39 @@ python3 -c "import json; d=json.load(open('begrepp-data.json')); print(f'{len(d[
 
 ## Steg 2.5 — Analysera och förbereda beskrivningar (V5.5+, Johanna-direktiv 2026-10-02)
 
-**Varför:** Forklaringen styr både framåt-audio (svar) OCH reverse-display/reverse-fraga-audio. Om forklaringen saknar begreppsnamnet → framåt-ljud låter konstigt ("Allemansrätt är Vi får vara i naturen"). Om forklaringen INNEHÅLLER begreppsnamnet → reverse-display ger bort svaret ("Urskog är gammal skog..." läses rakt av). Vi behöver därför båda:
+**Varför:** Forklaringen styr både framåt-audio (svar) OCH reverse-display/reverse-fraga-audio. Om forklaringen saknar begreppsnamnet → framåt-ljud låter konstigt ("Allemansrätt är Vi får vara i naturen"). Om forklaringen INNEHÅLLER begreppsnamnet → reverse-display ger bort svaret ("Urskog är gammal skog..." läses rakt av).
 
-1. **Identifiera mönster i forklaring** — innehåller den begreppet? Direkt ("Urskog är..."), via artikel ("En/Ett X..."), eller saknas helt ("Vi får vara...")?
+**INTE via regex-script** — hand-curra permade begrepp. Regex missar edge cases (substantiv i mitten, "X består av", etc.) och gav feltolkning tidigare (2026-10-02).
 
-2. **Om forklaring INTE innehåller begreppsnamnet** → skriv om med en naturlig connector, t.ex. "Allemansrätt innebär att vi får vara..." istället för "Vi får vara...". Vanliga connectors: "X innebär att...", "X betyder att...", "X är...".
+**GÖR MANUELLERT per begrepp:**
 
-3. **Generera `reverse_forklaring`** (utan begreppsnamnet) — auto-generator via regex-strip. Prioriterat regex-mönster:
+1. **Läs forklaringen.** Innehåller den begreppet?
+   - **Direkt:** "Urskog är..." ✓
+   - **Via artikel:** "En/Ett X..." ✓
+   - **Saknas:** "Vi får vara i naturen..." → skriv om med naturlig connector ("X innebär att...", "X betyder att...")
 
-   ```python
-   import re
-   def make_reverse_forklaring(forklaring, begrepp):
-       # Mönster 1: Artikel + X + verb (är/betyder/innebär/etc.) + space
-       pattern1 = rf"^(?:(?:En|Ett)\s+)?{re.escape(begrepp)}\s+(?:är|betyder|innebär|visar|har|kan|ska|heter|saknas)\s+"
-       # Mönster 2: Artikel + X + space (utan verb)
-       pattern2 = rf"^(?:(?:En|Ett)\s+)?{re.escape(begrepp)}\s+"
-       for p in [pattern1, pattern2]:
-           result = re.sub(p, '', forklaring, count=1, flags=re.IGNORECASE)
-           if result != forklaring:
-               return result.strip().capitalize()  # ← VIKTIGT: capitalisera!
-       return forklaring
-   ```
+2. **Bestäm `reverse_forklaring`** — beskrivningen UTAN begreppet. Ta bort "X" eller "En X"/"Ett X" + ev. "är/betyder" i början. Hand-curra om auto-mönstånggget inte regel-.
 
-4. **Capitalisera första bokstaven** — `result.strip().capitalize()`. Reversa-texten måste börja med stor bokstav — annars blir det "däggdjur är djur som..." (liten bokstav) vilket är oacceptabelt för barn som ska lära sig skriva rätt.
+4. **Capitalisera första bokstaven** — barn ska se korrekt skrivning ("Att vi får..." inte "att vi får...").
 
-5. **Verifiera** att resultatet låter naturligt. Vanliga auto-strip-edge-cases att hand-curra:
-   - "X består av..." (omfattas INTE av verb-listan)
-   - "På X..." (substantiv i preposition)
-   - Substantiv som finns MITTÄTVÅ i forklaringen ("bytesdjur" nämns i Rovdjurs-forklaring)
-   - Om auto-strip ger konstigt resultat → override `reverse_forklaring` per begrepp
+5. **Läs högt i huvudet** — later det bra? Inget text "eller " som första ord (när "att vi får..." är OK men "att..." ensamt är inte).
 
-**Exempel (NO-begrepp, 2026-10-02):**
-| Begrepp | Forklaring | Reverse (auto-strip) |
+6. **Sätt i `reverse_forklaring`-fält per begrepp i JSON**
+
+**Exempel (NO-begrepp, hand-curred 2026-10-02):**
+| Begrepp | Forklaring | Reverse (hand-curred) |
 |---|---|---|
-| Urskog | "Urskog är gammal skog..." | "Gammal skog som..." ✓ |
-| Rovdjur | "Ett rovdjur är ett djur som jagar..." | "Ett djur som jagar..." ✓ |
-| Bytesdjur | "Ett bytesdjur är ett djur som blir fångat..." | "Ett djur som blir fångat..." ✓ |
-| Allemansrätt | (efter fix) "Allemansrätt innebär att vi får vara..." | "Att vi får vara..." ✓ |
-| Vi får vara i naturen... (utan fix) | n/a | "Vi får vara i naturen..." (redan OK, inget begrepp) |
+| Urskog | "Urskog är gammal skog som..." | "Gammal skog som..." |
+| Rovdjur | "Ett rovdjur är ett djur som jagar..." | "Ett djur som jagar..." |
+| Bytesdjur | "Ett bytesdjur är ett djur som blir fångat..." | "Ett djur som blir fångat..." |
+| Allemansrätt | (efter fix) "Allemansrätt innebär att..." | "Att vi får vara i naturen..." |
 
 **Historia:** Forklaringar saknar redan begreppsnamnet → `reverse_forklaring = forklaring` (inget ändringsarbete behövs).
 
 **Vad händer om steget hoppas över?**
-- Utan steg 2.5 → framåt-ljud har dubbelprepend ("Urskog är Urskog är...") eller felaktig grammatik ("Allemansrätt är Vi får vara...")
+- Framåt-ljud har dubbelprepend ("Urskog är Urskog är...") eller felaktig grammatik ("Allemansrätt är Vi får vara...")
 - Reverse-display ger bort svaret i NO ("Urskog" läses rakt av i texten)
-- Auto-strip kan ge "liten bokstav i början av meningen" → oacceptabelt för barn
+- Reverse-forklaring med liten bokstav → oacceptabelt för barn
 
 ---
 
