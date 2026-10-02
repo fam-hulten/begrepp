@@ -163,82 +163,162 @@
         {
           "id": "urskog",
           "begrepp": "Urskog",
-          "forklaring": "Urskog är gammal skog som nästan inte har förändrats av människor."
+          "forklaring": "Urskog är gammal skog som nästan inte har förändrats av människor.",
+          "reverse_forklaring": "gammal skog som nästan inte har förändrats av människor.",
+          "audio_fraga": "audio/urskog-fraga.mp3",
+          "audio_svar": "audio/urskog-svar.mp3",
+          "audio_reverse_fraga": "audio/urskog-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/urskog-reverse-svar.mp3"
         },
         {
           "id": "naringskedja",
           "begrepp": "Näringskedja",
-          "forklaring": "En näringskedja visar vem som äter vem i naturen."
+          "forklaring": "En näringskedja visar vem som äter vem i naturen.",
+          "reverse_forklaring": "vem som äter vem i naturen.",
+          "audio_fraga": "audio/naringskedja-fraga.mp3",
+          "audio_svar": "audio/naringskedja-svar.mp3",
+          "audio_reverse_fraga": "audio/naringskedja-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/naringskedja-reverse-svar.mp3"
         },
         {
           "id": "naturreservat",
           "begrepp": "Naturreservat",
-          "forklaring": "Ett naturreservat är ett område i naturen som är skyddat."
+          "forklaring": "Ett naturreservat är ett område i naturen som är skyddat.",
+          "reverse_forklaring": "ett område i naturen som är skyddat.",
+          "audio_fraga": "audio/naturreservat-fraga.mp3",
+          "audio_svar": "audio/naturreservat-svar.mp3",
+          "audio_reverse_fraga": "audio/naturreservat-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/naturreservat-reverse-svar.mp3"
         },
         {
           "id": "mycel",
           "begrepp": "Mycel",
-          "forklaring": "Mycel är tunna trådar från svampen som finns nere i marken."
+          "forklaring": "Mycel är tunna trådar från svampen som finns nere i marken.",
+          "reverse_forklaring": "tunna trådar från svampen som finns nere i marken.",
+          "audio_fraga": "audio/mycel-fraga.mp3",
+          "audio_svar": "audio/mycel-svar.mp3",
+          "audio_reverse_fraga": "audio/mycel-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/mycel-reverse-svar.mp3"
         },
         {
           "id": "allemansratt",
           "begrepp": "Allemansrätt",
-          "forklaring": "Vi får vara i naturen och till exempel gå, plocka bär och plocka blommor, så länge vi inte förstör eller stör."
+          "forklaring": "Allemansrätt innebär att vi får vara i naturen och till exempel gå, plocka bär och pllocka blommor, så länge vi inte förstör eller stör.",
+          "reverse_forklaring": "att vi får vara i naturen och till exempel gå, plocka bär och pllocka blommor, så länge vi inte förstör eller stör.",
+          "audio_fraga": "audio/allemansratt-fraga.mp3",
+          "audio_svar": "audio/allemansratt-svar.mp3",
+          "audio_reverse_fraga": "audio/allemansratt-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/allemansratt-reverse-svar.mp3"
         },
         {
           "id": "atervinna",
           "begrepp": "Återvinna",
-          "forklaring": "Återvinna betyder att man använder något igen, till exempel när gammalt papper blir nytt papper."
+          "forklaring": "Återvinna betyder att man använder något igen, till exempel när gammalt papper blir nytt papper.",
+          "reverse_forklaring": "att man använder något igen, till exempel när gammalt papper blir nytt papper.",
+          "audio_fraga": "audio/atervinna-fraga.mp3",
+          "audio_svar": "audio/atervinna-svar.mp3",
+          "audio_reverse_fraga": "audio/atervinna-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/atervinna-reverse-svar.mp3"
         },
         {
           "id": "nationalpark",
           "begrepp": "Nationalpark",
-          "forklaring": "En nationalpark är ett stort skyddat naturområde med särskilda regler."
+          "forklaring": "En nationalpark är ett stort skyddat naturområde med särskilda regler.",
+          "reverse_forklaring": "ett stort skyddat naturområde med särskilda regler.",
+          "audio_fraga": "audio/nationalpark-fraga.mp3",
+          "audio_svar": "audio/nationalpark-svar.mp3",
+          "audio_reverse_fraga": "audio/nationalpark-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/nationalpark-reverse-svar.mp3"
         },
         {
           "id": "odlad-skog",
           "begrepp": "Odlad skog",
-          "forklaring": "Odlad skog är skog som människor har planterat och sköter om."
+          "forklaring": "Odlad skog är skog som människor har planterat och sköter om.",
+          "reverse_forklaring": "skog som människor har planterat och sköter om.",
+          "audio_fraga": "audio/odlad-skog-fraga.mp3",
+          "audio_svar": "audio/odlad-skog-svar.mp3",
+          "audio_reverse_fraga": "audio/odlad-skog-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/odlad-skog-reverse-svar.mp3"
         },
         {
           "id": "palrot",
           "begrepp": "Pålrot",
-          "forklaring": "En pålrot är en lång rot som växer rakt ner i marken."
+          "forklaring": "En pålrot är en lång rot som växer rakt ner i marken.",
+          "reverse_forklaring": "en lång rot som växer rakt ner i marken.",
+          "audio_fraga": "audio/palrot-fraga.mp3",
+          "audio_svar": "audio/palrot-svar.mp3",
+          "audio_reverse_fraga": "audio/palrot-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/palrot-reverse-svar.mp3"
         },
         {
           "id": "daeggdjur",
           "begrepp": "Däggdjur",
-          "forklaring": "Däggdjur är djur som får ungar och ger dem mjölk. Till exempel katt, hund och älg."
+          "forklaring": "Däggdjur är djur som får ungar och ger dem mjölk. Till exempel katt, hund och älg.",
+          "reverse_forklaring": "djur som får ungar och ger dem mjölk. Till exempel katt, hund och älg.",
+          "audio_fraga": "audio/daeggdjur-fraga.mp3",
+          "audio_svar": "audio/daeggdjur-svar.mp3",
+          "audio_reverse_fraga": "audio/daeggdjur-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/daeggdjur-reverse-svar.mp3"
         },
         {
           "id": "kretslopp",
           "begrepp": "Kretslopp",
-          "forklaring": "Kretslopp betyder att något går runt och kommer tillbaka igen, fast i en ny form."
+          "forklaring": "Kretslopp betyder att något går runt och kommer tillbaka igen, fast i en ny form.",
+          "reverse_forklaring": "att något går runt och kommer tillbaka igen, fast i en ny form.",
+          "audio_fraga": "audio/kretslopp-fraga.mp3",
+          "audio_svar": "audio/kretslopp-svar.mp3",
+          "audio_reverse_fraga": "audio/kretslopp-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/kretslopp-reverse-svar.mp3"
         },
         {
           "id": "vintergron",
           "begrepp": "Vintergrön",
-          "forklaring": "Vintergrön betyder att växten är grön även på vintern."
+          "forklaring": "Vintergrön betyder att växten är grön även på vintern.",
+          "reverse_forklaring": "att växten är grön även på vintern.",
+          "audio_fraga": "audio/vintergron-fraga.mp3",
+          "audio_svar": "audio/vintergron-svar.mp3",
+          "audio_reverse_fraga": "audio/vintergron-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/vintergron-reverse-svar.mp3"
         },
         {
           "id": "nedbrytare",
           "begrepp": "Nedbrytare",
-          "forklaring": "Nedbrytare är små organismer som bryter ner döda växter och djur."
+          "forklaring": "Nedbrytare är små organismer som bryter ner döda växter och djur.",
+          "reverse_forklaring": "små organismer som bryter ner döda växter och djur.",
+          "audio_fraga": "audio/nedbrytare-fraga.mp3",
+          "audio_svar": "audio/nedbrytare-svar.mp3",
+          "audio_reverse_fraga": "audio/nedbrytare-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/nedbrytare-reverse-svar.mp3"
         },
         {
           "id": "bytesdjur",
           "begrepp": "Bytesdjur",
-          "forklaring": "Ett bytesdjur är ett djur som blir fångat och uppätet av ett annat djur."
+          "forklaring": "Ett bytesdjur är ett djur som blir fångat och uppätet av ett annat djur.",
+          "reverse_forklaring": "ett djur som blir fångat och uppätet av ett annat djur.",
+          "audio_fraga": "audio/bytesdjur-fraga.mp3",
+          "audio_svar": "audio/bytesdjur-svar.mp3",
+          "audio_reverse_fraga": "audio/bytesdjur-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/bytesdjur-reverse-svar.mp3"
         },
         {
           "id": "vaxtatare",
           "begrepp": "Växtätare",
-          "forklaring": "En växtätare är ett djur som äter växter, till exempel gräs, blad eller bär."
+          "forklaring": "En växtätare är ett djur som äter växter, till exempel gräs, blad eller bär.",
+          "reverse_forklaring": "ett djur som äter växter, till exempel gräs, blad eller bär.",
+          "audio_fraga": "audio/vaxtatare-fraga.mp3",
+          "audio_svar": "audio/vaxtatare-svar.mp3",
+          "audio_reverse_fraga": "audio/vaxtatare-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/vaxtatare-reverse-svar.mp3"
         },
         {
           "id": "rovdjur",
           "begrepp": "Rovdjur",
-          "forklaring": "Ett rovdjur är ett djur som jagar och äter andra djur."
+          "forklaring": "Ett rovdjur är ett djur som jagar och äter andra djur.",
+          "reverse_forklaring": "ett djur som jagar och äter andra djur.",
+          "audio_fraga": "audio/rovdjur-fraga.mp3",
+          "audio_svar": "audio/rovdjur-svar.mp3",
+          "audio_reverse_fraga": "audio/rovdjur-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/rovdjur-reverse-svar.mp3"
         }
       ]
     },

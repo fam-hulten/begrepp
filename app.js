@@ -446,11 +446,15 @@ function renderCard() {
     return;
   }
 
+  // V5.4: Reverse-mode visar reverse_forklaring (utan begreppsnamnet) om satt.
+    // Eleven ska MINNETSÅ från beskrivning, inte läsa svaret rakt av.
+  const reverseText = currentCard.reverse_forklaring || currentCard.forklaring;
+
   if (currentMode === 'forward') {
     promptEl.textContent = currentCard.begrepp;
     answerEl.textContent = currentCard.forklaring;
   } else {
-    promptEl.textContent = currentCard.forklaring;
+    promptEl.textContent = reverseText;
     answerEl.textContent = currentCard.begrepp;
   }
 
@@ -771,7 +775,7 @@ if ('serviceWorker' in navigator) {
     // Cache-bust ?v=N på sw.js matchar CACHE_NAME i sw.js — tvingar webbläsaren att
     // hämta ny SW istället för att returnera HTTP-cache. Utan detta kan gamla
     // SW-registreringar ligga kvar i veckor (Johanna-incident 2026-10-02 07:02).
-    navigator.serviceWorker.register('sw.js?v=25').catch(err => console.warn('SW registration failed:', err));
+    navigator.serviceWorker.register('sw.js?v=26').catch(err => console.warn('SW registration failed:', err));
   });
 }
 
