@@ -313,7 +313,9 @@ button.danger:hover:not(:disabled) {
 
 /* V4: Paper/app mode toggle (bara synlig i reverse) */
 .paper-app-toggle {
-  margin-top: 0.5rem;
+  display: flex;
+  width: fit-content;
+  margin: 0.5rem auto 0;
   font-size: 0.85rem;
 }
 
