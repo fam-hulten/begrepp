@@ -277,7 +277,8 @@
           "audio_fraga": "audio/kretslopp-fraga.mp3",
           "audio_svar": "audio/kretslopp-svar.mp3",
           "audio_reverse_fraga": "audio/kretslopp-reverse-fraga.mp3",
-          "audio_reverse_svar": "audio/kretslopp-reverse-svar.mp3"
+          "audio_reverse_svar": "audio/kretslopp-reverse-svar.mp3",
+          "image": "images/kretslopp.png"
         },
         {
           "id": "vintergron",
