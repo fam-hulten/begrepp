@@ -34,11 +34,48 @@ cd /home/node/.openclaw/repos/begrepp && git remote -v
 
 ---
 
-## Steg 2 — Uppdatera `begrepp-data.json`
+## Steg 2 — Uppdatera `begrepp-data.json` (multi-subject, V5+)
 
 **Fil:** `begrepp-data.json` (i repot root)
 
-**Struktur per begrepp:**
+**Top-level-struktur (V5):**
+```json
+{
+  "version": 2,
+  "subjects": [
+    {
+      "id": "historia",
+      "name": "Historia",
+      "subtitle": "Vikingatid v.40",
+      "icon": "📜",
+      "color": "#b45309",
+      "modes": ["forward", "reverse"],
+      "begrepp": [ /* … */ ]
+    },
+    {
+      "id": "no",
+      "name": "NO",
+      "subtitle": "Biologi, kemi, fysik",
+      "icon": "🌿",
+      "color": "#16a34a",
+      "modes": ["forward", "reverse"],
+      "begrepp": [ /* … */ ]
+    }
+  ]
+}
+```
+
+**Lägga till nytt ämne:**
+1. Öppna `begrepp-data.json`.
+2. Lägg till objekt i `subjects[]` med unik `id`, `name`, `modes` (t.ex. `["forward", "reverse"]`), `begrepp[]`.
+3. Valfritt: `icon` (emoji), `color` (hex), `subtitle` (kort kontext).
+4. Sätt `archived: true` om ämnet inte ska synas i väljaren (t.ex. färdigtränat).
+
+**Lägga till begrepp i befintligt ämne:**
+1. Hitta rätt subject i `subjects[]` (via `id`).
+2. Lägg till begrepp-objekt i `begrepp[]` (se struktur nedan).
+
+**Per-begrepp-struktur:**
 ```json
 {
   "id": "summa",
@@ -52,12 +89,12 @@ cd /home/node/.openclaw/repos/begrepp && git remote -v
 ```
 
 **Regler:**
-- `id` — kebab-case, kort, unikt (t.ex. `jamna-tal`, inte `jämna tal` eller `JamnaTal`)
+- `id` — kebab-case, kort, globalt unikt ÖVER ALLA ÄMNEN (används i localStorage-mastery).
 - `begrepp` — ordet som det står i läroboken (t.ex. "Summa" med stor bokstav)
 - `forklaring` — pedagogiskt, DLD-vänligt, kort nog att höras på <10s
   - **Bra:** "Svaret när man lägger ihop tal med addition. Till exempel: tre plus fyra är sju. Summan är sju."
   - **Dåligt:** "Summa är ett matematiskt begrepp som används vid addition" (för abstrakt)
-- `audio_*` — sätt paths till `audio/{id}-{typ}.mp3` — genereras i steg 3
+- `audio_*` — valfritt i V5 (om saknas → audio-knapparna döljs). Sätt paths till `audio/{id}-{typ}.mp3` — genereras i steg 3.
 
 **Verifiering innan steg 3:**
 ```bash

@@ -1,6 +1,6 @@
 # Begrepp — Klass 4 Lejonskolan
 
-Träna SO-begrepp (Matematik v.37+) med audio. För Zacharias (åk 4, misstänkt språkstörning).
+Träna begrepp (Historia, NO, Matte, …) med audio. För Zacharias (åk 4, misstänkt språkstörning).
 
 ## Funktioner
 
@@ -122,6 +122,91 @@ Se **[WORKFLOW.md](WORKFLOW.md)** för steg-för-steg-guide:
 # Lokalt: öppna index.html i webbläsare
 # Deploy: push till GitHub Pages (auto-deploy via fam-hulten/begrepp)
 ```
+
+## V5 Arkitektur — multi-subject (2026-10-02)
+
+**Bakgrund:** Zacharias har läxa i flera ämnen samtidigt (Historia, NO, …) — behöver kunna växla mellan ämnen i appen. Samma ämne kan ha olika träningslägen (per JSON-deklarativ `modes`-array).
+
+**Datalayout (`begrepp-data.json`):**
+
+```json
+{
+  "version": 2,
+  "subjects": [
+    {
+      "id": "historia",
+      "name": "Historia",
+      "subtitle": "Vikingatid v.40",
+      "icon": "📜",
+      "color": "#b45309",
+      "modes": ["forward", "reverse"],
+      "begrepp": [
+        { "id": "vikingatag", "begrepp": "Vikingatåg", "forklaring": "…", "audio_*": "…" }
+      ]
+    },
+    {
+      "id": "no",
+      "name": "NO",
+      "subtitle": "Biologi, kemi, fysik",
+      "icon": "🌿",
+      "color": "#16a34a",
+      "modes": ["forward", "reverse"],
+      "begrepp": [ /* … */ ]
+    },
+    {
+      "id": "matte",
+      "name": "Matte",
+      "archived": true,
+      "modes": ["forward", "reverse"],
+      "begrepp": [ /* … */ ]
+    }
+  ]
+}
+```
+
+**Per-ämne-fält:**
+- `id` (krävs) — kebab-case, unikt. Använd som localStorage-nyckel + DOM-id.
+- `name` (krävs) — visningsnamn (t.ex. "Historia", "NO").
+- `subtitle` (valfri) — kort kontext under headern (t.ex. "Vikingatid v.40").
+- `icon` (valfri) — emoji på väljarkortet. Default: 📚.
+- `color` (valfri) — primärfärg för ämnet (CSS `--primary`). Default: amber.
+- `modes` (krävs) — array av `"forward"`, `"reverse"`, eller framtida `"multipleChoice"`, `"imageBased"`.
+- `archived` (valfri, default false) — visas inte i väljaren.
+- `begrepp[]` (krävs) — array av begrepp-objekt.
+
+**Per-begrepp-fält (oförändrat från V4):**
+- `id` (krävs) — kebab-case, globalt unikt över alla ämnen (används i localStorage-mastery).
+- `begrepp` (krävs) — ordet.
+- `forklaring` (krävs) — definition/förklaring.
+- `audio_fraga`, `audio_svar`, `audio_reverse_fraga`, `audio_reverse_svar` (valfria) — paths till MP3-filer. Om saknas för aktuellt läge döljs audio-knapparna.
+
+**App-flöde (V5):**
+1. Första skärm: ämnesväljare (lista över icke-arkiverade ämnen).
+2. Klick på ämneskort → `selectSubject(id)` → laddar ämnets begrepp, byter header + primärfärg, startar session.
+3. Träning som förut (forward/reverse, papper/app-läge, Leitner-kö).
+4. `← Ämnen` (eller `Esc`) → tillbaka till väljaren.
+
+**Lokal persistence (V5):**
+- `begrepp-mastery-v3` (mastery per begrepp-ID: `{correct, wrong, lastSeen}`) — oförändrad från V4. ID är globalt unikt över ämnen så mastery delas per kort (oavsett ämne).
+- `***` (paper/app-läge) — oförändrad från V4.
+- `begrepp-last-subject-v5` (senast valda ämnes-id) — för PWA-install: återöppnas direkt i senast tränade ämne.
+
+**Backward-kompatibilitet:**
+- localStorage-mastery från V4 läses in orörd (samma nyckel, samma struktur).
+- `modes`-array är deklarativ per ämne — kan utökas utan app.js-ändringar.
+- Per-begrepp `audio_*`-fält är valfria — ämnen utan audio fungerar i visuellt läge (audio-knappar döljs).
+- `active: false` per begrepp respekteras fortfarande (bakåtkompatibelt, används i matte-arkivet).
+
+**Skillnad mot tidigare versioner:**
+- V1–V4: en JSON-array `begrepp[]` — ett ämne implicit.
+- V5: `subjects[]` med per-ämne-begrepp, modes, färg, ikon, archive-stöd.
+
+**Lägg till nytt ämne:**
+1. Öppna `begrepp-data.json`.
+2. Lägg till objekt i `subjects[]` med unik `id`, `name`, `modes`, `begrepp[]`.
+3. Valfritt: sätt `icon`, `color`, `subtitle` för visuell identitet.
+4. Generera audio för begreppen (`scripts/gen_audio_v4.py` — funkar oförändrat).
+5. Commit + push.
 
 ## V4 Arkitektur — mode-toggle + prev/next + app-läge (2026-10-01)
 

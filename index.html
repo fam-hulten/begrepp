@@ -11,13 +11,21 @@
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
-  <link rel="stylesheet" href="styles.css?v=3">
+  <link rel="stylesheet" href="styles.css?v=4">
   <title>Begrepp</title>
 </head>
 <body>
   <header>
-    <h1 id="title" contenteditable="true">Begrepp — Klass 4 Lejonskolan</h1>
-    <p class="subtitle">Samhällskunskap v.37 — lyssna, tänk, jämför med facit</p>
+    <div class="header-row">
+      <button id="backToSubjectsBtn" class="back-link hidden" aria-label="Tillbaka till ämnesväljaren">
+        <span aria-hidden="true">←</span> Ämnen
+      </button>
+      <div class="header-text">
+        <h1 id="title" contenteditable="true">Begrepp</h1>
+        <p class="subtitle" id="subtitle">Välj ämne för att börja träna</p>
+      </div>
+      <div class="header-spacer" aria-hidden="true"></div>
+    </div>
     <div class="mode-toggle" role="tablist" aria-label="Övningsläge">
       <button id="modeForwardBtn" class="mode-btn active" role="tab" aria-selected="true">📖 Begrepp → Förklaring</button>
       <button id="modeReverseBtn" class="mode-btn" role="tab" aria-selected="false">🔊 Förklaring → Begrepp</button>
@@ -28,7 +36,11 @@
     </div>
   </header>
 
-  <main class="card" id="card">
+  <section id="subjectPicker" class="subject-picker" aria-label="Välj ämne">
+    <!-- populated by app.js -->
+  </section>
+
+  <main class="card hidden" id="card">
     <div class="streak-counter" id="streakCounter" aria-label="Rätt i rad">🔥 <span id="streakNum">0</span></div>
     <div class="progress-bar" id="progressBar" aria-hidden="true"></div>
     <div class="counter"><span id="current">1</span> av <span id="total">12</span></div>
@@ -108,6 +120,6 @@
     <button id="dismissInstall" aria-label="Stäng">✕</button>
   </footer>
 
-  <script src="app.js?v=3"></script>
+  <script src="app.js?v=5"></script>
 </body>
 </html>

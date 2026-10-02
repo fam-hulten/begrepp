@@ -1,7 +1,7 @@
 {
   "name": "begrepp",
   "version": "1.0.0",
-  "description": "Träna SO-begrepp (Samhällskunskap v.37) med audio. För Zacharias (åk 4, misstänkt språkstörning).",
+  "description": "Träna begrepp (Historia, NO, Matte, …) med audio. Multi-subject PWA för Zacharias (åk 4, misstänkt språkstörning).",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

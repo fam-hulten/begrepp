@@ -67,6 +67,48 @@ h1 {
   margin-bottom: 1rem;
 }
 
+/* V5: Header row med back-link */
+.header-row {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.5rem;
+}
+
+.header-text {
+  text-align: center;
+}
+
+.back-link {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  min-height: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all 0.15s;
+}
+
+.back-link:hover:not([hidden]) {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.back-link.hidden { display: none; }
+
 /* Mode toggle (Begrepp → Förklaring / Förklaring → Begrepp) */
 .mode-toggle {
   display: inline-flex;
@@ -538,6 +580,125 @@ button.danger:hover:not(:disabled) {
   gap: 0.75rem;
 }
 
+/* V5: Subject picker */
+.subject-picker {
+  max-width: 560px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.subject-picker.hidden { display: none; }
+
+.picker-header {
+  text-align: center;
+  margin-bottom: 0.25rem;
+}
+
+.pick-heading {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.01em;
+}
+
+.pick-subheading {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.subject-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.subject-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-left: 6px solid var(--subject-color, var(--primary));
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  color: var(--text);
+  min-height: 80px;
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+}
+
+.subject-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--subject-color, var(--primary));
+}
+
+.subject-card:active {
+  transform: translateY(0);
+}
+
+.subject-card .subject-icon {
+  font-size: 2.5rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.subject-card .subject-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.subject-card .subject-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.subject-card .subject-chevron {
+  font-size: 1.8rem;
+  color: var(--text-subtle);
+  flex-shrink: 0;
+  font-weight: 300;
+}
+
+.error-state, .empty-state {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
+.error-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.error-msg {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.3rem;
+}
+
+.error-hint {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
 .install-hint p { flex: 1; }
 
 .install-hint button {
@@ -574,6 +735,14 @@ button.danger:hover:not(:disabled) {
   header { margin-bottom: 1rem; }
   .summary-card { padding: 1.5rem 1rem; }
   .stat-num { font-size: 2rem; }
+  /* V5 mobile */
+  .subject-card { padding: 0.85rem 1rem; min-height: 70px; gap: 0.75rem; }
+  .subject-card .subject-icon { font-size: 2rem; }
+  .subject-card .subject-name { font-size: 1.1rem; }
+  .subject-card .subject-chevron { font-size: 1.4rem; }
+  .back-link { font-size: 0.78rem; padding: 0.35rem 0.6rem; }
+  .pick-heading { font-size: 1.2rem; }
+  .pick-subheading { font-size: 0.85rem; }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -600,4 +769,10 @@ button.danger:hover:not(:disabled) {
   .feedback-hint { background: #44403c; }
   .paper-app-toggle .mode-btn { background: transparent; color: var(--text-muted); }
   .paper-app-toggle .mode-btn:hover:not(.active) { background: rgba(245, 158, 11, 0.2); }
+  /* V5: Dark mode för picker */
+  .back-link { background: transparent; color: var(--text-muted); border-color: var(--border); }
+  .back-link:hover:not([hidden]) { background: var(--primary-soft); color: var(--primary); border-color: var(--primary); }
+  .subject-card { background: var(--card); border-color: var(--border); }
+  .subject-card .subject-name { color: var(--text); }
+  .error-state, .empty-state { background: var(--card); border-color: var(--border); }
 }

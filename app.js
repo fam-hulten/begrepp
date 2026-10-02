@@ -1,21 +1,28 @@
-// Begrepp — PWA V4 (mode-toggle + prev/next + app-läge för reverse)
+// Begrepp — PWA V5 (multi-subject + subject picker)
 //
-// Läge:
+// Arkitektur:
+//   • Första skärm: subject picker (lista av ämnen, exkl. archived).
+//   • Per ämne: egen uppsättning begrepp + valbara träningslägen (declarativt via JSON).
+//   • localStorage-mastery per kort-id (globalt unikt över ämnen).
+//   • Senast valda ämne sparas → återöppnas direkt om appen är PWA-installad.
+//
+// Träningslägen (per ämne, deklarerade i JSON.modes):
 //   • Forward (Begrepp → Förklaring): reading explanation — INGET app-läge.
 //   • Reverse (Förklaring → Begrepp): recall begreppet — app-läge möjligt.
 //
 // App-läge (bara reverse):
 //   • Input + Rätta jämför mot begreppet.
 //   • Rätt → ✓ Rät!, auto-advance ~0.8s, saveMastery(true).
-//   • Fel → ✗ Inte rätt med diff, [Nästa →] manuell, saveMastery(false), ordet till slutet.
+//   • Fel → ✗ Inte rätt med diff, [Nästa →] manuell, saveMastery(false).
 //
-// Papper-läge (båda riktningar):
-//   • Befintligt flöde: Visa svaret → reveal + self-mark.
+// Audio: per-kart 4 fält (audio_fraga, audio_svar, audio_reverse_fraga, audio_reverse_svar).
+//   • Saknas audio för aktuellt läge → audio-knapparna döljs helt (visuellt läge).
 //
 // Navigation: ← Bak / Nästa → fritt genom listan. Rätta påverkar listan oavsett position.
 
 const STORAGE_KEY = 'begrepp-mastery-v3';
-const APP_MODE_KEY = 'begrepp-app-mode';
+const APP_MODE_KEY = '***';
+const SUBJECT_STORAGE_KEY = 'begrepp-last-subject-v5';
 
 // === AUDIO PRIMING ===
 let audioPrimed = false;
@@ -34,24 +41,30 @@ document.addEventListener('touchstart', primeAudio, { once: true, passive: true 
 document.addEventListener('keydown', primeAudio, { once: true, passive: true });
 const INITIAL_DELAY_MS = 300;
 
-let data = null;
-let order = [];              // dynamisk ordning (shufflas en gång, fel-ord flyttas till slutet)
+// === STATE ===
+let data = null;                    // { version, subjects: [...] }
+let currentSubject = null;          // currently selected subject obj
+let order = [];                      // dynamic order (shuffled, fails moved to end)
 let currentIndex = 0;
 let masteredThisSession = [];
 let sessionRepeats = 0;
 let sessionAttempts = [];
 let currentCard = null;
 let currentMode = 'forward';
-let appMode = 'paper';        // 'paper' | 'app' (endast relevant i reverse)
+let appMode = 'paper';              // 'paper' | 'app' (only relevant in reverse)
 let revealed = false;
 let activeChain = null;
+let streak = 0;
+let deferredInstallPrompt = null;
 
+// === DOM ===
 const cardEl = document.getElementById('card');
 const promptEl = document.getElementById('prompt');
 const answerEl = document.getElementById('answer');
 const feedbackEl = document.getElementById('feedback');
 const audioPromptBtn = document.getElementById('audioPromptBtn');
 const audioAnswerBtn = document.getElementById('audioAnswerBtn');
+const audioButtonsEl = document.querySelector('.audio-buttons');
 const revealBtn = document.getElementById('revealBtn');
 const selfAssessEl = document.getElementById('selfAssess');
 const rattBtn = document.getElementById('rattBtn');
@@ -76,11 +89,11 @@ const installHint = document.getElementById('installHint');
 const installBtn = document.getElementById('installBtn');
 const dismissInstallBtn = document.getElementById('dismissInstall');
 const titleEl = document.getElementById('title');
+const subtitleEl = document.getElementById('subtitle');
+const subjectPickerEl = document.getElementById('subjectPicker');
+const backToSubjectsBtn = document.getElementById('backToSubjectsBtn');
 
-let streak = 0;
-let deferredInstallPrompt = null;
-
-// --- AUDIO ENGINE (oförändrad från V3.9) ---
+// === AUDIO ENGINE (oförändrad från V3.9) ===
 
 function cancelChain() {
   if (activeChain) {
@@ -142,23 +155,31 @@ function playChain(sources) {
 function getInitialSources() {
   if (!currentCard) return [];
   if (currentMode === 'forward') {
-    return [currentCard.audio_fraga];
+    return currentCard.audio_fraga ? [currentCard.audio_fraga] : [];
   }
-  return [currentCard.audio_reverse_fraga];
+  return currentCard.audio_reverse_fraga ? [currentCard.audio_reverse_fraga] : [];
 }
 
 function getAnswerSources() {
   if (!currentCard) return [];
   if (currentMode === 'forward') {
-    return [currentCard.audio_svar];
+    return currentCard.audio_svar ? [currentCard.audio_svar] : [];
   }
-  return [currentCard.audio_reverse_svar];
+  return currentCard.audio_reverse_svar ? [currentCard.audio_reverse_svar] : [];
+}
+
+function hasAudioForCurrentCard() {
+  if (!currentCard) return false;
+  if (currentMode === 'forward') {
+    return !!(currentCard.audio_fraga || currentCard.audio_svar);
+  }
+  return !!(currentCard.audio_reverse_fraga || currentCard.audio_reverse_svar);
 }
 
 function playPrompt() { playChain(getInitialSources()); }
 function playAnswer() { playChain(getAnswerSources()); }
 
-// --- DATA + UI ---
+// === DATA + UI ===
 
 async function loadData() {
   try {
@@ -166,17 +187,27 @@ async function loadData() {
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const json = await res.json();
     data = json;
-    if (!data.begrepp || !data.begrepp.length) throw new Error('Inga begrepp i datafilen');
-    data.begrepp = data.begrepp.filter(b => b.active !== false);
-    if (data.meta?.title) titleEl.textContent = data.meta.title;
-    init();
+    if (!data.subjects || !data.subjects.length) {
+      throw new Error('Inga subjects i datafilen');
+    }
+    if (data.version !== 2) {
+      console.warn('Begrepp-data har oväntad version:', data.version, '— förväntade 2');
+    }
+    renderSubjectPicker();
   } catch (err) {
     console.error('Kunde inte ladda begrepp-data.json:', err);
-    promptEl.textContent = '⚠️';
-    answerEl.textContent = 'Kunde inte ladda data. Kontrollera att begrepp-data.json finns.';
-    answerEl.classList.remove('hidden');
-    revealBtn.disabled = true;
+    subjectPickerEl.innerHTML = `
+      <div class="error-state">
+        <div class="error-icon">⚠️</div>
+        <p class="error-msg">Kunde inte ladda data.</p>
+        <p class="error-hint">Kontrollera att begrepp-data.json finns.</p>
+      </div>`;
   }
+}
+
+function getAvailableSubjects() {
+  if (!data?.subjects) return [];
+  return data.subjects.filter(s => s.archived !== true);
 }
 
 function loadAppMode() {
@@ -211,8 +242,96 @@ function setAppMode(mode) {
   renderCard();
 }
 
+// === SUBJECT PICKER ===
+
+function renderSubjectPicker() {
+  cancelChain();
+  subjectPickerEl.innerHTML = '';
+  subjectPickerEl.classList.remove('hidden');
+  cardEl.classList.add('hidden');
+  summaryEl.classList.add('hidden');
+  backToSubjectsBtn.classList.add('hidden');
+
+  const subjects = getAvailableSubjects();
+
+  const headerEl = document.createElement('div');
+  headerEl.className = 'picker-header';
+  headerEl.innerHTML = `
+    <h2 class="pick-heading">Välj ämne</h2>
+    <p class="pick-subheading">Vilket ämne vill du öva på?</p>
+  `;
+  subjectPickerEl.appendChild(headerEl);
+
+  if (subjects.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.innerHTML = '<p>Inga ämnen tillgängliga just nu.</p>';
+    subjectPickerEl.appendChild(empty);
+    return;
+  }
+
+  // Om endast ett ämne → auto-select (kid-friendly)
+  if (subjects.length === 1) {
+    selectSubject(subjects[0].id);
+    return;
+  }
+
+  const list = document.createElement('div');
+  list.className = 'subject-list';
+  for (const subj of subjects) {
+    const card = document.createElement('button');
+    card.className = 'subject-card';
+    card.type = 'button';
+    card.dataset.subjectId = subj.id;
+    if (subj.color) card.style.setProperty('--subject-color', subj.color);
+    card.innerHTML = `
+      <span class="subject-icon" aria-hidden="true">${escapeHtml(subj.icon || '📚')}</span>
+      <span class="subject-info">
+        <span class="subject-name">${escapeHtml(subj.name)}</span>
+      </span>
+      <span class="subject-chevron" aria-hidden="true">›</span>
+    `;
+    card.addEventListener('click', () => selectSubject(subj.id));
+    list.appendChild(card);
+  }
+  subjectPickerEl.appendChild(list);
+}
+
+function selectSubject(subjectId) {
+  const subj = data.subjects.find(s => s.id === subjectId);
+  if (!subj) return;
+  currentSubject = subj;
+  try {
+    localStorage.setItem(SUBJECT_STORAGE_KEY, subjectId);
+  } catch {}
+  subjectPickerEl.classList.add('hidden');
+  cardEl.classList.remove('hidden');
+  backToSubjectsBtn.classList.remove('hidden');
+
+  // Update header
+  titleEl.textContent = subj.name;
+  if (subtitleEl) subtitleEl.textContent = subj.subtitle || '';
+  if (subj.color) {
+    document.documentElement.style.setProperty('--primary', subj.color);
+  }
+
+  init();
+}
+
+function backToSubjects() {
+  cancelChain();
+  currentSubject = null;
+  cardEl.classList.add('hidden');
+  summaryEl.classList.add('hidden');
+  renderSubjectPicker();
+}
+
+// === SESSION LOGIC (per ämne) ===
+
 function init() {
-  const all = [...data.begrepp];
+  if (!currentSubject) return;
+  // Filtrera bort ev. active:false på enskilda begrepp (bakåtkompatibelt)
+  const all = currentSubject.begrepp.filter(b => b.active !== false);
   for (let i = all.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [all[i], all[j]] = [all[j], all[i]];
@@ -223,7 +342,7 @@ function init() {
   sessionRepeats = 0;
   sessionAttempts = [];
   streak = 0;
-  totalSpan.textContent = data.begrepp.length;
+  totalSpan.textContent = all.length;
   renderProgress();
   updateStreak();
   renderCard();
@@ -246,12 +365,13 @@ function prevWord() {
 }
 
 function renderCard() {
+  if (!currentSubject) return;
   if (currentIndex >= order.length) {
     showSummary();
     return;
   }
   const id = order[currentIndex];
-  currentCard = data.begrepp.find(b => b.id === id);
+  currentCard = currentSubject.begrepp.find(b => b.id === id);
   if (!currentCard) {
     currentIndex++;
     renderCard();
@@ -284,6 +404,9 @@ function renderCard() {
   if (inputRow) inputRow.hidden = !useAppMode;
   revealBtn.classList.toggle('hidden', useAppMode);
 
+  // Audio-knappar: visa bara om audio finns för aktuellt kort
+  if (audioButtonsEl) audioButtonsEl.classList.toggle('hidden', !hasAudioForCurrentCard());
+
   currentSpan.textContent = currentIndex + 1;
 
   // Nav-knappar
@@ -293,7 +416,9 @@ function renderCard() {
   renderProgress();
 
   cancelChain();
-  setTimeout(() => playPrompt(), INITIAL_DELAY_MS);
+  if (hasAudioForCurrentCard()) {
+    setTimeout(() => playPrompt(), INITIAL_DELAY_MS);
+  }
 
   // Fokusera input i app-läge
   if (useAppMode && guessInput) {
@@ -308,8 +433,10 @@ function reveal() {
   revealed = true;
   answerEl.classList.remove('hidden');
   revealBtn.classList.add('hidden');
-  audioAnswerBtn.classList.remove('hidden');
-  audioAnswerBtn.disabled = false;
+  if (currentCard.audio_svar || currentCard.audio_reverse_svar) {
+    audioAnswerBtn.classList.remove('hidden');
+    audioAnswerBtn.disabled = false;
+  }
   selfAssessEl.classList.remove('hidden');
   cancelChain();
   setTimeout(() => playAnswer(), 0);
@@ -359,7 +486,6 @@ function checkGuess() {
   const correct = normalize(currentCard.begrepp);
 
   if (guess === correct) {
-    // Rätt: ✓ Rät!, auto-advance, saveMastery(true), mastera
     feedbackEl.innerHTML = `✓ Rätt! <strong>${escapeHtml(currentCard.begrepp)}</strong>`;
     feedbackEl.className = 'feedback feedback-correct';
     guessInput.disabled = true;
@@ -372,7 +498,6 @@ function checkGuess() {
     renderProgress();
     setTimeout(() => nextWord(), 800);
   } else {
-    // Fel: ✗ Inte rätt med diff, saveMastery(false), ordet till slutet
     feedbackEl.innerHTML = buildDiffFeedback(guessInput.value.trim(), currentCard.begrepp);
     feedbackEl.className = 'feedback feedback-wrong';
     guessInput.disabled = true;
@@ -382,7 +507,6 @@ function checkGuess() {
     sessionRepeats++;
     saveMastery(currentCard.id, false);
     sessionAttempts.push({ id: currentCard.id, correct: false, mode: currentMode });
-    // Flytta ordet till slutet av listan (currentIndex pekar på nästa)
     const wordId = order.splice(currentIndex, 1)[0];
     order.push(wordId);
     renderProgress();
@@ -461,14 +585,12 @@ function setMode(mode) {
   modeForwardBtn.setAttribute('aria-selected', mode === 'forward');
   modeReverseBtn.classList.toggle('active', mode === 'reverse');
   modeReverseBtn.setAttribute('aria-selected', mode === 'reverse');
-  // Visa/dölj paper/app-toggle beroende på riktning
   if (paperAppToggle) {
     paperAppToggle.hidden = (mode === 'forward');
   }
-  // Om vi byter till forward och är i app-läge, återställ till papper
   if (mode === 'forward' && appMode === 'app') {
     setAppMode('paper');
-    return;  // setAppMode anropar redan renderCard
+    return;
   }
   init();
 }
@@ -487,13 +609,15 @@ nextBtn?.addEventListener('click', () => {
     nextWord();
     return;
   }
-  // Båda läge + revealed: om i app-läge efter fel är ordet redan flyttat
   nextWord();
 });
 startOverBtn.addEventListener('click', startOver);
 audioPromptBtn.addEventListener('click', playPrompt);
 audioAnswerBtn.addEventListener('click', playAnswer);
 dismissInstallBtn?.addEventListener('click', () => installHint.hidden = true);
+
+// V5: Tillbaka till ämnesväljare
+backToSubjectsBtn?.addEventListener('click', backToSubjects);
 
 // Enter i input-fältet → Rätta (app-läge)
 guessInput?.addEventListener('keydown', e => {
@@ -520,18 +644,19 @@ installBtn?.addEventListener('click', async () => {
 
 // Keyboard shortcuts
 document.addEventListener('keydown', (e) => {
-  // Skip om target är input eller contenteditable
   if (e.target.tagName === 'INPUT' || e.target.isContentEditable) {
-    // Tillåt piltangenter för cursor-rörelse i input
+    return;
+  }
+  if (e.key === 'Escape') {
+    // V5: Escape går tillbaka till ämnesväljaren om vi är i träning
+    if (!subjectPickerEl.classList.contains('hidden')) return;
+    backToSubjects();
     return;
   }
   if (e.key === ' ' || e.key === 'Enter') {
-    // I app-läge reverse: Enter triggar checkGuess via input-hanteraren
-    // Här hanterar vi pappers-läge (reveal) och app-läge (om input ej fokuserad)
     if (!revealed) {
       e.preventDefault();
       if (currentMode === 'reverse' && appMode === 'app') {
-        // Försök checkGuess (om guessInput har värde)
         checkGuess();
       } else {
         reveal();
@@ -561,10 +686,9 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-// Initiera läge från localStorage
+// Initiera
 loadAppMode();
-setAppMode(appMode);  // uppdaterar UI baserat på laddat appMode
-// Visa paper/app-toggle om vi startar i reverse
+setAppMode(appMode);
 if (paperAppToggle) {
   paperAppToggle.hidden = (currentMode === 'forward');
 }

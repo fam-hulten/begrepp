@@ -1,323 +1,411 @@
 {
-  "meta": {
-    "title": "Begrepp — Klass 4 Lejonskolan",
-    "subtitle": "Historia v.40 — Vikingatid, träna begrepp med audio, självbedöm rätt/fel"
-  },
-  "begrepp": [
+  "version": 2,
+  "subjects": [
     {
-      "id": "summa",
-      "begrepp": "Summa",
-      "forklaring": "Svaret i en addition.",
-      "audio_fraga": "audio/summa-fraga.mp3",
-      "audio_svar": "audio/summa-svar.mp3",
-      "audio_reverse_fraga": "audio/summa-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/summa-reverse-svar.mp3",
-      "active": false
+      "id": "historia",
+      "name": "Historia",
+      "subtitle": "Vikingatid v.40",
+      "icon": "📜",
+      "color": "#b45309",
+      "modes": ["forward", "reverse"],
+      "begrepp": [
+        {
+          "id": "langhus",
+          "begrepp": "Långhus",
+          "forklaring": "Hus som vikingar bodde i, delade med djuren",
+          "audio_fraga": "audio/langhus-fraga.mp3",
+          "audio_svar": "audio/langhus-svar.mp3",
+          "audio_reverse_fraga": "audio/langhus-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/langhus-reverse-svar.mp3"
+        },
+        {
+          "id": "munk",
+          "begrepp": "Munk",
+          "forklaring": "En kristen som jobbar i ett kloster, typ kyrka",
+          "audio_fraga": "audio/munk-fraga.mp3",
+          "audio_svar": "audio/munk-svar.mp3",
+          "audio_reverse_fraga": "audio/munk-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/munk-reverse-svar.mp3"
+        },
+        {
+          "id": "plundra",
+          "begrepp": "Plundra",
+          "forklaring": "Att ta, röva eller stjäla",
+          "audio_fraga": "audio/plundra-fraga.mp3",
+          "audio_svar": "audio/plundra-svar.mp3",
+          "audio_reverse_fraga": "audio/plundra-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/plundra-reverse-svar.mp3"
+        },
+        {
+          "id": "saga",
+          "begrepp": "Saga",
+          "forklaring": "En berättelse om Gudar och Hjältar",
+          "audio_fraga": "audio/saga-fraga.mp3",
+          "audio_svar": "audio/saga-svar.mp3",
+          "audio_reverse_fraga": "audio/saga-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/saga-reverse-svar.mp3"
+        },
+        {
+          "id": "marknad",
+          "begrepp": "Marknad",
+          "forklaring": "En plats där människor säljer och köper saker",
+          "audio_fraga": "audio/marknad-fraga.mp3",
+          "audio_svar": "audio/marknad-svar.mp3",
+          "audio_reverse_fraga": "audio/marknad-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/marknad-reverse-svar.mp3"
+        },
+        {
+          "id": "kloster",
+          "begrepp": "Kloster",
+          "forklaring": "En kyrka där munkar arbetar med att be och hjälpa andra fattiga",
+          "audio_fraga": "audio/kloster-fraga.mp3",
+          "audio_svar": "audio/kloster-svar.mp3",
+          "audio_reverse_fraga": "audio/kloster-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/kloster-reverse-svar.mp3"
+        },
+        {
+          "id": "vikingatag",
+          "begrepp": "Vikingatåg",
+          "forklaring": "Resor ut i världen där vikingar plundrade, men även sålde och köpte saker",
+          "audio_fraga": "audio/vikingatag-fraga.mp3",
+          "audio_svar": "audio/vikingatag-svar.mp3",
+          "audio_reverse_fraga": "audio/vikingatag-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/vikingatag-reverse-svar.mp3"
+        },
+        {
+          "id": "tral",
+          "begrepp": "Träl",
+          "forklaring": "Slav under vikingatiden",
+          "audio_fraga": "audio/tral-fraga.mp3",
+          "audio_svar": "audio/tral-svar.mp3",
+          "audio_reverse_fraga": "audio/tral-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/tral-reverse-svar.mp3"
+        },
+        {
+          "id": "hantverkare",
+          "begrepp": "Hantverkare",
+          "forklaring": "Person som tillverkar saker från början till slut, till exempel skor",
+          "audio_fraga": "audio/hantverkare-fraga.mp3",
+          "audio_svar": "audio/hantverkare-svar.mp3",
+          "audio_reverse_fraga": "audio/hantverkare-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/hantverkare-reverse-svar.mp3"
+        },
+        {
+          "id": "bofast",
+          "begrepp": "Bofast",
+          "forklaring": "Att man bor på samma plats hela tiden",
+          "audio_fraga": "audio/bofast-fraga.mp3",
+          "audio_svar": "audio/bofast-svar.mp3",
+          "audio_reverse_fraga": "audio/bofast-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/bofast-reverse-svar.mp3"
+        },
+        {
+          "id": "blot",
+          "begrepp": "Blot",
+          "forklaring": "Offra blod eller gåvor till sina Gudar",
+          "audio_fraga": "audio/blot-fraga.mp3",
+          "audio_svar": "audio/blot-svar.mp3",
+          "audio_reverse_fraga": "audio/blot-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/blot-reverse-svar.mp3"
+        },
+        {
+          "id": "att",
+          "begrepp": "Ätt",
+          "forklaring": "Ens egen släkt",
+          "audio_fraga": "audio/att-fraga.mp3",
+          "audio_svar": "audio/att-svar.mp3",
+          "audio_reverse_fraga": "audio/att-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/att-reverse-svar.mp3"
+        },
+        {
+          "id": "ting",
+          "begrepp": "Ting",
+          "forklaring": "Plats där man bestämde och dömde folk",
+          "audio_fraga": "audio/ting-fraga.mp3",
+          "audio_svar": "audio/ting-svar.mp3",
+          "audio_reverse_fraga": "audio/ting-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/ting-reverse-svar.mp3"
+        },
+        {
+          "id": "gotar",
+          "begrepp": "Götar",
+          "forklaring": "Folk i södra Sverige",
+          "audio_fraga": "audio/gotar-fraga.mp3",
+          "audio_svar": "audio/gotar-svar.mp3",
+          "audio_reverse_fraga": "audio/gotar-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/gotar-reverse-svar.mp3"
+        },
+        {
+          "id": "svear",
+          "begrepp": "Svear",
+          "forklaring": "Folk i mittersta Sverige",
+          "audio_fraga": "audio/svear-fraga.mp3",
+          "audio_svar": "audio/svear-svar.mp3",
+          "audio_reverse_fraga": "audio/svear-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/svear-reverse-svar.mp3"
+        }
+      ]
     },
     {
-      "id": "differens",
-      "begrepp": "Differens",
-      "forklaring": "Svaret i en subtraktion.",
-      "audio_fraga": "audio/differens-fraga.mp3",
-      "audio_svar": "audio/differens-svar.mp3",
-      "audio_reverse_fraga": "audio/differens-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/differens-reverse-svar.mp3",
-      "active": false
+      "id": "no",
+      "name": "NO",
+      "subtitle": "Biologi, kemi, fysik — testdata",
+      "icon": "🌿",
+      "color": "#16a34a",
+      "modes": ["forward", "reverse"],
+      "begrepp": [
+        {
+          "id": "fotosyntes",
+          "begrepp": "Fotosyntes",
+          "forklaring": "Så gör växter sin egen mat av solljus, vatten och luft"
+        },
+        {
+          "id": "vaxt",
+          "begrepp": "Växt",
+          "forklaring": "Levande varelse som gör sin egen mat med solljus"
+        },
+        {
+          "id": "daeggdjur",
+          "begrepp": "Däggdjur",
+          "forklaring": "Djur som har päls och diar sina ungar"
+        },
+        {
+          "id": "rovdjur",
+          "begrepp": "Rovdjur",
+          "forklaring": "Djur som jagar och äter andra djur"
+        },
+        {
+          "id": "fast-form",
+          "begrepp": "Fast form",
+          "forklaring": "Ett ämne som har en bestämd form, till exempel is"
+        },
+        {
+          "id": "vaetska",
+          "begrepp": "Vätska",
+          "forklaring": "Ett ämne som kan rinna, till exempel vatten"
+        },
+        {
+          "id": "gas",
+          "begrepp": "Gas",
+          "forklaring": "Ett ämne som sprider ut sig i luften, till exempel luft själv"
+        },
+        {
+          "id": "smaelta",
+          "begrepp": "Smälta",
+          "forklaring": "När is blir till vatten, fast blir till vätska"
+        },
+        {
+          "id": "magnet",
+          "begrepp": "Magnet",
+          "forklaring": "Något som drar till sig järn och vissa metaller"
+        },
+        {
+          "id": "friktion",
+          "begrepp": "Friktion",
+          "forklaring": "Motstånd som uppstår när två ytor glider mot varandra"
+        },
+        {
+          "id": "tyngdkraft",
+          "begrepp": "Tyngdkraft",
+          "forklaring": "Kraften som drar allt mot marken"
+        },
+        {
+          "id": "energi",
+          "begrepp": "Energi",
+          "forklaring": "Kraft som gör att saker rör sig eller fungerar"
+        }
+      ]
     },
     {
-      "id": "multiplikation",
-      "begrepp": "Multiplikation",
-      "forklaring": "Räknesätt som används för att beräkna upprepade additioner.",
-      "audio_fraga": "audio/multiplikation-fraga.mp3",
-      "audio_svar": "audio/multiplikation-svar.mp3",
-      "audio_reverse_fraga": "audio/multiplikation-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/multiplikation-reverse-svar.mp3",
-      "active": false
-    },
-    {
-      "id": "jamna-tal",
-      "begrepp": "Jämna tal",
-      "forklaring": "Jämna tal är noll och andra hela tal som är delbara med 2.",
-      "audio_fraga": "audio/jamna-tal-fraga.mp3",
-      "audio_svar": "audio/jamna-tal-svar.mp3",
-      "audio_reverse_fraga": "audio/jamna-tal-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/jamna-tal-reverse-svar.mp3",
-      "active": false
-    },
-    {
-      "id": "produkt",
-      "begrepp": "Produkt",
-      "forklaring": "Svaret i en multiplikation.",
-      "audio_fraga": "audio/produkt-fraga.mp3",
-      "audio_svar": "audio/produkt-svar.mp3",
-      "audio_reverse_fraga": "audio/produkt-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/produkt-reverse-svar.mp3",
-      "active": false
-    },
-    {
-      "id": "udda-tal",
-      "begrepp": "Udda tal",
-      "forklaring": "Udda tal är de hela tal som inte är delbara med 2.",
-      "audio_fraga": "audio/udda-tal-fraga.mp3",
-      "audio_svar": "audio/udda-tal-svar.mp3",
-      "audio_reverse_fraga": "audio/udda-tal-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/udda-tal-reverse-svar.mp3",
-      "active": false
-    },
-    {
-      "id": "division",
-      "begrepp": "Division",
-      "forklaring": "Räknesätt för att se hur många gånger ett tal ryms i ett annat tal.",
-      "audio_fraga": "audio/division-fraga.mp3",
-      "audio_svar": "audio/division-svar.mp3",
-      "audio_reverse_fraga": "audio/division-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/division-reverse-svar.mp3",
-      "active": false
-    },
-    {
-      "id": "addition",
-      "begrepp": "Addition",
-      "forklaring": "Räknesätt där tal läggs ihop.",
-      "audio_fraga": "audio/addition-fraga.mp3",
-      "audio_svar": "audio/addition-svar.mp3",
-      "audio_reverse_fraga": "audio/addition-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/addition-reverse-svar.mp3",
-      "active": false
-    },
-    {
-      "id": "subtraktion",
-      "begrepp": "Subtraktion",
-      "forklaring": "Räknesätt där ett tal dras från ett annat tal.",
-      "audio_fraga": "audio/subtraktion-fraga.mp3",
-      "audio_svar": "audio/subtraktion-svar.mp3",
-      "audio_reverse_fraga": "audio/subtraktion-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/subtraktion-reverse-svar.mp3",
-      "active": false
-    },
-    {
-      "id": "siffra",
-      "begrepp": "Siffra",
-      "forklaring": "I vårt talsystem finns 10 siffror, 0, 1, 2, 3, 4, 5, 6, 7, 8 och 9.",
-      "audio_fraga": "audio/siffra-fraga.mp3",
-      "audio_svar": "audio/siffra-svar.mp3",
-      "audio_reverse_fraga": "audio/siffra-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/siffra-reverse-svar.mp3",
-      "active": false
-    },
-    {
-      "id": "tal",
-      "begrepp": "Tal",
-      "forklaring": "Ett tal består av minst en siffra.",
-      "audio_fraga": "audio/tal-fraga.mp3",
-      "audio_svar": "audio/tal-svar.mp3",
-      "audio_reverse_fraga": "audio/tal-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/tal-reverse-svar.mp3",
-      "active": false
-    },
-    {
-      "id": "platsvarde",
-      "begrepp": "Platsvärde",
-      "forklaring": "Den plats som en siffra har i ett tal avgör siffrans värde.",
-      "audio_fraga": "audio/platsvarde-fraga.mp3",
-      "audio_svar": "audio/platsvarde-svar.mp3",
-      "audio_reverse_fraga": "audio/platsvarde-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/platsvarde-reverse-svar.mp3",
-      "active": false
-    },
-    {
-      "id": "tallinje",
-      "begrepp": "Tallinje",
-      "forklaring": "En rät linje där varje punkt på tallinjen motsvarar ett tal.",
-      "audio_fraga": "audio/tallinje-fraga.mp3",
-      "audio_svar": "audio/tallinje-svar.mp3",
-      "audio_reverse_fraga": "audio/tallinje-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/tallinje-reverse-svar.mp3",
-      "active": false
-    },
-    {
-      "id": "faktor",
-      "begrepp": "Faktor",
-      "forklaring": "Tal som ska multipliceras.",
-      "audio_fraga": "audio/faktor-fraga.mp3",
-      "audio_svar": "audio/faktor-svar.mp3",
-      "audio_reverse_fraga": "audio/faktor-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/faktor-reverse-svar.mp3",
-      "active": false
-    },
-    {
-      "id": "taljare",
-      "begrepp": "Täljare",
-      "forklaring": "Talet som delas i en division.",
-      "audio_fraga": "audio/taljare-fraga.mp3",
-      "audio_svar": "audio/taljare-svar.mp3",
-      "audio_reverse_fraga": "audio/taljare-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/taljare-reverse-svar.mp3",
-      "active": false
-    },
-    {
-      "id": "namnare",
-      "begrepp": "Nämnare",
-      "forklaring": "Talet som delas med i en division.",
-      "audio_fraga": "audio/namnare-fraga.mp3",
-      "audio_svar": "audio/namnare-svar.mp3",
-      "audio_reverse_fraga": "audio/namnare-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/namnare-reverse-svar.mp3",
-      "active": false
-    },
-    {
-      "id": "kvot",
-      "begrepp": "Kvot",
-      "forklaring": "Svaret i en division.",
-      "audio_fraga": "audio/kvot-fraga.mp3",
-      "audio_svar": "audio/kvot-svar.mp3",
-      "audio_reverse_fraga": "audio/kvot-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/kvot-reverse-svar.mp3",
-      "active": false
-    },
-    {
-      "id": "term",
-      "begrepp": "Term",
-      "forklaring": "Tal som ska adderas eller subtraheras.",
-      "audio_fraga": "audio/term-fraga.mp3",
-      "audio_svar": "audio/term-svar.mp3",
-      "audio_reverse_fraga": "audio/term-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/term-reverse-svar.mp3",
-      "active": false
-    },
-    {
-      "id": "langhus",
-      "begrepp": "Långhus",
-      "forklaring": "Hus som vikingar bodde i, delade med djuren",
-      "audio_fraga": "audio/langhus-fraga.mp3",
-      "audio_svar": "audio/langhus-svar.mp3",
-      "audio_reverse_fraga": "audio/langhus-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/langhus-reverse-svar.mp3"
-    },
-    {
-      "id": "munk",
-      "begrepp": "Munk",
-      "forklaring": "En kristen som jobbar i ett kloster, typ kyrka",
-      "audio_fraga": "audio/munk-fraga.mp3",
-      "audio_svar": "audio/munk-svar.mp3",
-      "audio_reverse_fraga": "audio/munk-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/munk-reverse-svar.mp3"
-    },
-    {
-      "id": "plundra",
-      "begrepp": "Plundra",
-      "forklaring": "Att ta, röva eller stjäla",
-      "audio_fraga": "audio/plundra-fraga.mp3",
-      "audio_svar": "audio/plundra-svar.mp3",
-      "audio_reverse_fraga": "audio/plundra-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/plundra-reverse-svar.mp3"
-    },
-    {
-      "id": "saga",
-      "begrepp": "Saga",
-      "forklaring": "En berättelse om Gudar och Hjältar",
-      "audio_fraga": "audio/saga-fraga.mp3",
-      "audio_svar": "audio/saga-svar.mp3",
-      "audio_reverse_fraga": "audio/saga-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/saga-reverse-svar.mp3"
-    },
-    {
-      "id": "marknad",
-      "begrepp": "Marknad",
-      "forklaring": "En plats där människor säljer och köper saker",
-      "audio_fraga": "audio/marknad-fraga.mp3",
-      "audio_svar": "audio/marknad-svar.mp3",
-      "audio_reverse_fraga": "audio/marknad-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/marknad-reverse-svar.mp3"
-    },
-    {
-      "id": "kloster",
-      "begrepp": "Kloster",
-      "forklaring": "En kyrka där munkar arbetar med att be och hjälpa andra fattiga",
-      "audio_fraga": "audio/kloster-fraga.mp3",
-      "audio_svar": "audio/kloster-svar.mp3",
-      "audio_reverse_fraga": "audio/kloster-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/kloster-reverse-svar.mp3"
-    },
-    {
-      "id": "vikingatag",
-      "begrepp": "Vikingatåg",
-      "forklaring": "Resor ut i världen där vikingar plundrade, men även sålde och köpte saker",
-      "audio_fraga": "audio/vikingatag-fraga.mp3",
-      "audio_svar": "audio/vikingatag-svar.mp3",
-      "audio_reverse_fraga": "audio/vikingatag-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/vikingatag-reverse-svar.mp3"
-    },
-    {
-      "id": "tral",
-      "begrepp": "Träl",
-      "forklaring": "Slav under vikingatiden",
-      "audio_fraga": "audio/tral-fraga.mp3",
-      "audio_svar": "audio/tral-svar.mp3",
-      "audio_reverse_fraga": "audio/tral-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/tral-reverse-svar.mp3"
-    },
-    {
-      "id": "hantverkare",
-      "begrepp": "Hantverkare",
-      "forklaring": "Person som tillverkar saker från början till slut, till exempel skor",
-      "audio_fraga": "audio/hantverkare-fraga.mp3",
-      "audio_svar": "audio/hantverkare-svar.mp3",
-      "audio_reverse_fraga": "audio/hantverkare-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/hantverkare-reverse-svar.mp3"
-    },
-    {
-      "id": "bofast",
-      "begrepp": "Bofast",
-      "forklaring": "Att man bor på samma plats hela tiden",
-      "audio_fraga": "audio/bofast-fraga.mp3",
-      "audio_svar": "audio/bofast-svar.mp3",
-      "audio_reverse_fraga": "audio/bofast-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/bofast-reverse-svar.mp3"
-    },
-    {
-      "id": "blot",
-      "begrepp": "Blot",
-      "forklaring": "Offra blod eller gåvor till sina Gudar",
-      "audio_fraga": "audio/blot-fraga.mp3",
-      "audio_svar": "audio/blot-svar.mp3",
-      "audio_reverse_fraga": "audio/blot-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/blot-reverse-svar.mp3"
-    },
-    {
-      "id": "att",
-      "begrepp": "Ätt",
-      "forklaring": "Ens egen släkt",
-      "audio_fraga": "audio/att-fraga.mp3",
-      "audio_svar": "audio/att-svar.mp3",
-      "audio_reverse_fraga": "audio/att-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/att-reverse-svar.mp3"
-    },
-    {
-      "id": "ting",
-      "begrepp": "Ting",
-      "forklaring": "Plats där man bestämde och dömde folk",
-      "audio_fraga": "audio/ting-fraga.mp3",
-      "audio_svar": "audio/ting-svar.mp3",
-      "audio_reverse_fraga": "audio/ting-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/ting-reverse-svar.mp3"
-    },
-    {
-      "id": "gotar",
-      "begrepp": "Götar",
-      "forklaring": "Folk i södra Sverige",
-      "audio_fraga": "audio/gotar-fraga.mp3",
-      "audio_svar": "audio/gotar-svar.mp3",
-      "audio_reverse_fraga": "audio/gotar-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/gotar-reverse-svar.mp3"
-    },
-    {
-      "id": "svear",
-      "begrepp": "Svear",
-      "forklaring": "Folk i mittersta Sverige",
-      "audio_fraga": "audio/svear-fraga.mp3",
-      "audio_svar": "audio/svear-svar.mp3",
-      "audio_reverse_fraga": "audio/svear-reverse-fraga.mp3",
-      "audio_reverse_svar": "audio/svear-reverse-svar.mp3"
+      "id": "matte",
+      "name": "Matte",
+      "subtitle": "v.37 (arkiverad)",
+      "icon": "➕",
+      "color": "#0ea5e9",
+      "modes": ["forward", "reverse"],
+      "archived": true,
+      "begrepp": [
+        {
+          "id": "summa",
+          "begrepp": "Summa",
+          "forklaring": "Svaret i en addition.",
+          "audio_fraga": "audio/summa-fraga.mp3",
+          "audio_svar": "audio/summa-svar.mp3",
+          "audio_reverse_fraga": "audio/summa-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/summa-reverse-svar.mp3",
+          "active": false
+        },
+        {
+          "id": "differens",
+          "begrepp": "Differens",
+          "forklaring": "Svaret i en subtraktion.",
+          "audio_fraga": "audio/differens-fraga.mp3",
+          "audio_svar": "audio/differens-svar.mp3",
+          "audio_reverse_fraga": "audio/differens-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/differens-reverse-svar.mp3",
+          "active": false
+        },
+        {
+          "id": "multiplikation",
+          "begrepp": "Multiplikation",
+          "forklaring": "Räknesätt som används för att beräkna upprepade additioner.",
+          "audio_fraga": "audio/multiplikation-fraga.mp3",
+          "audio_svar": "audio/multiplikation-svar.mp3",
+          "audio_reverse_fraga": "audio/multiplikation-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/multiplikation-reverse-svar.mp3",
+          "active": false
+        },
+        {
+          "id": "jamna-tal",
+          "begrepp": "Jämna tal",
+          "forklaring": "Jämna tal är noll och andra hela tal som är delbara med 2.",
+          "audio_fraga": "audio/jamna-tal-fraga.mp3",
+          "audio_svar": "audio/jamna-tal-svar.mp3",
+          "audio_reverse_fraga": "audio/jamna-tal-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/jamna-tal-reverse-svar.mp3",
+          "active": false
+        },
+        {
+          "id": "produkt",
+          "begrepp": "Produkt",
+          "forklaring": "Svaret i en multiplikation.",
+          "audio_fraga": "audio/produkt-fraga.mp3",
+          "audio_svar": "audio/produkt-svar.mp3",
+          "audio_reverse_fraga": "audio/produkt-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/produkt-reverse-svar.mp3",
+          "active": false
+        },
+        {
+          "id": "udda-tal",
+          "begrepp": "Udda tal",
+          "forklaring": "Udda tal är de hela tal som inte är delbara med 2.",
+          "audio_fraga": "audio/udda-tal-fraga.mp3",
+          "audio_svar": "audio/udda-tal-svar.mp3",
+          "audio_reverse_fraga": "audio/udda-tal-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/udda-tal-reverse-svar.mp3",
+          "active": false
+        },
+        {
+          "id": "division",
+          "begrepp": "Division",
+          "forklaring": "Räknesätt för att se hur många gånger ett tal ryms i ett annat tal.",
+          "audio_fraga": "audio/division-fraga.mp3",
+          "audio_svar": "audio/division-svar.mp3",
+          "audio_reverse_fraga": "audio/division-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/division-reverse-svar.mp3",
+          "active": false
+        },
+        {
+          "id": "addition",
+          "begrepp": "Addition",
+          "forklaring": "Räknesätt där tal läggs ihop.",
+          "audio_fraga": "audio/addition-fraga.mp3",
+          "audio_svar": "audio/addition-svar.mp3",
+          "audio_reverse_fraga": "audio/addition-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/addition-reverse-svar.mp3",
+          "active": false
+        },
+        {
+          "id": "subtraktion",
+          "begrepp": "Subtraktion",
+          "forklaring": "Räknesätt där ett tal dras från ett annat tal.",
+          "audio_fraga": "audio/subtraktion-fraga.mp3",
+          "audio_svar": "audio/subtraktion-svar.mp3",
+          "audio_reverse_fraga": "audio/subtraktion-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/subtraktion-reverse-svar.mp3",
+          "active": false
+        },
+        {
+          "id": "siffra",
+          "begrepp": "Siffra",
+          "forklaring": "I vårt talsystem finns 10 siffror, 0, 1, 2, 3, 4, 5, 6, 7, 8 och 9.",
+          "audio_fraga": "audio/siffra-fraga.mp3",
+          "audio_svar": "audio/siffra-svar.mp3",
+          "audio_reverse_fraga": "audio/siffra-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/siffra-reverse-svar.mp3",
+          "active": false
+        },
+        {
+          "id": "tal",
+          "begrepp": "Tal",
+          "forklaring": "Ett tal består av minst en siffra.",
+          "audio_fraga": "audio/tal-fraga.mp3",
+          "audio_svar": "audio/tal-svar.mp3",
+          "audio_reverse_fraga": "audio/tal-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/tal-reverse-svar.mp3",
+          "active": false
+        },
+        {
+          "id": "platsvarde",
+          "begrepp": "Platsvärde",
+          "forklaring": "Den plats som en siffra har i ett tal avgör siffrans värde.",
+          "audio_fraga": "audio/platsvarde-fraga.mp3",
+          "audio_svar": "audio/platsvarde-svar.mp3",
+          "audio_reverse_fraga": "audio/platsvarde-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/platsvarde-reverse-svar.mp3",
+          "active": false
+        },
+        {
+          "id": "tallinje",
+          "begrepp": "Tallinje",
+          "forklaring": "En rät linje där varje punkt på tallinjen motsvarar ett tal.",
+          "audio_fraga": "audio/tallinje-fraga.mp3",
+          "audio_svar": "audio/tallinje-svar.mp3",
+          "audio_reverse_fraga": "audio/tallinje-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/tallinje-reverse-svar.mp3",
+          "active": false
+        },
+        {
+          "id": "faktor",
+          "begrepp": "Faktor",
+          "forklaring": "Tal som ska multipliceras.",
+          "audio_fraga": "audio/faktor-fraga.mp3",
+          "audio_svar": "audio/faktor-svar.mp3",
+          "audio_reverse_fraga": "audio/faktor-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/faktor-reverse-svar.mp3",
+          "active": false
+        },
+        {
+          "id": "taljare",
+          "begrepp": "Täljare",
+          "forklaring": "Talet som delas i en division.",
+          "audio_fraga": "audio/taljare-fraga.mp3",
+          "audio_svar": "audio/taljare-svar.mp3",
+          "audio_reverse_fraga": "audio/taljare-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/taljare-reverse-svar.mp3",
+          "active": false
+        },
+        {
+          "id": "namnare",
+          "begrepp": "Nämnare",
+          "forklaring": "Talet som delas med i en division.",
+          "audio_fraga": "audio/namnare-fraga.mp3",
+          "audio_svar": "audio/namnare-svar.mp3",
+          "audio_reverse_fraga": "audio/namnare-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/namnare-reverse-svar.mp3",
+          "active": false
+        },
+        {
+          "id": "kvot",
+          "begrepp": "Kvot",
+          "forklaring": "Svaret i en division.",
+          "audio_fraga": "audio/kvot-fraga.mp3",
+          "audio_svar": "audio/kvot-svar.mp3",
+          "audio_reverse_fraga": "audio/kvot-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/kvot-reverse-svar.mp3",
+          "active": false
+        },
+        {
+          "id": "term",
+          "begrepp": "Term",
+          "forklaring": "Tal som ska adderas eller subtraheras.",
+          "audio_fraga": "audio/term-fraga.mp3",
+          "audio_svar": "audio/term-svar.mp3",
+          "audio_reverse_fraga": "audio/term-reverse-fraga.mp3",
+          "audio_reverse_svar": "audio/term-reverse-svar.mp3",
+          "active": false
+        }
+      ]
     }
   ]
 }
