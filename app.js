@@ -771,7 +771,7 @@ if ('serviceWorker' in navigator) {
     // Cache-bust ?v=N på sw.js matchar CACHE_NAME i sw.js — tvingar webbläsaren att
     // hämta ny SW istället för att returnera HTTP-cache. Utan detta kan gamla
     // SW-registreringar ligga kvar i veckor (Johanna-incident 2026-10-02 07:02).
-    navigator.serviceWorker.register('sw.js?v=23').catch(err => console.warn('SW registration failed:', err));
+    navigator.serviceWorker.register('sw.js?v=25').catch(err => console.warn('SW registration failed:', err));
   });
 }
 

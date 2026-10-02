@@ -7,7 +7,10 @@
       "subtitle": "Vikingatid v.40",
       "icon": "📜",
       "color": "#b45309",
-      "modes": ["forward", "reverse"],
+      "modes": [
+        "forward",
+        "reverse"
+      ],
       "begrepp": [
         {
           "id": "langhus",
@@ -149,75 +152,93 @@
     {
       "id": "no",
       "name": "NO",
-      "subtitle": "Biologi, kemi, fysik — testdata",
+      "subtitle": "Ekologi + biologi v.40",
       "icon": "🌿",
       "color": "#16a34a",
-      "modes": ["forward", "reverse"],
+      "modes": [
+        "forward",
+        "reverse"
+      ],
       "begrepp": [
         {
-          "id": "fotosyntes",
-          "begrepp": "Fotosyntes",
-          "forklaring": "Så gör växter sin egen mat av solljus, vatten och luft"
+          "id": "urskog",
+          "begrepp": "Urskog",
+          "forklaring": "Urskog är gammal skog som nästan inte har förändrats av människor."
         },
         {
-          "id": "vaxt",
-          "begrepp": "Växt",
-          "forklaring": "Levande varelse som gör sin egen mat med solljus",
-          "image": "\ud83c\udf31"
+          "id": "naringskedja",
+          "begrepp": "Näringskedja",
+          "forklaring": "En näringskedja visar vem som äter vem i naturen."
+        },
+        {
+          "id": "naturreservat",
+          "begrepp": "Naturreservat",
+          "forklaring": "Ett naturreservat är ett område i naturen som är skyddat."
+        },
+        {
+          "id": "mycel",
+          "begrepp": "Mycel",
+          "forklaring": "Mycel är tunna trådar från svampen som finns nere i marken."
+        },
+        {
+          "id": "allemansratt",
+          "begrepp": "Allemansrätt",
+          "forklaring": "Vi får vara i naturen och till exempel gå, plocka bär och plocka blommor, så länge vi inte förstör eller stör."
+        },
+        {
+          "id": "atervinna",
+          "begrepp": "Återvinna",
+          "forklaring": "Återvinna betyder att man använder något igen, till exempel när gammalt papper blir nytt papper."
+        },
+        {
+          "id": "nationalpark",
+          "begrepp": "Nationalpark",
+          "forklaring": "En nationalpark är ett stort skyddat naturområde med särskilda regler."
+        },
+        {
+          "id": "odlad-skog",
+          "begrepp": "Odlad skog",
+          "forklaring": "Odlad skog är skog som människor har planterat och sköter om."
+        },
+        {
+          "id": "palrot",
+          "begrepp": "Pålrot",
+          "forklaring": "En pålrot är en lång rot som växer rakt ner i marken."
         },
         {
           "id": "daeggdjur",
           "begrepp": "Däggdjur",
-          "forklaring": "Djur som har päls och diar sina ungar",
-          "image": "\ud83d\udc3e"
+          "forklaring": "Däggdjur är djur som får ungar och ger dem mjölk. Till exempel katt, hund och älg."
+        },
+        {
+          "id": "kretslopp",
+          "begrepp": "Kretslopp",
+          "forklaring": "Kretslopp betyder att något går runt och kommer tillbaka igen, fast i en ny form."
+        },
+        {
+          "id": "vintergron",
+          "begrepp": "Vintergrön",
+          "forklaring": "Vintergrön betyder att växten är grön även på vintern."
+        },
+        {
+          "id": "nedbrytare",
+          "begrepp": "Nedbrytare",
+          "forklaring": "Nedbrytare är små organismer som bryter ner döda växter och djur."
+        },
+        {
+          "id": "bytesdjur",
+          "begrepp": "Bytesdjur",
+          "forklaring": "Ett bytesdjur är ett djur som blir fångat och uppätet av ett annat djur."
+        },
+        {
+          "id": "vaxtatare",
+          "begrepp": "Växtätare",
+          "forklaring": "En växtätare är ett djur som äter växter, till exempel gräs, blad eller bär."
         },
         {
           "id": "rovdjur",
           "begrepp": "Rovdjur",
-          "forklaring": "Djur som jagar och äter andra djur"
-        },
-        {
-          "id": "fast-form",
-          "begrepp": "Fast form",
-          "forklaring": "Ett ämne som har en bestämd form, till exempel is"
-        },
-        {
-          "id": "vaetska",
-          "begrepp": "Vätska",
-          "forklaring": "Ett ämne som kan rinna, till exempel vatten"
-        },
-        {
-          "id": "gas",
-          "begrepp": "Gas",
-          "forklaring": "Ett ämne som sprider ut sig i luften, till exempel luft själv",
-          "image": "\u2601\ufe0f"
-        },
-        {
-          "id": "smaelta",
-          "begrepp": "Smälta",
-          "forklaring": "När is blir till vatten, fast blir till vätska"
-        },
-        {
-          "id": "magnet",
-          "begrepp": "Magnet",
-          "forklaring": "Något som drar till sig järn och vissa metaller",
-          "image": "\ud83e\uddf2"
-        },
-        {
-          "id": "friktion",
-          "begrepp": "Friktion",
-          "forklaring": "Motstånd som uppstår när två ytor glider mot varandra"
-        },
-        {
-          "id": "tyngdkraft",
-          "begrepp": "Tyngdkraft",
-          "forklaring": "Kraften som drar allt mot marken"
-        },
-        {
-          "id": "energi",
-          "begrepp": "Energi",
-          "forklaring": "Kraft som gör att saker rör sig eller fungerar",
-          "image": "\u26a1"
+          "forklaring": "Ett rovdjur är ett djur som jagar och äter andra djur."
         }
       ]
     },
@@ -227,7 +248,10 @@
       "subtitle": "v.37 (arkiverad)",
       "icon": "➕",
       "color": "#0ea5e9",
-      "modes": ["forward", "reverse"],
+      "modes": [
+        "forward",
+        "reverse"
+      ],
       "archived": true,
       "begrepp": [
         {
