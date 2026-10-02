@@ -682,7 +682,10 @@ document.addEventListener('keydown', (e) => {
 // Service worker (offline)
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').catch(err => console.warn('SW registration failed:', err));
+    // Cache-bust ?v=N på sw.js matchar CACHE_NAME i sw.js — tvingar webbläsaren att
+    // hämta ny SW istället för att returnera HTTP-cache. Utan detta kan gamla
+    // SW-registreringar ligga kvar i veckor (Johanna-incident 2026-10-02 07:02).
+    navigator.serviceWorker.register('sw.js?v=20').catch(err => console.warn('SW registration failed:', err));
   });
 }
 
