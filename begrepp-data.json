@@ -289,7 +289,8 @@
           "audio_fraga": "audio/vintergron-fraga.mp3",
           "audio_svar": "audio/vintergron-svar.mp3",
           "audio_reverse_fraga": "audio/vintergron-reverse-fraga.mp3",
-          "audio_reverse_svar": "audio/vintergron-reverse-svar.mp3"
+          "audio_reverse_svar": "audio/vintergron-reverse-svar.mp3",
+          "image": "images/vintergron.png"
         },
         {
           "id": "nedbrytare",
