@@ -636,6 +636,12 @@ button.danger:hover:not(:disabled) {
   gap: 0.75rem;
 }
 
+/* V5.4: HTML-attributet hidden ska faktiskt gömma bannern — utan detta
+   overrider .install-hint { display: flex } browser-default [hidden] = display:none.
+   Johanna-pushback 07:21: ✕-knappen gjorde ingenting eftersom bannern
+   förblev display: flex; trots att installHint.hidden = true sattes. */
+.install-hint[hidden] { display: none; }
+
 /* V5: Subject picker */
 .subject-picker {
   max-width: 560px;
