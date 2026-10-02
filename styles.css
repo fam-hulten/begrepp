@@ -109,6 +109,60 @@ h1 {
 
 .back-link.hidden { display: none; }
 
+/* V5.3: Refresh-data-knapp (alltid synlig — Johanna uppdaterar data) */
+.refresh-link {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  min-height: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+
+.refresh-link:hover:not(:disabled) {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.refresh-link:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.refresh-link.is-success {
+  background: #d1fae5;
+  border-color: var(--success);
+  color: #065f46;
+}
+
+.refresh-link.is-error {
+  background: var(--danger-soft);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.refresh-link.is-loading .refresh-icon {
+  display: inline-block;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 /* Mode toggle (Begrepp → Förklaring / Förklaring → Begrepp) */
 .mode-toggle {
   display: inline-flex;
@@ -743,6 +797,8 @@ button.danger:hover:not(:disabled) {
   .subject-card .subject-name { font-size: 1.1rem; }
   .subject-card .subject-chevron { font-size: 1.4rem; }
   .back-link { font-size: 0.78rem; padding: 0.35rem 0.6rem; }
+  .refresh-link { font-size: 0.78rem; padding: 0.35rem 0.6rem; }
+  .refresh-link .refresh-label { display: none; }
   .pick-heading { font-size: 1.2rem; }
   .pick-subheading { font-size: 0.85rem; }
 }
@@ -774,6 +830,8 @@ button.danger:hover:not(:disabled) {
   /* V5: Dark mode för picker */
   .back-link { background: transparent; color: var(--text-muted); border-color: var(--border); }
   .back-link:hover:not([hidden]) { background: var(--primary-soft); color: var(--primary); border-color: var(--primary); }
+  .refresh-link { background: transparent; color: var(--text-muted); border-color: var(--border); }
+  .refresh-link:hover:not(:disabled) { background: var(--primary-soft); color: var(--primary); border-color: var(--primary); }
   .subject-card { background: var(--card); border-color: var(--border); }
   .subject-card .subject-name { color: var(--text); }
   .error-state, .empty-state { background: var(--card); border-color: var(--border); }

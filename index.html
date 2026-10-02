@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
-  <link rel="stylesheet" href="styles.css?v=6">
+  <link rel="stylesheet" href="styles.css?v=8">
   <title>Begrepp</title>
 </head>
 <body>
@@ -24,7 +24,9 @@
         <h1 id="title" contenteditable="true">Begrepp</h1>
         <p class="subtitle" id="subtitle">Välj ämne för att börja träna</p>
       </div>
-      <div class="header-spacer" aria-hidden="true"></div>
+      <button id="refreshDataBtn" class="refresh-link" aria-label="Uppdatera data från servern">
+        <span class="refresh-icon" aria-hidden="true">↻</span> <span class="refresh-label">Uppdatera</span>
+      </button>
     </div>
     <div class="mode-toggle" role="tablist" aria-label="Övningsläge">
       <button id="modeForwardBtn" class="mode-btn active" role="tab" aria-selected="true">📖 Begrepp → Förklaring</button>
@@ -120,6 +122,6 @@
     <button id="dismissInstall" aria-label="Stäng">✕</button>
   </footer>
 
-  <script src="app.js?v=6"></script>
+  <script src="app.js?v=8"></script>
 </body>
 </html>

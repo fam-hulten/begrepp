@@ -23,6 +23,7 @@
 const STORAGE_KEY = 'begrepp-mastery-v3';
 const APP_MODE_KEY = '***';
 const SUBJECT_STORAGE_KEY = 'begrepp-last-subject-v5';
+const INSTALL_HINT_DISMISSED_KEY = 'begrepp-install-hint-dismissed';
 
 // === AUDIO PRIMING ===
 let audioPrimed = false;
@@ -92,6 +93,7 @@ const titleEl = document.getElementById('title');
 const subtitleEl = document.getElementById('subtitle');
 const subjectPickerEl = document.getElementById('subjectPicker');
 const backToSubjectsBtn = document.getElementById('backToSubjectsBtn');
+const refreshDataBtn = document.getElementById('refreshDataBtn');
 
 // === AUDIO ENGINE (oförändrad från V3.9) ===
 
@@ -324,6 +326,71 @@ function backToSubjects() {
   cardEl.classList.add('hidden');
   summaryEl.classList.add('hidden');
   renderSubjectPicker();
+}
+
+// === INSTALL HINT (PWA) ===
+
+function isInstallHintDismissed() {
+  try {
+    return localStorage.getItem(INSTALL_HINT_DISMISSED_KEY) === 'true';
+  } catch {
+    return false;
+  }
+}
+
+// === DATA REFRESH (Johanna-pushback 2026-10-02 07:12) ===
+
+async function refreshData() {
+  const btn = refreshDataBtn;
+  if (!btn) return;
+  const label = btn.querySelector('.refresh-label');
+  const originalText = label ? label.textContent : '';
+
+  btn.disabled = true;
+  btn.classList.add('is-loading');
+  if (label) label.textContent = 'Uppdaterar';
+
+  try {
+    // 1. Töm SW-cache — säkerställer att gammal data inte serveras
+    if ('caches' in window) {
+      const keys = await caches.keys();
+      await Promise.all(keys.map(k => caches.delete(k)));
+    }
+    // 2. Hämta färsk JSON med cache-bust
+    const res = await fetch('begrepp-data.json?t=' + Date.now(), { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const newJson = await res.json();
+    data = newJson;
+    // 3. Om i träning — avbryt session och gå tillbaka till picker
+    if (currentSubject) {
+      cancelChain();
+      currentSubject = null;
+      cardEl.classList.add('hidden');
+      summaryEl.classList.add('hidden');
+      backToSubjectsBtn.classList.add('hidden');
+    }
+    // 4. Rendera om picker
+    renderSubjectPicker();
+    // 5. Feedback (Klar!)
+    btn.classList.remove('is-loading');
+    btn.classList.add('is-success');
+    if (label) label.textContent = 'Klar!';
+    setTimeout(() => {
+      btn.classList.remove('is-success');
+      if (label) label.textContent = originalText || 'Uppdatera';
+    }, 1500);
+  } catch (err) {
+    console.error('Kunde inte uppdatera data:', err);
+    btn.classList.remove('is-loading');
+    btn.classList.add('is-error');
+    if (label) label.textContent = 'Fel';
+    setTimeout(() => {
+      btn.classList.remove('is-error');
+      if (label) label.textContent = originalText || 'Uppdatera';
+    }, 2500);
+  } finally {
+    btn.disabled = false;
+  }
 }
 
 // === SESSION LOGIC (per ämne) ===
@@ -614,10 +681,16 @@ nextBtn?.addEventListener('click', () => {
 startOverBtn.addEventListener('click', startOver);
 audioPromptBtn.addEventListener('click', playPrompt);
 audioAnswerBtn.addEventListener('click', playAnswer);
-dismissInstallBtn?.addEventListener('click', () => installHint.hidden = true);
+dismissInstallBtn?.addEventListener('click', () => {
+  installHint.hidden = true;
+  try { localStorage.setItem(INSTALL_HINT_DISMISSED_KEY, 'true'); } catch {}
+});
 
 // V5: Tillbaka till ämnesväljare
 backToSubjectsBtn?.addEventListener('click', backToSubjects);
+
+// V5.3: Uppdatera data-knapp (Johanna-pushback 2026-10-02 07:12)
+refreshDataBtn?.addEventListener('click', refreshData);
 
 // Enter i input-fältet → Rätta (app-läge)
 guessInput?.addEventListener('keydown', e => {
@@ -628,6 +701,9 @@ guessInput?.addEventListener('keydown', e => {
 });
 
 window.addEventListener('beforeinstallprompt', (e) => {
+  // Skippa banner om användaren redan dismissat eller appen är installerad (Johanna 2026-10-02)
+  if (isInstallHintDismissed()) return;
+  if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) return;
   e.preventDefault();
   deferredInstallPrompt = e;
   installHint.hidden = false;
@@ -685,7 +761,7 @@ if ('serviceWorker' in navigator) {
     // Cache-bust ?v=N på sw.js matchar CACHE_NAME i sw.js — tvingar webbläsaren att
     // hämta ny SW istället för att returnera HTTP-cache. Utan detta kan gamla
     // SW-registreringar ligga kvar i veckor (Johanna-incident 2026-10-02 07:02).
-    navigator.serviceWorker.register('sw.js?v=20').catch(err => console.warn('SW registration failed:', err));
+    navigator.serviceWorker.register('sw.js?v=22').catch(err => console.warn('SW registration failed:', err));
   });
 }
 
